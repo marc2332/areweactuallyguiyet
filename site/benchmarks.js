@@ -174,7 +174,11 @@ export function renderBenchmarks(history, libraries) {
     const measured = selected.results.filter(result => result.status === 'ok').length;
     document.querySelector('#collection-summary').textContent = `${selected.metadata.buildProfile ?? 'Unknown'} collection · ${identifiers.length} frameworks · ${measured} measured cases · ${selected.metadata.repetitions ?? '?'} repetitions`;
     document.querySelector('#collection-timing').textContent = `${selected.metadata.durationSeconds ?? '?'}s interaction windows · ${selected.metadata.warmupSeconds ?? '?'}s warm-up`;
-    document.querySelector('#collection-machine').textContent = `${selected.machine.cpu ?? 'CPU unknown'} · ${selected.machine.gpu ?? 'GPU unknown'} · ${selected.machine.os ?? 'OS unknown'}`;
+    const gpu = (selected.machine.gpu ?? 'GPU unknown').replace(
+      '2d:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 7590 (rev c0)',
+      'AMD Radeon RX 9060 (16 GB VRAM)',
+    );
+    document.querySelector('#collection-machine').textContent = `${selected.machine.cpu ?? 'CPU unknown'} · ${gpu} · ${selected.machine.os ?? 'OS unknown'}`;
     const legacyStartup = selected.results.some(result => result.scenario === 'startup' && result.scenarioVersion < 2);
     document.querySelector('#startup-method-note').textContent = legacyStartup
       ? 'Startup v1 used inconsistent ready signals and memory sampling. Do not compare its startup results.'
