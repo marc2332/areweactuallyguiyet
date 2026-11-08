@@ -1,13 +1,12 @@
 import { frameworkColor, groupMetricResults, metricLabels, placePointLabels } from './chart-data.mjs';
 
 const svgNamespace = 'http://www.w3.org/2000/svg';
-const primaryMetrics = ['cpu_ms', 'rss_mib', 'startup_ms'];
-const extraMetrics = ['peak_rss_mib', 'pss_mib'];
+const primaryMetrics = ['cpu_ms', 'pss_mib', 'startup_ms'];
+const extraMetrics = ['rss_mib'];
 const descriptions = {
   cpu_ms: ['CPU time', 'CPU used during the workload, not frame smoothness.'],
   rss_mib: ['Resident memory', 'RSS at workload end. Shared pages may be counted more than once.'],
   startup_ms: ['Time to initial UI', "Launch to the adapter's ready signal, not display presentation."],
-  peak_rss_mib: ['Peak resident memory', 'Highest sampled process-tree RSS during each workload.'],
   pss_mib: ['Proportional memory', 'Process-tree PSS, which apportions shared pages between processes.'],
 };
 
