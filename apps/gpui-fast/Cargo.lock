@@ -1971,6 +1971,7 @@ dependencies = [
  "uuid",
  "waker-fn",
  "windows 0.62.2",
+ "zed-scap",
 ]
 
 [[package]]

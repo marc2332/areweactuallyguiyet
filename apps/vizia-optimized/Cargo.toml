@@ -21,4 +21,4 @@ vizia-main = []
 
 [dependencies]
 benchmark-common = { path = "../../crates/benchmark-common" }
-vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", default-features = false, features = ["winit", "x11", "wayland", "rayon"] }
+vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", features = ["rayon"] }
