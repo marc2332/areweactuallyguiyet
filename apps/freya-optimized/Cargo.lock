@@ -1672,6 +1672,7 @@ dependencies = [
  "benchmark-common",
  "freya",
  "freya-testing",
+ "freya-winit",
 ]
 
 [[package]]

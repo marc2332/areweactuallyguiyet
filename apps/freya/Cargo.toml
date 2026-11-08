@@ -9,6 +9,7 @@ publish = false
 [dependencies]
 benchmark-common = { path = "../../crates/benchmark-common" }
 freya = "=0.5.0"
+freya-winit = "=0.5.0"
 async-io = "=2.5.0"
 
 [dev-dependencies]

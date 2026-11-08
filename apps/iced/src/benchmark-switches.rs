@@ -27,6 +27,7 @@ struct App {
 #[derive(Debug, Clone)]
 enum Message {
     Tick,
+    InitialFrame,
     Switch(usize),
 }
 impl App {
@@ -46,11 +47,27 @@ impl App {
             Task::none(),
         )
     }
-    fn subscription(_: &Self) -> Subscription<Message> {
-        time::every(Duration::from_millis(33)).map(|_| Message::Tick)
+    fn subscription(&self) -> Subscription<Message> {
+        Subscription::batch([
+            time::every(Duration::from_millis(33)).map(|_| Message::Tick),
+            if self.ready_sent {
+                Subscription::none()
+            } else {
+                iced::window::frames().map(|_| Message::InitialFrame)
+            },
+        ])
     }
     fn update(&mut self, message: Message) -> Task<Message> {
         match message {
+            Message::InitialFrame => {
+                if !self.ready_sent {
+                    if let Err(error) = self.harness.mark_ready("initial-draw-returned-not-presented") {
+                        eprintln!("Iced benchmark protocol failed: {error}");
+                        return iced::exit();
+                    }
+                    self.ready_sent = true;
+                }
+            }
             Message::Switch(index) => {
                 if index < SWITCH_COUNT {
                     self.switches.toggle(index);
@@ -60,15 +77,6 @@ impl App {
                 Ok(state) => {
                     if state.should_quit {
                         return iced::exit();
-                    }
-                    if !self.ready_sent {
-                        if let Err(error) = self.harness.mark_ready(
-                            "initial widget tree constructed; first GUI event-loop tick",
-                        ) {
-                            eprintln!("Iced benchmark protocol failed: {error}");
-                            std::process::exit(2);
-                        }
-                        self.ready_sent = true;
                     }
                     if state.reset_generation != self.reset_generation {
                         self.applied_updates = 0;

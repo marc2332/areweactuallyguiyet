@@ -5,6 +5,10 @@ use benchmark_common::{Harness, Scenario};
 use benchmark_common::{row_body, row_title};
 use freya::prelude::launch as freya_launch;
 use freya::prelude::*;
+use freya_winit::{
+    plugins::{FreyaPlugin, PluginEvent, PluginHandle},
+    renderer::NativeGenericEvent,
+};
 
 #[derive(Clone)]
 pub struct HarnessContext {
@@ -21,13 +25,46 @@ impl HarnessContext {
     }
 }
 
-pub fn launch<C: Clone + 'static>(
+struct InitialFrameReady {
+    context: HarnessContext,
+    ready_sent: bool,
+}
+
+impl FreyaPlugin for InitialFrameReady {
+    fn plugin_id(&self) -> &'static str {
+        "benchmark-initial-frame-ready"
+    }
+
+    fn on_event(&mut self, event: &mut PluginEvent, handle: PluginHandle) {
+        if self.ready_sent || !matches!(event, PluginEvent::AfterPresenting { .. }) {
+            return;
+        }
+        self.ready_sent = true;
+        if let Err(error) = self
+            .context
+            .harness
+            .borrow_mut()
+            .mark_ready("initial-present-returned-no-display-confirmation")
+        {
+            *self.context.failure.borrow_mut() = Some(error.to_string());
+            handle.send_event_loop_event(NativeEvent::Generic(NativeGenericEvent::User(
+                GlobalUserEvent::Exit,
+            )));
+        }
+    }
+}
+
+pub fn launch(
     app: fn() -> Element,
-    context: C,
+    context: HarnessContext,
     failure: Rc<RefCell<Option<String>>>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     freya_launch(
         LaunchConfig::new()
+            .with_plugin(InitialFrameReady {
+                context: context.clone(),
+                ready_sent: false,
+            })
             .with_default_font("DejaVu Sans")
             .with_font(
                 "DejaVu Sans",

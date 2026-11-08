@@ -4,7 +4,15 @@ use eframe::egui::Vec2;
 use eframe::egui::{self, FontData, FontDefinitions, FontFamily};
 #[cfg(any(feature = "switches", feature = "memory"))]
 use eframe::egui::{Response, Sense, Widget};
-use std::{cell::RefCell, rc::Rc, time::Duration};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
+    time::Duration,
+};
 
 type Error = Box<dyn std::error::Error>;
 
@@ -110,7 +118,8 @@ struct BenchmarkApp<S> {
     state: FrameState,
     scenario: S,
     failure: Rc<RefCell<Option<String>>>,
-    built_once: bool,
+    initial_painted: Arc<AtomicBool>,
+    ready_sent: bool,
 }
 
 impl<S: ScenarioUi> BenchmarkApp<S> {
@@ -125,7 +134,8 @@ impl<S: ScenarioUi> BenchmarkApp<S> {
             state: FrameState::default(),
             scenario: S::new(context)?,
             failure,
-            built_once: false,
+            initial_painted: Arc::new(AtomicBool::new(false)),
+            ready_sent: false,
         })
     }
 
@@ -137,6 +147,16 @@ impl<S: ScenarioUi> BenchmarkApp<S> {
 
 impl<S: ScenarioUi> eframe::App for BenchmarkApp<S> {
     fn logic(&mut self, context: &egui::Context, _frame: &mut eframe::Frame) {
+        if !self.ready_sent && self.initial_painted.load(Ordering::Acquire) {
+            if let Err(error) = self
+                .harness
+                .mark_ready("initial-paint-returned-following-update-not-presented")
+            {
+                self.fail(context, error);
+                return;
+            }
+            self.ready_sent = true;
+        }
         match self.harness.poll() {
             Ok(state) => self.state = state,
             Err(error) => {
@@ -164,11 +184,21 @@ impl<S: ScenarioUi> eframe::App for BenchmarkApp<S> {
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         self.scenario.render(ui);
-        if !self.built_once {
-            self.built_once = true;
-            if let Err(error) = self.harness.mark_ready("ui-built-not-presented") {
-                self.fail(ui.ctx(), error);
-            }
+        if !self.ready_sent {
+            let painted = self.initial_painted.clone();
+            let context = ui.ctx().clone();
+            ui.ctx()
+                .layer_painter(egui::LayerId::new(
+                    egui::Order::Debug,
+                    egui::Id::new("initial-frame-ready"),
+                ))
+                .add(egui::PaintCallback {
+                    rect: ui.max_rect(),
+                    callback: Arc::new(eframe::egui_glow::CallbackFn::new(move |_, _| {
+                        painted.store(true, Ordering::Release);
+                        context.request_repaint();
+                    })),
+                });
         }
     }
 }

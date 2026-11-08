@@ -157,11 +157,16 @@ pub fn run<S: ScenarioUi>() -> Result<(), Error> {
     };
     let app = App::new(spec).args(Vec::new()).init(move || state);
     let handle = app.handle();
-    app.on_ready(move |_| {
+    let mut ready_sent = false;
+    app.on_frame_encoded(move |frame| {
+        if ready_sent || frame.outcome() != rune::FrameOutcome::Drawn {
+            return;
+        }
+        ready_sent = true;
         handle.update(|state, transaction| {
             if let Err(error) = state
                 .harness
-                .mark_ready("native-first-frame-ready-not-presented")
+                .mark_ready("native-first-drawn-frame-returned-no-display-confirmation")
             {
                 *state.failure.borrow_mut() = Some(error.to_string());
                 transaction.quit();

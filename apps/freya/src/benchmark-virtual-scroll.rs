@@ -22,7 +22,6 @@ fn app() -> Element {
         let mut controller = controller;
         async move {
             let result = async {
-                context.harness.borrow_mut().mark_ready("ui-built")?;
                 let mut observed_reset = 0;
                 loop {
                     Timer::after(Duration::from_millis(16)).await;

@@ -104,15 +104,20 @@ impl View for ReadyProbe {
     fn paint(&mut self, context: &mut floem::context::PaintCx) {
         let boundary = match &**context {
             PaintRenderer::Uninitialized { .. } => return,
-            PaintRenderer::Vger(_) => "vger-first-paint-after-renderer-init-not-presented",
-            PaintRenderer::TinySkia(_) => "tiny-skia-first-paint-after-renderer-init-not-presented",
+            PaintRenderer::Vger(_) => "vger-initial-paint-returned-following-tick-not-presented",
+            PaintRenderer::TinySkia(_) => {
+                "tiny-skia-initial-paint-returned-following-tick-not-presented"
+            }
         };
         if !self.runtime.ready.get() {
             self.runtime.ready.set(true);
-            if let Err(error) = self.runtime.harness.borrow_mut().mark_ready(boundary) {
-                *self.runtime.failure.borrow_mut() = Some(error.to_string());
-                floem::quit_app();
-            }
+            let runtime = self.runtime.clone();
+            floem::action::exec_after(Duration::ZERO, move |_| {
+                if let Err(error) = runtime.harness.borrow_mut().mark_ready(boundary) {
+                    *runtime.failure.borrow_mut() = Some(error.to_string());
+                    floem::quit_app();
+                }
+            });
         }
     }
 }

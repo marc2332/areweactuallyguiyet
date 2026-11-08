@@ -28,6 +28,7 @@ struct App {
 #[derive(Debug, Clone)]
 enum Message {
     Tick,
+    InitialFrame,
     Input(String),
     Button,
 }
@@ -51,26 +52,33 @@ impl App {
             Task::none(),
         )
     }
-    fn subscription(_: &Self) -> Subscription<Message> {
-        time::every(Duration::from_millis(16)).map(|_| Message::Tick)
+    fn subscription(&self) -> Subscription<Message> {
+        Subscription::batch([
+            time::every(Duration::from_millis(16)).map(|_| Message::Tick),
+            if self.ready_sent {
+                Subscription::none()
+            } else {
+                iced::window::frames().map(|_| Message::InitialFrame)
+            },
+        ])
     }
     fn update(&mut self, message: Message) -> Task<Message> {
         match message {
+            Message::InitialFrame => {
+                if !self.ready_sent {
+                    if let Err(error) = self.harness.mark_ready("initial-draw-returned-not-presented") {
+                        eprintln!("Iced benchmark protocol failed: {error}");
+                        return iced::exit();
+                    }
+                    self.ready_sent = true;
+                }
+            }
             Message::Input(value) => self.input = value,
             Message::Button => self.message = format!("Submitted: {}", self.input),
             Message::Tick => match self.harness.poll() {
                 Ok(state) => {
                     if state.should_quit {
                         return iced::exit();
-                    }
-                    if !self.ready_sent {
-                        if let Err(error) = self.harness.mark_ready(
-                            "initial widget tree constructed; first GUI event-loop tick",
-                        ) {
-                            eprintln!("Iced benchmark protocol failed: {error}");
-                            std::process::exit(2);
-                        }
-                        self.ready_sent = true;
                     }
                     if state.reset_generation != self.reset_generation {
                         self.applied_updates = 0;

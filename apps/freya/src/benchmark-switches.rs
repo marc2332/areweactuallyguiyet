@@ -39,11 +39,6 @@ fn app() -> Element {
         let platform = platform.clone();
         async move {
             let result = async {
-                context
-                    .harness
-                    .harness
-                    .borrow_mut()
-                    .mark_ready("ui-built")?;
                 let mut observed_reset = 0;
                 loop {
                     Timer::after(Duration::from_millis(16)).await;

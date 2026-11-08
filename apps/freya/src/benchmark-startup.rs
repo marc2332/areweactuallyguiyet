@@ -20,7 +20,6 @@ fn app() -> Element {
         let platform = platform.clone();
         async move {
             let result = async {
-                context.harness.borrow_mut().mark_ready("ui-built")?;
                 loop {
                     Timer::after(Duration::from_millis(16)).await;
                     let polled = context.harness.borrow_mut().poll()?;
