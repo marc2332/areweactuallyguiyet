@@ -128,8 +128,12 @@ function metricCard(run, metric, hidden, names) {
   return figure;
 }
 
+export function newestRuns(history) {
+  return [...history.runs].sort((first, second) => Date.parse(second.collectedAt) - Date.parse(first.collectedAt) || second.id.localeCompare(first.id));
+}
+
 export function renderBenchmarks(history, libraries) {
-  const runs = [...history.runs].sort((first, second) => Date.parse(second.collectedAt) - Date.parse(first.collectedAt));
+  const runs = newestRuns(history);
   const empty = document.querySelector('#empty');
   if (!runs.length) {
     empty.textContent = 'No measurements yet.';
@@ -142,9 +146,10 @@ export function renderBenchmarks(history, libraries) {
   let names = baseNames;
   const hidden = new Set();
   const selector = document.querySelector('#run');
-  document.querySelector('#collection-control').hidden = runs.length < 2;
-  selector.replaceChildren(...runs.map(run => {
-    const option = element('option', `${new Date(run.collectedAt).toLocaleString()} · ${run.machine.label} · ${run.metadata.buildProfile ?? 'unknown profile'}`);
+  document.querySelector('#collection-control').hidden = false;
+  selector.replaceChildren(...runs.map((run, index) => {
+    const measured = run.results.filter(result => result.status === 'ok').length;
+    const option = element('option', `${index === 0 ? 'Latest · ' : ''}${new Date(run.collectedAt).toLocaleString()} · ${run.machine.label} · ${run.metadata.buildProfile ?? 'unknown profile'} · ${measured}/${run.results.length} cases · ${run.id}`);
     option.value = run.id;
     return option;
   }));
@@ -169,6 +174,7 @@ export function renderBenchmarks(history, libraries) {
   function renderCollection() {
     names = { ...baseNames, ...selected.metadata.frameworkLabels };
     highlight(null);
+    document.querySelector('#collection-run').textContent = `Run ${selected.id} · ${new Date(selected.collectedAt).toLocaleString()} · ${selected.id === runs[0].id ? 'Latest run' : 'Historical run'} · Showing only this full collection.`;
     const identifiers = [...new Set(selected.results.map(result => result.framework))];
     const measured = selected.results.filter(result => result.status === 'ok').length;
     document.querySelector('#collection-summary').textContent = `${selected.metadata.buildProfile ?? 'Unknown'} collection · ${identifiers.length} frameworks · ${measured} measured cases · ${selected.metadata.repetitions ?? '?'} repetitions`;
@@ -214,6 +220,7 @@ export function renderBenchmarks(history, libraries) {
 
   selector.addEventListener('change', () => {
     selected = runs.find(run => run.id === selector.value) ?? runs[0];
+    hidden.clear();
     renderCollection();
   });
   renderCollection();

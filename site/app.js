@@ -18,7 +18,7 @@ const aiLabels = {
 };
 
 async function loadJson(path) {
-  const response = await fetch(path);
+  const response = await fetch(path, { cache: 'no-cache' });
   if (!response.ok) throw new Error(`Loading ${path}: ${response.status}`);
   return response.json();
 }
@@ -146,7 +146,7 @@ function metadataRows(libraries) {
 
 try {
   const [libraryData, featureData, history] = await Promise.all([
-    loadJson('data/libraries.json'), loadJson('data/features.json'), loadJson('data/history.json'),
+    loadJson('data/libraries.json'), loadJson('data/features.json'), loadJson('data/benchmark-runs.json'),
   ]);
   renderBenchmarks(history, libraryData.libraries);
   renderMatrix(libraryData.libraries, featureData);

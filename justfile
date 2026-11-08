@@ -47,7 +47,7 @@ bench-all machine="desktop" *args:
 
 # Exercise the full runner with a short development-only real-window run.
 smoke framework="egui" scenario="scroll":
-    @just bench "$1" "$2" smoke --profile dev --repetitions 1 --warmup 1 --duration 3
+    @just bench "$1" "$2" smoke --profile dev --repetitions 1 --warmup 1 --duration 3 --output /tmp/gui-bench-smoke
 
 # Import a run and rebuild the website, then refresh the browser.
 collect path:

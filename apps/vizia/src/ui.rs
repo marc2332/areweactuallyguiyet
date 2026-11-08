@@ -23,7 +23,10 @@ pub fn run<A: Adapter>() -> Result<(), Box<dyn std::error::Error>> {
     let timer_harness = harness.clone();
     let timer_failure = failure.clone();
     let application = Application::new(move |cx| {
+        #[cfg(not(feature = "vizia-main"))]
         cx.add_font_mem(include_bytes!("../../../assets/fonts/DejaVuSans.ttf"));
+        #[cfg(feature = "vizia-main")]
+        cx.load_font_mem(include_bytes!("../../../assets/fonts/DejaVuSans.ttf"));
         let state = A::state();
         VStack::new(cx, |cx| A::build(cx, &state))
             .width(Stretch(1.0))

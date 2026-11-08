@@ -19,6 +19,7 @@ export const frameworkColors = {
   'freya-attempt-8': '#d9f99d',
   egui: '#60a5fa',
   vizia: '#f472b6',
+  'vizia-optimized': '#e879f9',
   iced: '#22d3ee',
   gpui: '#fb923c',
   'gpui-fast': '#c084fc',

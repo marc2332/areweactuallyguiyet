@@ -115,6 +115,36 @@
     }
   },
   {
+    "id": "vizia-optimized",
+    "name": "Vizia (Optimized)",
+    "baseId": "vizia",
+    "version": "0.4.0 (main@a8a38adbb7fd)",
+    "package": "gui-bench-vizia-optimized",
+    "manifest": "apps/vizia-optimized/Cargo.toml",
+    "scenarios": {
+      "startup": {
+        "status": "implemented",
+        "reason": "Pinned Vizia main commit, same app source and features as the published baseline"
+      },
+      "scroll": {
+        "status": "implemented",
+        "reason": null
+      },
+      "virtual-scroll": {
+        "status": "implemented",
+        "reason": "Native VirtualList with fixed 48px rows"
+      },
+      "switches": {
+        "status": "implemented",
+        "reason": "Custom dummy views with local per-cell signals"
+      },
+      "memory": {
+        "status": "implemented",
+        "reason": "Shared dashboard v2 with signal-backed controls and embedded PNG fixtures"
+      }
+    }
+  },
+  {
     "id": "iced",
     "version": "0.14.0",
     "package": "gui-bench-iced",

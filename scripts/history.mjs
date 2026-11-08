@@ -29,7 +29,24 @@ export function validateHistory(history) {
   return history;
 }
 
-export async function importRun(inputPath, historyPath = 'site/data/history.json') {
+export function chartHistory(history) {
+  const metadataKeys = ['buildProfile', 'frameworkLabels', 'frameworkBaseIds', 'frameworkVersions', 'repetitions', 'durationSeconds', 'warmupSeconds', 'startupMemorySettleSeconds', 'switchMode'];
+  return {
+    schemaVersion: history.schemaVersion,
+    runs: history.runs.map(run => ({
+      id: run.id,
+      collectedAt: run.collectedAt,
+      machine: run.machine,
+      metadata: Object.fromEntries(metadataKeys.filter(key => key in run.metadata).map(key => [key, run.metadata[key]])),
+      results: run.results.map(result => ({
+        ...result,
+        repetitions: result.repetitions.map(repetition => ({ index: repetition.index, metrics: repetition.metrics ?? {} })),
+      })),
+    })),
+  };
+}
+
+export async function importRun(inputPath, historyPath = 'site/data/history.json', adapters) {
   const incoming = JSON.parse(await readFile(inputPath, 'utf8'));
   const history = validateHistory(JSON.parse(await readFile(historyPath, 'utf8')));
   if (!object(incoming) || incoming.schemaVersion !== 1 || !['id', 'collectedAt', 'machine', 'results', 'metadata'].every(key => key in incoming)) throw new Error('Input must be a schemaVersion 1 runner run object');
@@ -37,6 +54,10 @@ export async function importRun(inputPath, historyPath = 'site/data/history.json
   delete run.schemaVersion;
   const next = { schemaVersion: 1, runs: [...history.runs.filter(item => item.id !== run.id), run] };
   validateHistory(next);
+  adapters ??= JSON.parse(await readFile(new URL('../apps/catalog.json', import.meta.url), 'utf8'));
+  const included = new Set(run.results.map(result => `${result.framework}/${result.scenario}`));
+  const missing = adapters.flatMap(adapter => Object.keys(adapter.scenarios).map(scenario => `${adapter.id}/${scenario}`)).filter(key => !included.has(key));
+  if (missing.length) throw new Error(`Only full collections can be published. Individual runs are temporary inputs. Missing ${missing.length} cases, including ${missing.slice(0, 3).join(', ')}.`);
   await writeFile(historyPath, `${JSON.stringify(next, null, 2)}\n`);
   return next;
 }

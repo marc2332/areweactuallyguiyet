@@ -1,0 +1,24 @@
+[workspace]
+
+[package]
+name = "gui-bench-vizia-optimized"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "gui-bench-vizia-optimized"
+path = "../vizia/src/main.rs"
+
+[features]
+default = []
+startup = ["vizia-main"]
+scroll = ["vizia-main"]
+virtual-scroll = ["vizia-main"]
+switches = ["vizia-main"]
+memory = ["vizia-main"]
+vizia-main = []
+
+[dependencies]
+benchmark-common = { path = "../../crates/benchmark-common" }
+vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", default-features = false, features = ["winit", "x11", "wayland", "rayon"] }

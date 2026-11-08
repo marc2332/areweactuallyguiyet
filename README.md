@@ -20,10 +20,12 @@ just serve 8000        # Serve an existing build
 just doctor
 just list
 just app egui scroll
-just bench egui scroll desktop --repetitions 3
-just bench freya,freya-optimized scroll desktop
+just bench egui scroll desktop --repetitions 3 --output /tmp/gui-bench
+just bench freya,freya-optimized scroll desktop --output /tmp/gui-bench
 just smoke egui scroll
 just collect-latest desktop
 ```
+
+The website selector shows published full collections from `site/data/history.json`, newest first. Individual runs are temporary inputs and cannot be published with `just collect`. A full collection must include every adapter and scenario in `apps/catalog.json`. Builds do not automatically import local or temporary results.
 
 Site design adapted from [Are we layout yet?](https://github.com/marc2332/arewelayoutyet).
