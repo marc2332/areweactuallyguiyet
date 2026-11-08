@@ -15,6 +15,9 @@ benchmark-common = { path = "../../crates/benchmark-common" }
 freya = { git = "https://github.com/marc2332/freya", rev = "c546a9cc14d17187942245bccae4e2a8c7dce216" }
 async-io = "=2.5.0"
 
+[dev-dependencies]
+freya-testing = { git = "https://github.com/marc2332/freya", rev = "c546a9cc14d17187942245bccae4e2a8c7dce216" }
+
 [features]
 default = []
 startup = []

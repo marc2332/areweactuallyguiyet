@@ -655,10 +655,12 @@ impl TextInput {
         }
     }
 
+    #[cfg(feature = "memory")]
     pub fn value(&self) -> &str {
         self.content.as_ref()
     }
 
+    #[cfg(feature = "memory")]
     pub fn set_value(&mut self, value: String, cx: &mut Context<Self>) {
         let end = value.len();
         self.content = value.into();

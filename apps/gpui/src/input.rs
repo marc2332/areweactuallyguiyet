@@ -627,6 +627,7 @@ impl TextInput {
         }
     }
 
+    #[cfg(feature = "memory")]
     pub fn value(&self) -> &str {
         self.content.as_ref()
     }

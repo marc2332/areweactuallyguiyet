@@ -1398,6 +1398,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "freya-testing"
+version = "0.5.0-rc.13"
+source = "git+https://github.com/marc2332/freya?rev=c546a9cc14d17187942245bccae4e2a8c7dce216#c546a9cc14d17187942245bccae4e2a8c7dce216"
+dependencies = [
+ "accesskit",
+ "freya-clipboard",
+ "freya-components",
+ "freya-core",
+ "freya-engine",
+ "futures-channel",
+ "ragnarok",
+ "torin",
+]
+
+[[package]]
 name = "freya-winit"
 version = "0.5.0-rc.13"
 source = "git+https://github.com/marc2332/freya?rev=c546a9cc14d17187942245bccae4e2a8c7dce216#c546a9cc14d17187942245bccae4e2a8c7dce216"
@@ -1656,6 +1671,7 @@ dependencies = [
  "async-io",
  "benchmark-common",
  "freya",
+ "freya-testing",
 ]
 
 [[package]]

@@ -1,0 +1,9 @@
+import "../../../assets/fonts/DejaVuSans.ttf";
+export struct RecordValue { record-id: int, title: string, body: string, active: bool, selected: bool }
+export component RowView inherits Rectangle {
+    in property <string> title;
+    in property <string> body;
+    height: 48px;
+    Text { x: 8px; y: 4px; width: parent.width - 16px; height: 20px; text: root.title; font-size: 14px; }
+    Text { x: 8px; y: 24px; width: parent.width - 16px; height: 18px; text: root.body; font-size: 12px; overflow: elide; }
+}

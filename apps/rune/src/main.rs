@@ -1,3 +1,4 @@
+#[cfg(feature = "memory")]
 mod dashboard;
 mod ui;
 

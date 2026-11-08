@@ -1416,6 +1416,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "freya-testing"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "063624c2fa3fc4de9ae20635f0402f37f745bdeeedca3ffca7b978e148eaf16b"
+dependencies = [
+ "accesskit",
+ "freya-clipboard",
+ "freya-components",
+ "freya-core",
+ "freya-engine",
+ "futures-channel",
+ "ragnarok",
+ "torin",
+]
+
+[[package]]
 name = "freya-winit"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1675,6 +1691,7 @@ dependencies = [
  "async-io",
  "benchmark-common",
  "freya",
+ "freya-testing",
 ]
 
 [[package]]
