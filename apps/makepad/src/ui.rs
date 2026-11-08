@@ -545,9 +545,9 @@ impl AppMain for App {
                     while let Some(index) = list.next_visible_item(&mut context) {
                         let row = list.item(&mut context, index, live_id!(Row));
                         row.label(id!(title))
-                            .set_text(&mut context, &row_title(index));
+                            .set_text_with(|text| *text = row_title(index));
                         row.label(id!(body))
-                            .set_text(&mut context, &row_body(index));
+                            .set_text_with(|text| *text = row_body(index));
                         row.draw_all(&mut context, &mut scope);
                     }
                 }
