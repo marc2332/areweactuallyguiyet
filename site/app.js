@@ -57,28 +57,7 @@ function claimButton(text, title, paragraphs, evidenceUrl) {
   return button;
 }
 
-function renderFeatureReview(data) {
-  const review = data.review;
-  if (!review) return;
-  const unknownCount = data.claims.filter(claim => claim.status === 'unknown').length;
-  const summary = element('p', `${data.claims.length} feature entries · ${unknownCount} unverified`, 'small');
-  const details = element('details', undefined, 'small');
-  details.append(element('summary', 'Sources and review dates'));
-  const sources = element('ul');
-  for (const source of review.repositories) {
-    const item = element('li');
-    const link = element('a', `${source.repository} · ${source.sha.slice(0, 12)} · reviewed ${source.reviewedDate ?? review.date}`);
-    link.href = `https://github.com/${source.repository}/commit/${source.sha}`;
-    link.rel = 'noreferrer';
-    item.append(link);
-    sources.append(item);
-  }
-  details.append(sources);
-  $('#feature-review').replaceChildren(summary, details);
-}
-
 function renderMatrix(libraries, data) {
-  renderFeatureReview(data);
   $('#legend').replaceChildren(...Object.values(labels).map(label => element('span', label)));
   const table = $('#features');
   const head = element('thead');

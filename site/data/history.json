@@ -6,6 +6,7 @@
       "id": "1794072411155-2211836",
       "machine": {
         "cpu": "AMD Ryzen 5 5600X 6-Core Processor",
+        "distribution": "Ubuntu 24.04.4 LTS",
         "displaySettings": "not automatically captured, operator must record separately",
         "gpu": "2d:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 7590 (rev c0)",
         "id": "desktop",

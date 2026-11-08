@@ -363,10 +363,10 @@
       "sourceUpdated": null,
       "status": "Experimental performance-focused GPUI fork",
       "provenance": {
-        "status": "ai-generated",
-        "scope": "AI-generated, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "status": "ai-assisted",
+        "scope": "AI-assisted, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
         "evidence": null,
-        "quote": "GPUI fast and rune are AI-generated",
+        "quote": "GPUI Fast is AI-assisted",
         "reviewedCommit": "61dccec2536ecbb6845a2c0cdf5fb17651b10bc5",
         "reviewedDate": "2026-11-07",
         "supportingDisclosure": {
