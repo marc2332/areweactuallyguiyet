@@ -1,0 +1,15 @@
+/target/
+/apps/*/target/
+/dist/
+/results/
+/node_modules/
+/.pi/subagents/
+.bash_profile
+.bashrc
+.env
+.gitconfig
+.mcp.json
+.profile
+.ripgreprc
+.zprofile
+.zshrc

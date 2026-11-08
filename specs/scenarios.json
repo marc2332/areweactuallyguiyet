@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "scenarioVersion": 1,
+  "viewport": { "width": 1280, "height": 800, "unit": "logical-pixels" },
+  "startup": { "scenarioVersion": 2, "rows": 20, "readiness": "post-renderer adapter milestone, not first presentation", "memorySampling": "single endpoint after idle settling for configured warmupSeconds", "initializationPeakMeasured": false },
+  "scroll": { "rows": 2000, "rowHeight": 48, "pixelsPerSecond": 2000, "trajectory": "triangular", "input": "programmatic" },
+  "virtual-scroll": { "rows": 100000, "rowHeight": 48, "pixelsPerSecond": 2000, "overscan": "adapter-specific" },
+  "switches": { "scenarioVersion": 2, "controls": 900, "columns": 30, "rows": 30, "updatesPerSecond": 30, "modes": { "single": 1, "batch": 90, "all": 900 }, "shape": "plain equal rectangles", "labels": ["ON", "OFF"], "font": "DejaVu Sans", "fontSize": 12, "onColor": [47, 158, 68], "offColor": [134, 142, 150], "textColor": [255, 255, 255], "animations": false, "gaps": 0 },
+  "memory": { "scenarioVersion": 2, "records": 200, "recordBodyCharacters": 160, "recordHeight": 64, "navigationEntries": 20, "formFields": 20, "thumbnails": 10, "thumbnailFormat": "bundled PNG", "detailCharacters": 10000, "actions": ["search", "navigate", "select", "toggle", "edit", "scroll"], "implementedBy": ["freya", "egui", "vizia", "iced", "gpui", "gpui-fast", "dioxus-native", "slint", "floem", "makepad", "rune"] },
+  "collectionDefaults": { "repetitions": 5, "warmupSeconds": 2, "measurementSeconds": 10, "sampleIntervalMs": 100 },
+  "authority": "Current executable workload constants live in benchmark-common and toolkit adapters. This file describes the versioned contract, not runtime overrides."
+}

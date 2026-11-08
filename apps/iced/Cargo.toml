@@ -1,0 +1,19 @@
+[workspace]
+
+[package]
+name = "gui-bench-iced"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+benchmark-common = { path = "../../crates/benchmark-common" }
+iced = { version = "=0.14.0", features = ["tokio", "advanced", "lazy", "image"] }
+
+[features]
+default = []
+startup = []
+scroll = []
+virtual-scroll = []
+switches = []
+memory = []

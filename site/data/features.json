@@ -1,0 +1,3961 @@
+{
+  "categories": [
+    "Platforms",
+    "Rendering",
+    "Shaders",
+    "Layout and widgets",
+    "Text",
+    "Animation",
+    "Accessibility",
+    "Integration",
+    "Tooling"
+  ],
+  "statuses": [
+    "built-in",
+    "ecosystem",
+    "partial",
+    "different model",
+    "unsupported",
+    "unknown",
+    "not applicable"
+  ],
+  "claims": [
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Winit desktop shell with Linux X11/Wayland features.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/Cargo.toml",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Winit desktop shell includes Windows dependencies and renderer configuration.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/Cargo.toml",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "Winit desktop shell and platform renderer selection include macOS.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/Cargo.toml",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "partial",
+      "notes": "An in-repository web backend exists behind the web feature. Do not assume desktop API or accessibility parity.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-web/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "partial",
+      "notes": "An Android integration crate and Android examples exist. Desktop feature parity is not established.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-android/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Skia GPU support is feature-gated. The Winit crate also contains software rendering paths.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/Cargo.toml",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "RenderCallback supplies custom drawing through Freya's render context and Skia canvas.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/style/fill.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Native image element, with decoded image data and asset support.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/elements/image.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SvgViewer uses the Skia SVG rendering path. This is not a complete browser SVG DOM.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/svg_viewer.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Rectangles support overflow/clipping and visual transformation properties.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/elements/rect.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "built-in",
+      "notes": "ShaderFill accepts a compiled Skia RuntimeEffect and a provider for shader uniforms. Custom fills use SkSL RuntimeEffect, not arbitrary WGSL or GLSL pipelines. They are tied to the Skia rendering model.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/style/shader.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Torin supplies directional, sized and positioned layout. Do not equate this API with a complete browser CSS implementation.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/torin/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Controlled scroll views, scrollbars and input handling are supplied as components.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/scrollviews/scrollview.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "VirtualScrollView builds visible items from a logical item count and builder.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/scrollviews/virtual_scrollview.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "Editable Input component is included, beyond display-only labels.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/input.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Menus and table components are included. A complete built-in tree-view family is not established by this module inventory.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "freya-edit provides cursor movement, selection and editable text state, also used by input and editor components.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-edit/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "Core IME state and positioning API is supplied. Platform behavior still depends on the selected shell.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/accessibility/ime.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "unsupported",
+      "notes": "RTL and bidirectional text are not supported, per the maintainer's clarification.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/elements/paragraph.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "use_animation drives timed animated values and rerendering.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-animation/src/hook.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Spring-like motion is available through Elastic and Bounce easing, with custom easing functions also supported.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-animation/src/easing.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "Core accessibility tree tracks semantic nodes and updates.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/accessibility/tree.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Focus navigation is integrated with keyboard interaction.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/accessibility/focus.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Accessibility focus handles and focus requests are provided.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/accessibility/focus.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "built-in",
+      "notes": "The optional desktop accessibility integration uses AccessKit. This does not certify all widgets or every platform/backend.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/src/accessibility.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Clipboard abstraction has platform implementations, separate from ordinary text state.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-clipboard/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "partial",
+      "notes": "In-application drag/drop components are implemented. Full OS cross-application data-transfer parity was not established.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-components/src/drag_drop.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "ecosystem",
+      "notes": "The shell depends on rfd for native dialogs. This does not imply a cross-backend Freya dialog widget API.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/Cargo.toml",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Platform manages multiple windows by ID and provides per-window handles.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/platform.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "built-in",
+      "notes": "Supported through Freya's core crates with a custom host shell. The host handles rendering, event delivery and lifecycle instead of using the Winit launcher.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-core/src/runner.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "Feature-gated developer tools inspect the component tree.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-devtools/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "The hotreload feature integrates Subsecond and dx. Patches reset hook state and cancel tasks, and structural Rust changes require a restart.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya/src/_docs/hot_reload.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "TestingRunner offers component/input assertions and optional rendered snapshots without a native window.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-testing/src/lib.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux platform selection includes Wayland and X11 backend features.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_platform/src/gpui_platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Native Win32 platform implementation is present.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_windows/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "Native macOS platform implementation is present.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_macos/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "partial",
+      "notes": "A web platform implementation exists at this commit. This is not a claim of desktop feature or renderer parity.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_web/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "Support for Android was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/README.md",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "partial",
+      "notes": "An iOS platform crate and examples/tests exist. The desktop setup guide is not evidence of full mobile parity.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_ios/Cargo.toml",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Platform selection uses GPU renderers. A generally available CPU software fallback is not established.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui_platform/src/gpui_platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Canvas exposes prepaint/paint closures, and custom Element implementations can issue paint operations.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/canvas.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Image elements and image-source loading are included.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/img.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG elements are supported. Do not infer complete browser SVG feature coverage.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/svg.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Styles expose overflow and transformation controls for elements.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/style.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "unknown",
+      "notes": "Canvas exposes framework paint operations. An arbitrary user-defined GPU shader/pipeline API was not established, and internal backend shaders are not evidence of one. Internal WGPU shaders use WGSL while Apple paths use Metal. Internal shader files are not a portable public custom-shader API.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/canvas.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Element styles provide flex/grid and sized/positioned layout through the framework layout engine.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/style.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Scrollable divs and scroll handles are part of the core element API.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/div.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "uniform_list builds a visible range rather than constructing the entire logical list. A separate list implementation supports variable-sized entries.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/uniform_list.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "partial",
+      "notes": "The repository demonstrates a custom input using the platform input-handler contract. A reusable production widget must still be supplied by the app or a widget library.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Platform menu abstractions and list primitives exist. Complete table/tree widgets are not implied by those low-level APIs.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "partial",
+      "notes": "The input example implements selection, cursor movement and editing. Core paintable text alone is not a full editor widget.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Text",
+      "name": "IME",
+      "status": "partial",
+      "notes": "Input handlers expose marked text and replacement ranges for platform IME. Applications must implement the contract correctly.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "RTL wrapping is implemented and tested, but the line-layout source explicitly states that UAX #9 bidirectional support is incomplete.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/text_system/line_layout.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "AnimationExt applies timed interpolation/easing and requests animation frames.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/elements/animation.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "SpringConfig, SpringState and SpringAnimation provide an explicit physics-based spring API.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/spring.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "AccessKit semantic roles and stable global element IDs are documented. Custom elements must expose their own semantics.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/_accessibility.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Action/key binding dispatch supports keyboard interaction.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/key_dispatch.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "FocusHandle and window focus management are available.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/window.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "AccessKit integration is implemented. This does not establish equivalent support in every platform backend or application widget.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/_accessibility.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Platform clipboard contracts support reading and writing clipboard content.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "An in-repository drag/drop example exercises the core API. Platform data formats remain backend-dependent.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/examples/drag_drop.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "built-in",
+      "notes": "Platform prompt and path-selection interfaces are provided, with OS-specific implementations.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "App opens and manages multiple native windows.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/app.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "Platform interfaces expose native-window integration hooks. Embedding capabilities vary by backend and are not a generic cross-platform compositor contract.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "The inspector supports element selection, picking and registered inspector states.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/inspector.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "A hot-reload integration exists. Availability is feature/toolchain dependent, not unconditional live replacement of arbitrary Rust changes.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/hot_reload.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "TestAppContext supports UI state and simulated platform/input operations.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/app/test_context.rs",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "GPUI architecture/setup documentation and runnable examples live in the repository.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/README.md",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux is an explicitly supported desktop target.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows is an explicitly supported desktop target.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "macOS is an explicitly supported desktop target.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "unknown",
+      "notes": "Support for Web was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "Support for Android was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "The native shell uses Skia with GPU/windowing integration. General software-renderer parity is not established here.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_winit/Cargo.toml",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Custom View drawing can access the drawing context and Skia canvas.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/context/draw.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Built-in Image view supports repository image resources.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/image.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "Built-in SVG view is present, including the bundled icon use case.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/image.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Style modifiers include clipping, overflow and transforms.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/modifiers/style.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "partial",
+      "notes": "Custom View drawing receives a Skia Canvas and can issue Skia paint operations. Using Skia shader effects is custom native drawing, not a portable shader widget API. Custom draw integration uses Skia APIs and their RuntimeEffect/SkSL model when needed. Internal gradients do not establish a WGSL shader-injection API.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/context/draw.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Morphorm supplies flexible layout. This is not a promise of full browser CSS layout compatibility.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "ScrollView implements scroll offsets, scrollbars and interaction.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/scrollview.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "VirtualList constructs the required visible item range.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/virtual_list.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "Textbox is a built-in editable text view.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/textbox.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "built-in",
+      "notes": "The view inventory includes menu, virtual table and virtual tree/table families.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/mod.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "Textbox handles cursor movement, selection and edits.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/views/textbox.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The Winit shell forwards enabled, preedit, commit and disabled IME events.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_winit/src/application.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "Paragraph direction and RTL textbox handling are implemented. The shared movement routine still assumes left-to-right order, so mixed-direction navigation is limited.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/text/movement.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "The toolkit has an animation system and property interpolation.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/animation/mod.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "partial",
+      "notes": "Custom cubic-bezier easing can overshoot and settle. A reusable oscillating spring or elastic/bounce preset was not established.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_style/src/values/easing.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "The accessibility system builds semantic AccessKit tree updates.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/systems/accessibility.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Keyboard events and focus navigation are handled by the event system.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/events/event_manager.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Event context exposes focus management for interactive views.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/context/event.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "AccessKit has tree/action handling, but AccessibilityDeactivated still reaches todo! in the inspected Winit source. Do not label the integration complete.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_winit/src/application.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Clipboard support is a default feature, with a platform clipboard dependency.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/Cargo.toml",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "partial",
+      "notes": "In-app drag/drop is demonstrated. This does not establish arbitrary native cross-app data transfer.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/examples/dragdrop.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "ecosystem",
+      "notes": "The example integrates an external file-dialog crate rather than establishing a universal Vizia-native file picker.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/examples/save_dialog.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "The Winit host tracks and dispatches events for multiple windows.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_winit/src/application.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "built-in",
+      "notes": "The Baseview backend provides host-window/audio-plugin integration.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_baseview/src/lib.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "unknown",
+      "notes": "Inspector was not established as a supplied toolkit facility in the inspected source. Internal unit tests, redraws and ordinary rebuilds do not imply a public interactive test harness or live source reload.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "Stylesheets support hot reloading. This does not imply hot replacement of arbitrary Rust application logic.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "partial",
+      "notes": "Repository tests cover core internals. A general public end-user GUI interaction/snapshot harness was not verified.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/lib.rs",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux is explicitly listed as a supported target.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows is explicitly listed as a supported target.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "macOS is explicitly listed as a supported target.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "partial",
+      "notes": "The project lists Web support, but this is not a claim that every native shell service or widget feature works identically on Wasm.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "Support for Android was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "WGPU provides GPU rendering and TinySkia provides a software fallback.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Canvas supports custom 2D drawing.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/canvas.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "The image widget and image handles are built in.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/image.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG widget/rendering support is supplied.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/svg.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Renderer interfaces expose layers/clipping and transformations.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/renderer.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "built-in",
+      "notes": "Shader widget exposes a WGPU-backed custom rendering primitive/pipeline interface. Custom shader primitives use the WGPU renderer path. This is not portable shader execution on the TinySkia fallback.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/shader.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Layout nodes underpin rows, columns, containers and custom widgets.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/layout.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Scrollable provides controlled offsets, scrollbars and interaction handling.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/scrollable.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "partial",
+      "notes": "Lazy widgets defer cached content construction. Lazy alone is not list viewport virtualization, and a complete built-in arbitrary-row virtual-list API was not verified.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/lazy.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "TextInput and TextEditor are editable controls.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/text_input.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Menu overlays and table-related widgets exist. A complete built-in tree widget was not established.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/overlay/menu.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "TextEditor supports editing actions and selection.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/widget/src/text_editor.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The native shell enables input methods and manages preedit display/positioning, with enabled/preedit/commit/disabled events converted in the Winit integration.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/winit/src/window.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "The text renderer handles RTL runs and advanced text editing delegates motion to cosmic-text. Basic and advanced shaping paths differ, so this is not uniform bidi behavior across all text controls.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/graphics/src/text.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Animation provides time-based value interpolation and easing.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/animation.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Animation exposes elastic, bounce and custom easing through lilt, allowing spring-like motion without a dedicated physics solver.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/animation.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "unknown",
+      "notes": "Semantic tree was not established in the inspected core, widget and shell APIs. Keyboard handling or widget IDs are not evidence of an OS semantic accessibility bridge.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Focus operations support keyboard traversal of focusable widgets.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/widget/operation/focusable.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Focusable widget operations expose focused state and traversal.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/widget/operation/focusable.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "unknown",
+      "notes": "Assistive technology integration was not established in the inspected core, widget and shell APIs. Keyboard handling or widget IDs are not evidence of an OS semantic accessibility bridge.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Runtime clipboard tasks read/write supported clipboard content through the shell.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/runtime/src/clipboard.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "partial",
+      "notes": "The shell handles native file drop events. This is not proof of a complete reusable cross-widget and cross-application drag/drop framework.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/winit/src/conversion.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "ecosystem",
+      "notes": "The official editor example uses rfd::AsyncFileDialog for native file selection. This is an external dialog integration, not an Iced-native file-picker widget.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/examples/editor/src/main.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Daemon applications can manage multiple windows rather than only a single application window.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/src/daemon.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "The renderer-agnostic runtime is reusable in existing systems. Native host embedding still needs a suitable integration.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "The in-repository devtools/debugging subsystem provides UI diagnostics.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/devtools/src/lib.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "The hot feature enables explicitly very experimental hot reloading.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/Cargo.toml",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "The repository includes a tester interface for widget interactions and assertions.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/tester/src/lib.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Official Eframe supports Linux.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Official Eframe supports Windows.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "Official Eframe supports macOS.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "built-in",
+      "notes": "Official Eframe supports Wasm/browser applications, with a web demo and backend code.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "built-in",
+      "notes": "Android activity features are provided by the official Eframe integration.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/eframe/Cargo.toml",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Core emits textured triangles. Official GPU renderers are WGPU and Glow, not a built-in general software renderer.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Painter exposes custom 2D shapes and paint callbacks.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/painter.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Image widget and texture/image-source abstractions are included. Decoding/loaders can require egui_extras features.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/widgets/image.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "The official egui_extras SVG loader supports SVG image loading when enabled, rather than a browser SVG DOM.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui_extras/src/loaders/svg_loader.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "partial",
+      "notes": "Painter supports clipping and shape transforms. Arbitrary transformed interactive subtrees are not implied by mesh transformation support.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/painter.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "built-in",
+      "notes": "The repository demonstrates custom WGPU rendering via paint callbacks. The WGPU example uses WGSL. Glow/OpenGL callbacks require their own integration and shader setup.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui_demo_app/src/apps/custom3d_wgpu.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Immediate-mode horizontal/vertical/wrapping layouts are built in. This is not a retained CSS layout tree.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/layout.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "ScrollArea supports offsets, scrollbars and input.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/containers/scroll_area.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "show_rows/show_viewport allow viewport-based list rendering. A plain show closure is not automatically virtualized.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/containers/scroll_area.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "TextEdit supports single-line and multiline inputs.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/widgets/text_edit/builder.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Menus and collapsing sections are built in, while tables are in official egui_extras. Rich trees can require custom composition or another crate.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/containers/menu.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "TextEdit supports cursor state, selection and editable text.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/widgets/text_edit/builder.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The integration/input API includes explicit IME events, consumed by text editing. Shell support remains relevant.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/data/input/ime_event.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "unsupported",
+      "notes": "The text layout source explicitly says RTL/bidi support is still to be added. Font shaping does not provide bidirectional layout on its own.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/epaint/src/text/text_layout.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "AnimationManager interpolates widget state over time.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/animation_manager.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Public back and bounce easing functions can animate spring-like motion through the animation APIs. Scroll overshoot also uses a critically damped spring.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/emath/src/easing.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "The core constructs AccessKit semantic nodes.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/accessibility.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "UI memory manages keyboard focus and widget interaction state.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/memory/mod.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Focus state, requests and traversal are part of UI memory.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/memory/mod.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "AccessKit support and manual integration testing are documented. Support depends on the host integration and widget coverage, not merely enabling a label.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/docs/accessibility.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "The official Winit integration implements platform clipboard operations.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui-winit/src/clipboard.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "Core drag/drop state supports in-app transfers. Native file drops are integration dependent.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/drag_and_drop.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "ecosystem",
+      "notes": "Native file pickers use an external crate such as rfd, rather than core egui itself.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui_demo_app/Cargo.toml",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Viewport APIs support additional native windows through a supporting integration, not just painted in-app windows.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui/src/viewport.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "built-in",
+      "notes": "The core is designed to be embedded anywhere that supplies input and renders textured triangles.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "The official inspection feature integrates the in-repository inspection tooling.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/eframe/Cargo.toml",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "unknown",
+      "notes": "Live mutable UI state and immediate-mode redraw are not source hot reload. A general official source-reload contract was not verified.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "Official egui_kittest supports input-driven UI testing, accessibility queries and snapshots.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui_kittest/src/lib.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux desktop and embedded Linux are explicitly supported.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows is an explicitly supported desktop target.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "macOS is an explicitly supported desktop target.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "built-in",
+      "notes": "The repository includes WebAssembly/browser demos and build integration.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "built-in",
+      "notes": "Android is explicitly supported, with platform-specific setup requirements.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "built-in",
+      "notes": "iOS is explicitly supported, with Apple toolchain/platform constraints.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Skia and FemtoVG provide GPU paths, with a separate CPU software renderer.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "partial",
+      "notes": "Custom drawing can use path/image content and rendering integration hooks. This is not an unrestricted portable Canvas widget on every renderer.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/api/rs/slint/lib.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Image resources and rendering are built into the core.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/graphics/image.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG image loading/rendering is implemented. SVG script/DOM parity is not implied.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/graphics/image/svg.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Core items include clipping and transform-related behavior.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/items.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "partial",
+      "notes": "Custom WGPU rendering can supply a texture for display. This is renderer-specific interop, not a shader language embedded in every Slint item. The WGPU texture example uses WGSL. OpenGL rendering hooks and software rendering have different capabilities.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/examples/wgpu_texture/main.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "The core implements layout algorithms for declarative layout items.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/layout.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Flickable supplies scrolling behavior, also used by styled ScrollView widgets.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/items/flickable.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "Model-backed repeaters implement viewport/list virtualization, not just a full list hidden by clipping.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/model/repeater.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "Core text input underpins LineEdit and TextEdit widgets.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/items/text.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Native/styled menu support and table/list widgets exist. A complete tree-view widget family was not verified.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/menus.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "Text input includes selection, cursor movement and edit handling.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/items/text.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The Winit backend handles input-method events and positioning for focused inputs.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/backends/winit/lib.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "RTL text elision and bidi-aware selection are implemented, but the RTL regression fixture explicitly excludes the software embed-assets path because that path lays out text left to right.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/tests/screenshots/cases/text/text-elide-rtl.slint",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Property animation is part of the runtime and declarative language.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/animations.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "The declarative language test demonstrates easing: spring with bounce parameters and retargeting. This is evidence for the inspected source, not every older published version.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/tests/cases/properties/spring_easing_bounce.slint",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "Core accessibility representation is implemented.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/accessibility.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Window/input handling manages keyboard focus and dispatch.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/window.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Focused item tracking and focus changes are part of the core runtime.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/window.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "built-in",
+      "notes": "The Winit backend bridges semantic state to AccessKit. Support depends on target, feature selection and widget semantics.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/backends/winit/accesskit.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "The native backend provides clipboard integration, with a separate iOS implementation.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/backends/winit/clipboard.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "unknown",
+      "notes": "Pointer/flick gestures and moving items do not establish a complete native cross-application drag/drop contract. Such a public API was not verified.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/api/rs/slint/lib.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "partial",
+      "notes": "The language includes a Dialog abstraction. Native OS file pickers are a separate integration and are not implied by this widget.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/compiler/tests/syntax/basic/dialog.slint",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Multiple component windows are supported through the runtime and backend.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/api/rs/slint/lib.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "built-in",
+      "notes": "The Platform/WindowAdapter abstraction supports custom platform integration, including embedded systems.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/core/platform.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "Live preview includes item/property inspection.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/live-preview/inspector.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "built-in",
+      "notes": "The viewer supports auto reload and the language server provides live preview. This covers Slint UI source, not arbitrary Rust hot patching.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "A dedicated testing backend and public testing facilities support simulated UI interaction and assertions.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/backends/testing/lib.rs",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux is explicitly supported.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows is explicitly supported.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "macOS is explicitly supported.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "partial",
+      "notes": "Wasm-specific dependencies and a WebGPU example exist. Complete desktop/browser API parity is not established.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/Cargo.toml",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "Support for Android was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "GPU options include Vger, Vello and Skia. TinySkia is documented as the CPU fallback.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Canvas gives applications custom 2D painting within the view tree.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/canvas.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "An image view and image sources are supplied.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/img.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG view rendering is included.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/svg.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Renderer contracts include clipping and transforms. Renderer-specific limitations still apply.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/renderer/src/lib.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "unknown",
+      "notes": "The renderer exposes painting operations, but an arbitrary application shader/pipeline hook was not verified. The example named webgpu is a browser counter, not evidence of custom shader injection. Drawing targets the selected renderer abstraction. Its concrete backend may use GPU shaders internally, but that does not provide a portable user shader language.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/renderer/src/lib.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Taffy-backed flexbox and grid layout are explicitly documented.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Scroll view supports offsets, bars and input handling.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/scroll.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "Virtual stacks and lists construct visible content from a larger logical sequence.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/virtual_stack.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "TextInput is a built-in editable view, with a separate text editor view.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/text_input.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Context/platform menus and list composition are provided. A complete built-in table/tree widget family was not established.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/platform/context_menu.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "The text editor view implements selection and editing through editor state.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/text_editor.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "TextInput explicitly handles preedit, surrounding-text deletion and commit IME events.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/text_input.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "Text layout uses Parley, but TextInput left/right movement advances backward/forward through logical grapheme indices rather than visual bidi order.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/views/text_input.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Interpolatable style properties can have timed transitions.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/style/transition.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Spring implements a physics-based easing API with tunable parameters.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/animate/easing.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "unknown",
+      "notes": "Semantic tree was not established in the inspected core, widget and shell APIs. Keyboard handling or widget IDs are not evidence of an OS semantic accessibility bridge.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "The event system dispatches keyboard interactions and focus navigation.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/event/dispatch.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Views can request and track keyboard focus through view IDs.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/view/id.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "unknown",
+      "notes": "Assistive technology integration was not established in the inspected core, widget and shell APIs. Keyboard handling or widget IDs are not evidence of an OS semantic accessibility bridge.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Clipboard operations are part of platform integration.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/platform/clipboard.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "The event system tracks in-app drag state. This is not a promise of OS cross-application data-format parity.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/event/drag_state.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "ecosystem",
+      "notes": "Native file dialog integration depends on rfd, not a renderer-native file-picker widget.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/Cargo.toml",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Window configuration and creation support multiple windows.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/window/mod.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "Rendering is abstracted into reusable renderer interfaces. Turnkey arbitrary host-window embedding was not verified.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/renderer/src/lib.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "An in-repository element inspector is included.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/inspector/mod.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "unknown",
+      "notes": "Hot reload was not established as a supplied toolkit facility in the inspected source. Internal unit tests, redraws and ordinary rebuilds do not imply a public interactive test harness or live source reload.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "The repository includes a dedicated UI testing crate, with interaction/layout/animation tests.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/test/src/lib.rs",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux native browser/app shell builds are explicitly listed.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows native browser/app shell builds are explicitly listed.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "macOS native browser/app shell builds are explicitly listed.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "unknown",
+      "notes": "Support for Web was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "partial",
+      "notes": "Android builds of the Blitz browser shell are listed. This does not prove complete Dioxus Native application/platform parity.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "unknown",
+      "notes": "Support for iOS was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Frontend features select Vello, Vello hybrid, Skia, or CPU Vello/Skia raster output paths. Availability is renderer/feature-dependent and does not describe the older benchmark baseline configuration.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/dioxus-native/Cargo.toml",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "partial",
+      "notes": "Custom widget hooks are available. They are not equivalent to supporting arbitrary browser Canvas/WebGL APIs.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/node/custom_widget.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "The paint pipeline renders DOM images and drawing content using the configured rendering abstraction.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-paint/src/lib.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "Inline SVG handling and repository SVG rendering tests exist. This does not establish complete browser SVG compatibility.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/node/svg.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "The DOM paint pipeline supports clipped and transformed drawing. CSS coverage remains a beta engine's subset.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-paint/src/lib.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "partial",
+      "notes": "The native example embeds a custom WGPU widget and shader-rendered content in the DOM. This is renderer-specific integration, not a portable CSS shader property. DOM painting targets AnyRender. Custom shader capabilities depend on a chosen concrete renderer and are not the same as browser WebGL support.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/examples/wgpu_texture/src/main.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Stylo resolves CSS, Taffy handles box layout and Parley handles inline text. Browser compatibility is not assumed for every CSS feature.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Native scrolling and scroll offsets are implemented in the DOM engine.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/scrolling.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "unknown",
+      "notes": "The native DOM engine is not itself a virtual-list component. A general built-in Dioxus Native viewport virtualizer was not verified. The benchmark's custom virtualizer is not toolkit evidence.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/lib.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "HTML form control state is implemented natively rather than relying on an OS WebView.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/form.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Native HTML table layout and a Muda menu integration exist. A complete Rust table/tree widget library is not implied.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/layout/table.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "Native selection state is implemented, alongside form editing handlers.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/selection.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "IME events are applied to focused text-input data and forwarded as DOM events.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/events/ime.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "CSS direction and unicode-bidi are passed to the inline text layout builder. RTL text layout is implemented, but full mixed-direction editing was not established.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/layout/inline/build.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "partial",
+      "notes": "The DOM tracks active CSS animations/transitions. Beta feature coverage and repaint behavior need per-property verification.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/document.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "unknown",
+      "notes": "CSS animation is present, but a reusable spring, elastic or bounce easing API was not established in the inspected native backend.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/tests/blitz-tests/tests/animations.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "DOM roles and HTML/ARIA attributes are translated into accessibility nodes.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/accessibility.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Native keyboard events are translated into DOM/input behavior.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/events/keyboard.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "The engine implements native focus changes and focused element tracking.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/events/focus.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "The shell bridges DOM semantics to AccessKit. Beta status and per-control/platform gaps prevent a blanket completeness claim.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-shell/src/accessibility.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Clipboard behavior is covered by native DOM regression tests.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/tests/blitz-tests/tests/clipboard.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "unknown",
+      "notes": "Pointer and scroll event implementations do not by themselves prove HTML5 or OS cross-application drag/drop parity. A complete implementation was not established.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/events/mod.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "unknown",
+      "notes": "Shell/window integration alone is not a verified general dialog or native file-picker API. This review did not establish one.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-shell/src/lib.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "The shell application manages multiple views/windows.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-shell/src/application.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "The example embeds custom WGPU content inside Blitz/Dioxus Native. It does not by itself prove that the entire DOM UI can be dropped into any foreign native window host.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/examples/wgpu_texture/src/main.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "The devtools feature implements Chrome DevTools Protocol integration, document inspection and element picking. This is native DOM tooling, not an embedded WebView inspector.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-shell/src/devtools.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "built-in",
+      "notes": "The hot-reload feature connects Dioxus RSX hot reload in debug builds. Arbitrary Rust structural changes still require rebuilding/restarting.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/dioxus-native/src/lib.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "The repository contains a DOM/layout/painting test harness and dedicated regression suites.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-test-harness/src/harness.rs",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux setup and desktop app execution are documented.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "The platform layer contains a Windows backend.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/backend/windows/mod.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "The platform layer contains Apple native backends.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/backend/apple/mod.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "built-in",
+      "notes": "Wasm build/run tooling is explicitly documented.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "built-in",
+      "notes": "Android toolchain installation and application execution are documented.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "built-in",
+      "notes": "The build tool explicitly supports Apple iOS targets.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "GPU-accelerated 2D and 3D rendering is explicit. A generally equivalent CPU-only UI renderer was not established.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "The drawing crate exposes custom GPU-oriented drawing primitives.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/draw/src/lib.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Image widgets and image loading/display infrastructure are supplied.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/image.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG widget/drawing support is present in the toolkit.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/svg.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "The drawing layer handles draw-list clipping and transformations.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/draw/src/draw_list_2d.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "built-in",
+      "notes": "The script/shader system compiles custom shader code for GPU rendering. Makepad uses its own shader/script representation with backend lowering. Applications cannot assume raw WGSL, GLSL and Metal source are interchangeable across targets.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/script/src/shader.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Views expose toolkit layout, sizing, flow and positioning behavior, rather than browser CSS layout.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/view.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Scrollbars and scroll interaction are native widget infrastructure.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/scroll_bars.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "PortalList provides visible-item list rendering rather than a widget for every logical row.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/portal_list.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "TextInput is a native editable widget.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/text_input.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "The widget inventory includes menus and collections/tree-related components. Feature-rich table/tree parity across every widget family was not established.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/lib.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "TextInput manages selection, cursor behavior and editing.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/text_input.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The platform layer has an explicit IME abstraction used by editable input.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/src/ime.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "The shaper resolves bidi runs, but TextInput left/right navigation uses previous/next logical grapheme boundaries rather than visual bidi movement.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/text_input.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Widget animator infrastructure drives animated state transitions.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/animator.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "The tween easing implementation includes spring-based motion. This is a development-commit feature, not a claim about every published release.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/libs/tween/src/easing.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "Widgets expose semantics backed by a shared accessibility tree.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/semantics.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Button behavior explicitly handles keyboard focus and keyboard activation.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/button.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Widgets can request, retain and respond to key focus.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/text_input.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "The HAL maintains semantic trees for native adapters, announcements and OS self-checks. Equivalent support across all mobile/web backends is not established.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/a11y.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "The HAL provides clipboard integration with platform implementations.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/clipboard.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "The event layer includes explicit drag/drop data/events. Data formats and platform integration remain target-dependent.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/src/event/drag_drop.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "built-in",
+      "notes": "Platform file dialog interfaces are present, with native backend implementations.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/src/file_dialogs.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "Window widgets and platform infrastructure support multiple native windows.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/core/src/window.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "The HAL separates host/platform services and rendering. This does not certify arbitrary foreign-toolkit embedding on every target.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/lib.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "Studio and UI automation/inspection tools are explicitly part of the development environment.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "built-in",
+      "notes": "The live-editable UI scripting/design language supports iteration without full application rebuilds. Arbitrary Rust code changes are a different concern.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "The repository exposes UI find/act/type/wait, semantic snapshots/diffs and OS checks for automation.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/a11y.rs",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository documentation and runnable examples are available. Their existence does not imply complete documentation for every API.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Linux platform selection includes Wayland and X11 backend features.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_platform/src/gpui_platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Native Win32 platform implementation is present.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_windows/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "Native macOS platform implementation is present.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_macos/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "partial",
+      "notes": "A web platform implementation exists at this commit. This is not a claim of desktop feature or renderer parity.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_web/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "Support for Android was not established for this specific backend at the inspected commit. Platform-agnostic dependencies or a sibling renderer are not sufficient evidence, and this is not an unsupported declaration.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "partial",
+      "notes": "An iOS platform crate and examples/tests exist. The desktop setup guide is not evidence of full mobile parity.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_ios/Cargo.toml",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "built-in",
+      "notes": "Platform selection uses GPU renderers. A generally available CPU software fallback is not established.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_platform/src/gpui_platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Canvas exposes prepaint/paint closures, and custom Element implementations can issue paint operations.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/canvas.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Image elements and image-source loading are included.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/img.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "SVG elements are supported. Do not infer complete browser SVG feature coverage.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/svg.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Styles expose overflow and transformation controls for elements.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/style.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "unknown",
+      "notes": "Canvas exposes framework paint operations. An arbitrary user-defined GPU shader/pipeline API was not established, and internal backend shaders are not evidence of one. Internal WGPU shaders use WGSL while Apple paths use Metal. Internal shader files are not a portable public custom-shader API.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/canvas.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Element styles provide flex/grid and sized/positioned layout through the framework layout engine.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/style.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Scrollable divs and scroll handles are part of the core element API.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/div.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "uniform_list builds a visible range rather than constructing the entire logical list. A separate list implementation supports variable-sized entries.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/uniform_list.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "partial",
+      "notes": "The repository demonstrates a custom input using the platform input-handler contract. A reusable production widget must still be supplied by the app or a widget library.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Platform menu abstractions and list primitives exist. Complete table/tree widgets are not implied by those low-level APIs.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "partial",
+      "notes": "The input example implements selection, cursor movement and editing. Core paintable text alone is not a full editor widget.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Text",
+      "name": "IME",
+      "status": "partial",
+      "notes": "Input handlers expose marked text and replacement ranges for platform IME. Applications must implement the contract correctly.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/examples/input.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "RTL wrapping is implemented and tested, but the line-layout source explicitly states that UAX #9 bidirectional support is incomplete.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/text_system/line_layout.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "AnimationExt applies timed interpolation/easing and requests animation frames.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/elements/animation.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "SpringConfig, SpringState and SpringAnimation provide an explicit physics-based spring API.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/spring.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "AccessKit semantic roles and stable global element IDs are documented. Custom elements must expose their own semantics.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/_accessibility.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Action/key binding dispatch supports keyboard interaction.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/key_dispatch.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "FocusHandle and window focus management are available.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/window.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "partial",
+      "notes": "AccessKit integration is implemented. This does not establish equivalent support in every platform backend or application widget.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/_accessibility.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Platform clipboard contracts support reading and writing clipboard content.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "An in-repository drag/drop example exercises the core API. Platform data formats remain backend-dependent.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/examples/drag_drop.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "built-in",
+      "notes": "Platform prompt and path-selection interfaces are provided, with OS-specific implementations.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/platform.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "App opens and manages multiple native windows.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/app.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "built-in",
+      "notes": "Opt-in native composition is documented for macOS AppKit views, Windows WebView2 composition, Wayland subsurfaces and X11 child windows. The overlay strategy differs by platform.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "The inspector supports element selection, picking and registered inspector states.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/inspector.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "A hot-reload integration exists. Availability is feature/toolchain dependent, not unconditional live replacement of arbitrary Rust changes.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/hot_reload.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "TestAppContext supports UI state and simulated platform/input operations.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/app/test_context.rs",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "GPUI architecture/setup documentation and runnable examples live in the repository.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/README.md",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "Native Winit X11/Wayland shell and Vulkan backend. This benchmark validates real Linux windows.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "Windows-specific DirectWrite, WGPU DX12 and AccessKit adapters are present. No Windows execution validation here.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "Apple-specific native shell, Metal renderer and accessibility dependencies are present. Not executed here.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "built-in",
+      "notes": "Wasm bindings and WebGPU with optional WebGL are present. This adapter does not exercise web output.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "unknown",
+      "notes": "No Android support or completeness conclusion is established by this benchmark addition. Target-specific dependency exclusions alone are not proof of support.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "partial",
+      "notes": "Apple mobile backend paths are described, but desktop tooling and hot editing have separate target restrictions. Not validated on a device here.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "different model",
+      "notes": "Custom GPU rendering through WGPU or native Metal. This source review does not establish a separate production CPU raster backend.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "built-in",
+      "notes": "Canvas paths, polygons and stroke primitives have a public API, alongside a custom compositor hook.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "Content-addressed image handles, asynchronous decoding and mip generation. The benchmark loads all ten shared PNG fixtures.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/image.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "The default svg feature uses resvg for SVG and SVGZ image loading.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "Rounded clipping, offsets, scaling, rotation and layer compositing are documented APIs.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "built-in",
+      "notes": "Compositor hooks expose WGPU frame rendering and effect slots. This is an explicit custom GPU rendering hook, not a WebGPU-named counter example. WGPU uses WGSL, while native Metal has separate precompiled shaders and feature constraints. Backend capabilities are not interchangeable.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "Taffy-backed flex, grid and block layout capabilities with retained measurement caches.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "Runtime-owned scroll offsets, native wheel input and direct Tx scroll requests. The benchmark uses instantaneous programmatic offsets.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/el/tx/scroll.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "virtual_rows lazily builds a toolkit-managed mounted window. A key-set version avoids rescanning stable keys on later commits.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/el/virtual_rows.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "TextEdit and text_input provide actual editing, selection, undo and IME, used by the benchmark dashboard.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "partial",
+      "notes": "Popup and context-menu APIs are documented. This bundled claim does not establish a complete specialized table and tree widget suite.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "TextEdit supports selection, clipboard editing, undo and redo. Selectable text also has documented APIs.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "Winit preedit and commit are routed to focused text fields or an app editor hook. Not tested with every platform input method.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "partial",
+      "notes": "Caret affinity, hit testing and selection geometry explicitly handle RTL visual clusters. This is more than a Parley dependency, but complete mixed-direction editing was not established.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/text/cursor.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Presence transitions and animated layout/color tracks are documented. Benchmark dummy changes disable animation.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Analytic springs are a core motion primitive.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune-motion/src/lib.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "Element roles, labels and state feed a semantic tree and platform accessibility adapters. This is not a screen-reader completeness certification.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "built-in",
+      "notes": "Tab navigation, focus groups, activation and key routing are documented runtime APIs.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "built-in",
+      "notes": "Focusable elements, focus groups, modal trapping and focus restoration have public APIs.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "built-in",
+      "notes": "Default accessibility feature includes AccessKit platform adapters for Windows, macOS and Linux. Not end-to-end screen-reader tested here.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "Native clipboard copy and paste include rich text and image hooks with platform-specific behavior.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "built-in",
+      "notes": "Native drag-out and file-drop APIs are documented, with platform-specific behavior.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "built-in",
+      "notes": "Opt-in native-file-dialog feature uses rfd or Linux portals. It is not enabled by this benchmark.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "built-in",
+      "notes": "App windows, retained hidden windows and overlays have explicit lifecycle APIs.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "unknown",
+      "notes": "Compositor hooks and native-surface interoperability do not by themselves establish embedding a whole Rune UI into arbitrary host windows.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "built-in",
+      "notes": "Element-tree inspection and playground tooling are documented. These are separate from OS accessibility validation.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "partial",
+      "notes": "Opt-in hot feature uses subsecond and Dioxus development tooling. Platform, edit-compatibility and restart restrictions are documented.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "built-in",
+      "notes": "Deterministic headless runtime input and rendering support UI tests. These benchmarks instead use real native windows.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Repository includes API explanations and runnable native and web examples. Source presence is not a guarantee that every example works on every target.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    }
+  ],
+  "review": {
+    "date": "2026-11-06",
+    "scope": "Development-branch source snapshots, not the older versions pinned by benchmark adapters. Features were source-reviewed, not execution-tested on every platform.",
+    "method": "Read repository documentation, manifests, API implementations, examples and regression tests at immutable commits. Built-in means a provided API, not specification completeness. Partial records a specific limitation or specialized scope. Different model identifies delegated/browser/low-level contracts. Unknown means the review did not establish the capability, not that it is absent. Unsupported requires an explicit source statement.",
+    "claimCount": 385,
+    "repositories": [
+      {
+        "id": "freya",
+        "repository": "marc2332/freya",
+        "sha": "11cd62a248bfafa496173360744bc6eb8f33b742",
+        "branch": "main",
+        "commitDate": "2026-11-06T17:35:18Z"
+      },
+      {
+        "id": "gpui",
+        "repository": "zed-industries/zed",
+        "sha": "9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3",
+        "branch": "main",
+        "commitDate": "2026-11-06T19:51:13Z"
+      },
+      {
+        "id": "vizia",
+        "repository": "vizia/vizia",
+        "sha": "9231260010d57380681d6bd2eca05b2b756463cb",
+        "branch": "main",
+        "commitDate": "2026-10-29T15:40:22Z"
+      },
+      {
+        "id": "iced",
+        "repository": "iced-rs/iced",
+        "sha": "8ff48c42b0d5188223501ea1ccc506fd5beaf36a",
+        "branch": "master",
+        "commitDate": "2026-11-01T20:28:44Z"
+      },
+      {
+        "id": "egui",
+        "repository": "emilk/egui",
+        "sha": "91b5712dd61765c337591ae25f07acee8fee3d52",
+        "branch": "main",
+        "commitDate": "2026-11-06T17:12:54Z"
+      },
+      {
+        "id": "slint",
+        "repository": "slint-ui/slint",
+        "sha": "b3be5c22781dfb245c700c80411daa2a69c4d9ff",
+        "branch": "master",
+        "commitDate": "2026-11-06T15:54:09Z"
+      },
+      {
+        "id": "floem",
+        "repository": "lapce/floem",
+        "sha": "1351ffb162faeb8be983f1301d718a0d5fb59c27",
+        "branch": "main",
+        "commitDate": "2026-09-24T01:50:48Z"
+      },
+      {
+        "id": "dioxus-native",
+        "repository": "DioxusLabs/blitz",
+        "sha": "5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c",
+        "branch": "main",
+        "commitDate": "2026-11-06T18:35:43Z"
+      },
+      {
+        "id": "makepad",
+        "repository": "makepad/makepad",
+        "sha": "506ec05105b9adb08d1d21f9879df181b5244ea7",
+        "branch": "main",
+        "commitDate": "2026-10-31T14:08:48Z"
+      },
+      {
+        "id": "gpui-fast",
+        "repository": "longbridge/gpui-fast",
+        "sha": "4a4a89af7c7fd3f9999218d6abdeb66116fd6d49",
+        "branch": "main",
+        "commitDate": "2026-11-06T18:10:36Z"
+      },
+      {
+        "id": "rune",
+        "repository": "anomalyco/rune",
+        "branch": "dev",
+        "sha": "a9da7e3ebf5a8ab9bf19c3015032674b6e042df2",
+        "commitDate": "2026-11-07T07:49:24-06:00",
+        "reviewedDate": "2026-11-07"
+      }
+    ],
+    "incrementalNote": "Rune was added on 2026-11-07 with its own source review date. Earlier library and claim dates remain unchanged."
+  }
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Rust GUI feature comparisons and locally collected benchmark history.">
+  <title>Are we actually GUI yet?</title>
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="shell"><a class="brand" href="./"><span class="logo" aria-hidden="true">🦀</span> are we actually GUI yet?</a></header>
+  <main class="shell">
+    <nav class="section-links" aria-label="Page sections"><a href="#bench-heading">Benchmarks</a><a href="#features-heading">Features</a></nav>
+    <section aria-labelledby="bench-heading">
+      <div class="benchmark-heading"><h2 id="bench-heading">Benchmarks</h2><a class="small" href="data/history.json" download>Download JSON</a></div>
+      <p id="empty" class="small" role="status">Loading measurements…</p>
+      <div id="bench" hidden>
+        <div class="collection-heading">
+          <div><p id="collection-summary" class="collection-summary"></p><p id="collection-timing" class="small"></p></div>
+          <label id="collection-control" class="collection-control">Collection <select id="run"></select></label>
+        </div>
+        <p id="collection-machine" class="small"></p>
+        <p id="startup-method-note" class="small" role="note"></p>
+        <div id="toggles" class="chart-legend" role="group" aria-label="Show or hide frameworks"></div>
+        <p class="chart-hint small">Lower is better. Dots: medians. Whiskers: repetition ranges. Hover a framework to highlight it, click to hide it.</p>
+        <div id="primary-charts" class="charts"></div>
+        <div id="extra-charts" class="charts additional-charts"></div>
+      </div>
+    </section>
+    <section aria-labelledby="features-heading">
+      <h2 id="features-heading">Feature comparison</h2>
+      <p class="small">Click a cell for its source and limitations.</p>
+      <div id="feature-review"></div>
+      <div id="legend" class="legend"></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Feature comparison"><table id="features"></table></div>
+    </section>
+    <noscript><p>JavaScript is needed for the graphs. JSON: <a href="data/history.json">measurements</a>, <a href="data/features.json">features</a>, <a href="data/libraries.json">metadata</a>.</p></noscript>
+  </main>
+  <footer class="shell small"><p>Adapted from <a href="https://github.com/marc2332/arewelayoutyet">Are we layout yet?</a> by Marc Espin.</p><p>Built <time datetime="{{generated-at}}">{{generated-date}}</time> UTC.</p></footer>
+</body>
+</html>

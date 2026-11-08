@@ -1,0 +1,444 @@
+{
+  "libraries": [
+    {
+      "id": "freya",
+      "name": "Freya",
+      "repository": "https://github.com/marc2332/freya",
+      "homepage": "https://github.com/marc2332/freya",
+      "classification": "Native declarative Rust components with a reactive core",
+      "backend": "Skia rendering with Winit, optional web and Android integration",
+      "creationYear": 2022,
+      "latestRelease": "2026-11-05",
+      "sourceUpdated": null,
+      "status": "Pre-1.0 toolkit with native, web and Android code in the inspected tree",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "AI-assisted, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "evidence": null,
+        "reviewedCommit": "11cd62a248bfafa496173360744bc6eb8f33b742",
+        "reviewedDate": "2026-11-07",
+        "basis": "site-maintainer",
+        "quote": "freya, vizia and gpu are ai asssited"
+      },
+      "metadataEvidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT",
+      "reviewedCommit": "11cd62a248bfafa496173360744bc6eb8f33b742",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya/Cargo.toml",
+        "Classification": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
+        "Backend": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya/Cargo.toml",
+        "Project status": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
+        "Latest release": "https://github.com/marc2332/freya/releases/tag/v0.5.0",
+        "Creation year": "https://github.com/marc2332/freya/commit/56d3213809b0b3cd5fec50bc1f3fe3a847fb38f7"
+      },
+      "firstCommit": {
+        "sha": "56d3213809b0b3cd5fec50bc1f3fe3a847fb38f7",
+        "date": "2022-07-28",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "gpui",
+      "name": "GPUI",
+      "repository": "https://github.com/zed-industries/zed",
+      "homepage": "https://github.com/zed-industries/zed",
+      "classification": "Hybrid immediate/retained Rust UI framework",
+      "backend": "GPU platform renderers, including Metal and WGPU paths",
+      "creationYear": 2021,
+      "latestRelease": "2026-11-04",
+      "sourceUpdated": null,
+      "status": "Pre-1.0 development framework",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged GPUI list-padding change explicitly says Claude was used to write the changes. Scope: crates/gpui, not every Zed component.",
+        "evidence": "https://github.com/zed-industries/zed/commit/78fde14d124dbbb7c6175ec2e25da7028b0573d6",
+        "quote": "Claude Fable 5.1 was used to write the changes in this PR.",
+        "reviewedCommit": "78fde14d124dbbb7c6175ec2e25da7028b0573d6",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/README.md",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06",
+      "license": "Apache-2.0",
+      "reviewedCommit": "9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/Cargo.toml",
+        "Classification": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/README.md",
+        "Backend": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/Cargo.toml",
+        "Project status": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/README.md",
+        "Latest release": "https://github.com/zed-industries/zed/releases/tag/v1.27.0",
+        "Creation year": "https://github.com/zed-industries/zed/commit/b400449a58507cca1fa007197929c2cfd6beabbe"
+      },
+      "firstCommit": {
+        "sha": "b400449a58507cca1fa007197929c2cfd6beabbe",
+        "date": "2021-02-20",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "vizia",
+      "name": "Vizia",
+      "repository": "https://github.com/vizia/vizia",
+      "homepage": "https://github.com/vizia/vizia",
+      "classification": "Declarative reactive desktop widget toolkit",
+      "backend": "Skia rendering with Winit or Baseview shells",
+      "creationYear": 2021,
+      "latestRelease": "2026-04-23",
+      "sourceUpdated": null,
+      "status": "Pre-1.0 declarative desktop framework",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "AI-assisted, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "evidence": null,
+        "reviewedCommit": "9231260010d57380681d6bd2eca05b2b756463cb",
+        "reviewedDate": "2026-11-07",
+        "basis": "site-maintainer",
+        "quote": "freya, vizia and gpu are ai asssited"
+      },
+      "metadataEvidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT",
+      "reviewedCommit": "9231260010d57380681d6bd2eca05b2b756463cb",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/Cargo.toml",
+        "Classification": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+        "Backend": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/Cargo.toml",
+        "Project status": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/README.md",
+        "Latest release": "https://github.com/vizia/vizia/releases/tag/0.4.0",
+        "Creation year": "https://github.com/vizia/vizia/commit/5b4db07dbe259d7b405c2e19e027c8ebd3919b7f"
+      },
+      "firstCommit": {
+        "sha": "5b4db07dbe259d7b405c2e19e027c8ebd3919b7f",
+        "date": "2021-09-17",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "iced",
+      "name": "Iced",
+      "repository": "https://github.com/iced-rs/iced",
+      "homepage": "https://github.com/iced-rs/iced",
+      "classification": "Elm-style state/message/view GUI toolkit",
+      "backend": "Renderer-agnostic core, WGPU and TinySkia renderers, Winit shell",
+      "creationYear": 2019,
+      "latestRelease": "2025-12-07",
+      "sourceUpdated": null,
+      "status": "Explicitly experimental software",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged iced_wgpu triangle-index fix credits Claude as a co-author.",
+        "evidence": "https://github.com/iced-rs/iced/commit/478c363df6cb2b17f10f5a808ef0acd8e0f35873",
+        "quote": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "reviewedCommit": "478c363df6cb2b17f10f5a808ef0acd8e0f35873",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT",
+      "reviewedCommit": "8ff48c42b0d5188223501ea1ccc506fd5beaf36a",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/Cargo.toml",
+        "Classification": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+        "Backend": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/Cargo.toml",
+        "Project status": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/README.md",
+        "Latest release": "https://github.com/iced-rs/iced/releases/tag/0.14.0",
+        "Creation year": "https://github.com/iced-rs/iced/commit/eefdcbe06cce97b452ee71ccb6fcd1a423d29075"
+      },
+      "firstCommit": {
+        "sha": "eefdcbe06cce97b452ee71ccb6fcd1a423d29075",
+        "date": "2019-05-29",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "egui",
+      "name": "egui",
+      "repository": "https://github.com/emilk/egui",
+      "homepage": "https://github.com/emilk/egui",
+      "classification": "Immediate-mode, renderer-independent Rust UI library",
+      "backend": "Official Eframe/Winit integration with WGPU or Glow, embeddable triangle-mesh output",
+      "creationYear": 2018,
+      "latestRelease": "2026-10-15",
+      "sourceUpdated": null,
+      "status": "Active pre-1.0 development with breaking API releases",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged epaint no-break-space text-wrapping fix credits Claude as a co-author.",
+        "evidence": "https://github.com/emilk/egui/commit/91b5712dd61765c337591ae25f07acee8fee3d52",
+        "quote": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+        "reviewedCommit": "91b5712dd61765c337591ae25f07acee8fee3d52",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT OR Apache-2.0",
+      "reviewedCommit": "91b5712dd61765c337591ae25f07acee8fee3d52",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/Cargo.toml",
+        "Classification": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+        "Backend": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/Cargo.toml",
+        "Project status": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/README.md",
+        "Latest release": "https://github.com/emilk/egui/releases/tag/0.37.0",
+        "Creation year": "https://github.com/emilk/egui/commit/856bbf4dae4a69693a0324da34e8b0dd3754dfdf"
+      },
+      "firstCommit": {
+        "sha": "856bbf4dae4a69693a0324da34e8b0dd3754dfdf",
+        "date": "2018-12-23",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "slint",
+      "name": "Slint",
+      "repository": "https://github.com/slint-ui/slint",
+      "homepage": "https://slint.dev",
+      "classification": "Compiled declarative UI language with Rust and other language bindings",
+      "backend": "Selectable Winit/Qt/embedded backends with Skia, FemtoVG and software renderers",
+      "creationYear": 2020,
+      "latestRelease": "2026-09-21",
+      "sourceUpdated": null,
+      "status": "Stable 1.x API with ongoing development",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged Skia WGPU snapshot-rendering change credits Claude as a co-author.",
+        "evidence": "https://github.com/slint-ui/slint/commit/bce7351a92bc9177af5d20c69b8cdee00fe33735",
+        "quote": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "reviewedCommit": "bce7351a92bc9177af5d20c69b8cdee00fe33735",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06",
+      "license": "GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR LicenseRef-Slint-Software-3.0",
+      "reviewedCommit": "b3be5c22781dfb245c700c80411daa2a69c4d9ff",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/Cargo.toml",
+        "Classification": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+        "Backend": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/Cargo.toml",
+        "Project status": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/README.md",
+        "Latest release": "https://github.com/slint-ui/slint/releases/tag/v1.18.1",
+        "Creation year": "https://github.com/slint-ui/slint/commit/c6553d007e5e9b45d0ae280763911580539e8d7e"
+      },
+      "firstCommit": {
+        "sha": "c6553d007e5e9b45d0ae280763911580539e8d7e",
+        "date": "2020-05-04",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "floem",
+      "name": "Floem",
+      "repository": "https://github.com/lapce/floem",
+      "homepage": "https://github.com/lapce/floem",
+      "classification": "Native Rust UI with fine-grained reactivity",
+      "backend": "Vger, Vello and Skia GPU options with TinySkia CPU fallback",
+      "creationYear": 2023,
+      "latestRelease": "2024-11-15",
+      "sourceUpdated": null,
+      "status": "Pre-1.0 and explicitly still maturing",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged toolkit cleanup changes inspector, event, view and other Rust source and credits Claude as a co-author.",
+        "evidence": "https://github.com/lapce/floem/commit/1351ffb162faeb8be983f1301d718a0d5fb59c27",
+        "quote": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        "reviewedCommit": "1351ffb162faeb8be983f1301d718a0d5fb59c27",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT",
+      "reviewedCommit": "1351ffb162faeb8be983f1301d718a0d5fb59c27",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/Cargo.toml",
+        "Classification": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+        "Backend": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/Cargo.toml",
+        "Project status": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/README.md",
+        "Latest release": "https://github.com/lapce/floem/releases/tag/v0.2.0",
+        "Creation year": "https://github.com/lapce/floem/commit/a88d89c56f3f66555446faeab1aefb997fa52f02"
+      },
+      "firstCommit": {
+        "sha": "a88d89c56f3f66555446faeab1aefb997fa52f02",
+        "date": "2023-01-31",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "dioxus-native",
+      "name": "Dioxus Native (Skia)",
+      "repository": "https://github.com/DioxusLabs/blitz",
+      "homepage": "https://github.com/DioxusLabs/blitz",
+      "classification": "Dioxus virtual DOM with native HTML/CSS layout and rendering",
+      "backend": "Blitz DOM with Stylo/Taffy/Parley, AnyRender drawing abstraction and Winit shell",
+      "creationYear": 2023,
+      "latestRelease": null,
+      "sourceUpdated": null,
+      "status": "Explicitly beta with bugs and missing features",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged Dioxus Native DOM mounted-event fix credits Claude as a co-author.",
+        "evidence": "https://github.com/DioxusLabs/blitz/commit/6ef4b532d59fab22df0d7cf2a0e1a7e5163af8a7",
+        "quote": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+        "reviewedCommit": "6ef4b532d59fab22df0d7cf2a0e1a7e5163af8a7",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT OR Apache-2.0",
+      "reviewedCommit": "5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/Cargo.toml",
+        "Classification": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+        "Backend": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/Cargo.toml",
+        "Project status": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
+        "Creation year": "https://github.com/DioxusLabs/blitz/commit/38e191211ec08e6c70ba9d5a47e72377dd7782a2"
+      },
+      "firstCommit": {
+        "sha": "38e191211ec08e6c70ba9d5a47e72377dd7782a2",
+        "date": "2023-11-30",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "makepad",
+      "name": "Makepad",
+      "repository": "https://github.com/makepad/makepad",
+      "homepage": "https://github.com/makepad/makepad",
+      "classification": "Native/web Rust UI runtime with a live-editable scripting/design language",
+      "backend": "Custom GPU drawing/shader pipeline with native and Wasm platform backends",
+      "creationYear": 2025,
+      "latestRelease": null,
+      "sourceUpdated": null,
+      "status": "Actively evolving UI/runtime and development environment",
+      "provenance": {
+        "status": "ai-assisted",
+        "scope": "The merged native window drag-and-drop changes credit Claude as a co-author.",
+        "evidence": "https://github.com/makepad/makepad/commit/10b706f906feedb9824a33fcffb0109b87a5106f",
+        "quote": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+        "reviewedCommit": "10b706f906feedb9824a33fcffb0109b87a5106f",
+        "reviewedDate": "2026-11-07"
+      },
+      "metadataEvidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06",
+      "license": "MIT OR Apache-2.0",
+      "reviewedCommit": "506ec05105b9adb08d1d21f9879df181b5244ea7",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/Cargo.toml",
+        "Classification": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+        "Backend": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/Cargo.toml",
+        "Project status": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
+        "Creation year": "https://github.com/makepad/makepad/commit/84328d949abceb02523986e6695ff12ff1b9df6d"
+      },
+      "firstCommit": {
+        "sha": "84328d949abceb02523986e6695ff12ff1b9df6d",
+        "date": "2025-05-06",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "gpui-fast",
+      "name": "GPUI Fast",
+      "repository": "https://github.com/longbridge/gpui-fast",
+      "homepage": "https://github.com/longbridge/gpui-fast",
+      "classification": "GPUI fork with tracked view retention and scroll-layer caching",
+      "backend": "GPU platform renderers, including Metal and WGPU paths",
+      "creationYear": 2026,
+      "latestRelease": "2026-11-02",
+      "sourceUpdated": null,
+      "status": "Experimental performance-focused GPUI fork",
+      "provenance": {
+        "status": "ai-generated",
+        "scope": "AI-generated, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "evidence": null,
+        "quote": "GPUI fast and rune are AI-generated",
+        "reviewedCommit": "61dccec2536ecbb6845a2c0cdf5fb17651b10bc5",
+        "reviewedDate": "2026-11-07",
+        "supportingDisclosure": {
+          "scope": "The merged font-metrics change declares Claude Code generation and credits Claude as a co-author.",
+          "evidence": "https://github.com/longbridge/gpui-fast/commit/61dccec2536ecbb6845a2c0cdf5fb17651b10bc5",
+          "quote": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>"
+        },
+        "basis": "site-maintainer"
+      },
+      "metadataEvidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06",
+      "license": "Apache-2.0",
+      "reviewedCommit": "4a4a89af7c7fd3f9999218d6abdeb66116fd6d49",
+      "metadataNotes": "Metadata and features describe the inspected development source, not benchmark adapter pins.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/Cargo.toml",
+        "Classification": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
+        "Backend": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/Cargo.toml",
+        "Project status": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
+        "Latest release": "https://github.com/longbridge/gpui-fast/releases/tag/v0.1.13",
+        "Creation year": "https://github.com/longbridge/gpui-fast/commit/11a44c4882f32789a8292b3f0682ffa4e6b6e79e"
+      },
+      "firstCommit": {
+        "sha": "11a44c4882f32789a8292b3f0682ffa4e6b6e79e",
+        "date": "2026-09-22",
+        "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "rune",
+      "name": "Rune",
+      "repository": "https://github.com/anomalyco/rune",
+      "homepage": "https://github.com/anomalyco/rune",
+      "classification": "Declarative Rust views with retained runtime, layout and motion",
+      "backend": "Winit and custom GPU rendering through WGPU, native Metal option on Apple platforms",
+      "creationYear": 2026,
+      "latestRelease": null,
+      "sourceUpdated": null,
+      "status": "Pre-release, source-pinned development framework",
+      "provenance": {
+        "status": "ai-generated",
+        "scope": "AI-generated, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "evidence": null,
+        "quote": "GPUI fast and rune are AI-generated",
+        "reviewedCommit": "0637212218e264dee90d89a415787015a3f474e7",
+        "reviewedDate": "2026-11-07",
+        "supportingDisclosure": {
+          "scope": "The merged layer-shell overlay cursor change credits Claude as a co-author.",
+          "evidence": "https://github.com/anomalyco/rune/commit/0637212218e264dee90d89a415787015a3f474e7",
+          "quote": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+        },
+        "basis": "site-maintainer"
+      },
+      "metadataEvidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/README.md",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07",
+      "license": "MIT",
+      "reviewedCommit": "a9da7e3ebf5a8ab9bf19c3015032674b6e042df2",
+      "metadataNotes": "Benchmark dependency and feature citations use the same pinned commit. Linux native windows are exercised by this adapter. Other platform APIs are source-reviewed, not execution-validated here. The agent-oriented contribution workflow is not a quantified declaration of authorship for the existing codebase.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/LICENSE",
+        "Classification": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/README.md",
+        "Backend": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/Cargo.toml",
+        "Project status": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/README.md",
+        "Creation year": "https://github.com/anomalyco/rune/commit/484b76675f9b02605df6a6e7e38eb2158f94b95a"
+      },
+      "firstCommit": {
+        "sha": "484b76675f9b02605df6a6e7e38eb2158f94b95a",
+        "date": "2026-10-22",
+        "reviewedDate": "2026-11-07"
+      }
+    }
+  ]
+}

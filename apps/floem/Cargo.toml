@@ -1,0 +1,20 @@
+[workspace]
+
+[package]
+name = "gui-bench-floem"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+benchmark-common = { path = "../../crates/benchmark-common" }
+floem = "=0.2.0"
+im = "=15.1.0"
+
+[features]
+default = []
+startup = []
+scroll = []
+virtual-scroll = []
+switches = []
+memory = []

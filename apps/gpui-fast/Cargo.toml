@@ -1,0 +1,26 @@
+[workspace]
+
+[package]
+name = "gui-bench-gpui-fast"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[features]
+default = []
+startup = []
+scroll = []
+virtual-scroll = []
+switches = []
+memory = []
+
+[dependencies]
+benchmark-common = { path = "../../crates/benchmark-common" }
+gpui = { package = "gpui-fast", version = "=0.1.0", default-features = false }
+gpui_platform = { package = "gpui-fast-platform", version = "=0.1.0", default-features = false, features = ["wayland", "x11"] }
+libc = "=0.2.174"
+unicode-segmentation = "=1.13.3"
+
+[[bin]]
+name = "gui-bench-gpui-fast"
+path = "src/main.rs"
