@@ -4,6 +4,8 @@ Rust GUI benchmarks and feature comparisons.
 
 ## Website
 
+[Visit the website](https://areweactuallyguiyet.vercel.app/).
+
 Requires Node.js. 
 
 ```sh
