@@ -116,6 +116,27 @@ function metadataRows(libraries) {
     ['AI involvement', library => aiLabels[library.provenance.status]],
   ];
   const body = document.createDocumentFragment();
+  const downloads = element('tr');
+  const downloadsHeading = element('th', 'Recent downloads');
+  downloadsHeading.scope = 'row';
+  downloads.append(downloadsHeading);
+  const crateNames = { makepad: 'makepad-widgets', rune: null };
+  for (const library of libraries) {
+    const cell = element('td', undefined, 'downloads-cell');
+    const crateName = library.id in crateNames ? crateNames[library.id] : library.id;
+    if (crateName) {
+      const link = element('a');
+      link.href = `https://crates.io/crates/${crateName}`;
+      const badge = element('img');
+      badge.src = `https://img.shields.io/crates/dr/${crateName}?label=recent`;
+      badge.alt = `${library.name} recent downloads on crates.io`;
+      badge.loading = 'lazy';
+      link.append(badge);
+      cell.append(link);
+    } else cell.textContent = 'Not published';
+    downloads.append(cell);
+  }
+  body.append(downloads);
   for (const [name, valueFor] of fields) {
     const row = element('tr');
     const heading = element('th', name);

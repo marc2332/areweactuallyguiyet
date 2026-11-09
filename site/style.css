@@ -83,6 +83,8 @@ tbody tr:hover { background: #222; }
 .claim-button { display: block; width: 100%; min-width: 0; min-height: 22px; padding: 1px 2px; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; font-size: 16px; line-height: 20px; cursor: pointer; }
 .claim-button:hover, .claim-button:focus-visible { background: #ffffff12; }
 .metadata-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.downloads-cell { color: var(--muted); }
+.downloads-cell img { display: block; max-width: 100%; height: auto; margin: 4px auto; }
 .unsupported { color: var(--muted); }
 .claim-dialog { width: min(540px, calc(100% - 32px)); max-height: calc(100dvh - 48px); padding: 24px; border: 1px solid #52525b; border-radius: 9px; background: var(--panel); color: #e4e4e7; font-size: 13px; overflow-wrap: anywhere; }
 .claim-dialog::backdrop { background: #000a; }
