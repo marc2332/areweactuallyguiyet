@@ -13,7 +13,7 @@ function https(value) {
 export function validateLibraries(data) {
   if (!Array.isArray(data?.libraries) || !data.libraries.length) throw new Error('Missing libraries');
   const identifiers = new Set();
-  const provenanceStatuses = ['unknown', 'no-ai', 'ai-assisted', 'ai-generated'];
+  const provenanceStatuses = ['unknown', 'no-ai', 'ai-assisted', 'ai-co-developed', 'ai-led'];
   for (const library of data.libraries) {
     if (!/^[a-z0-9-]+$/.test(library.id) || identifiers.has(library.id) || !library.name) throw new Error('Invalid or duplicate library');
     identifiers.add(library.id);

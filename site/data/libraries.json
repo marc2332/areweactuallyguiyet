@@ -1,39 +1,6 @@
 {
   "libraries": [
     {
-      "id": "zgui",
-      "name": "zgui",
-      "repository": "https://github.com/zortax/zgui",
-      "homepage": "https://zgui.zortax.de",
-      "classification": "Native Rust components with fine-grained reactivity and CSS styling",
-      "backend": "Retained WGPU renderer with Vello, Stylo CSS and cephal layout",
-      "creationYear": null,
-      "latestRelease": "2026-10-15",
-      "sourceUpdated": "2026-11-08",
-      "status": "Experimental pre-1.0 framework with breaking changes expected",
-      "provenance": {
-        "status": "unknown",
-        "scope": "The inspected README and contribution guide do not establish code authorship or AI involvement.",
-        "evidence": null,
-        "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
-        "reviewedDate": "2026-11-09"
-      },
-      "metadataEvidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
-      "reviewedVersion": "main@80baa3c7cb0f",
-      "reviewedDate": "2026-11-09",
-      "license": "Apache-2.0",
-      "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
-      "metadataNotes": "Metadata, features and the benchmark adapter use the same pinned development commit. Platform capabilities are source-reviewed, not execution-validated here. Creation year was not established from the shallow source snapshot.",
-      "metadataFieldEvidence": {
-        "License": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/Cargo.toml",
-        "Classification": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
-        "Backend": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
-        "Project status": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
-        "Latest release": "https://github.com/zortax/zgui/releases/tag/v0.1.0",
-        "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
-      }
-    },
-    {
       "id": "freya",
       "name": "Freya",
       "repository": "https://github.com/marc2332/freya",
@@ -310,7 +277,7 @@
     },
     {
       "id": "dioxus-native",
-      "name": "Dioxus Native (Skia)",
+      "name": "Dioxus Native",
       "repository": "https://github.com/DioxusLabs/blitz",
       "homepage": "https://github.com/DioxusLabs/blitz",
       "classification": "Dioxus virtual DOM with native HTML/CSS layout and rendering",
@@ -396,10 +363,10 @@
       "sourceUpdated": null,
       "status": "Experimental performance-focused GPUI fork",
       "provenance": {
-        "status": "ai-assisted",
-        "scope": "AI-assisted, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "status": "ai-co-developed",
+        "scope": "AI co-developed, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
         "evidence": null,
-        "quote": "GPUI Fast is AI-assisted",
+        "quote": "make gpui-fast AI co-developed",
         "reviewedCommit": "61dccec2536ecbb6845a2c0cdf5fb17651b10bc5",
         "reviewedDate": "2026-11-07",
         "supportingDisclosure": {
@@ -441,8 +408,8 @@
       "sourceUpdated": null,
       "status": "Pre-release, source-pinned development framework",
       "provenance": {
-        "status": "ai-generated",
-        "scope": "AI-generated, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "status": "ai-led",
+        "scope": "AI-led, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
         "evidence": null,
         "quote": "GPUI fast and rune are AI-generated",
         "reviewedCommit": "0637212218e264dee90d89a415787015a3f474e7",
@@ -471,6 +438,41 @@
         "sha": "484b76675f9b02605df6a6e7e38eb2158f94b95a",
         "date": "2026-10-22",
         "reviewedDate": "2026-11-07"
+      }
+    },
+    {
+      "id": "zgui",
+      "name": "zgui",
+      "repository": "https://github.com/zortax/zgui",
+      "homepage": "https://zgui.zortax.de",
+      "classification": "Native Rust components with fine-grained reactivity and CSS styling",
+      "backend": "Retained WGPU renderer with Vello, Stylo CSS and cephal layout",
+      "creationYear": null,
+      "latestRelease": "2026-10-15",
+      "sourceUpdated": "2026-11-08",
+      "status": "Experimental pre-1.0 framework with breaking changes expected",
+      "provenance": {
+        "status": "ai-co-developed",
+        "scope": "Substantial AI-generated code with human technical direction, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "basis": "site-maintainer",
+        "quote": "it did ave a lot of LLM generated code but the guy knows what he is doing",
+        "evidence": null,
+        "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
+        "reviewedDate": "2026-11-09"
+      },
+      "metadataEvidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+      "reviewedVersion": "main@80baa3c7cb0f",
+      "reviewedDate": "2026-11-09",
+      "license": "Apache-2.0",
+      "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
+      "metadataNotes": "Metadata, features and the benchmark adapter use the same pinned development commit. Platform capabilities are source-reviewed, not execution-validated here. Creation year was not established from the shallow source snapshot.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/Cargo.toml",
+        "Classification": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Backend": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Project status": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Latest release": "https://github.com/zortax/zgui/releases/tag/v0.1.0",
+        "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
       }
     }
   ]

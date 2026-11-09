@@ -176,7 +176,6 @@ export function renderBenchmarks(history, libraries) {
     names = { ...baseNames, ...selected.metadata.frameworkLabels };
     highlight(null);
     const details = collectionDetails(selected);
-    document.querySelector('#collection-run').textContent = `Run ${selected.id} · ${new Date(selected.collectedAt).toLocaleString()} · ${selected.id === runs[0].id ? 'Latest run' : 'Historical run'} · Showing only this full collection. ${details.provenance}`;
     const identifiers = [...new Set(selected.results.map(result => result.framework))];
     const measured = selected.results.filter(result => result.status === 'ok').length;
     const kind = selected.metadata.hoverAugmentation ? 'augmented collection' : 'collection';
@@ -194,9 +193,10 @@ export function renderBenchmarks(history, libraries) {
       selected.machine.session === 'wayland' ? 'Wayland' : selected.machine.session,
     ].filter(Boolean).join(' · ');
     const legacyStartup = selected.results.some(result => result.scenario === 'startup' && result.scenarioVersion < 2);
+    document.querySelector('#startup-method-note').hidden = !legacyStartup;
     document.querySelector('#startup-method-note').textContent = legacyStartup
       ? 'Startup v1 used inconsistent ready signals and memory sampling. Do not compare its startup results.'
-      : `Startup memory: sampled after ${selected.metadata.startupMemorySettleSeconds ?? selected.metadata.warmupSeconds ?? '?'}s idle. Settling is excluded from startup timing.`;
+      : '';
     document.querySelector('#toggles').replaceChildren(...identifiers.map(identifier => {
       const button = element('button', undefined, 'framework-toggle');
       button.type = 'button';

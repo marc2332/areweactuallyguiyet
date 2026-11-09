@@ -295,7 +295,7 @@
   },
   {
     "id": "dioxus-native",
-    "name": "Dioxus Native (Skia)",
+    "name": "Dioxus Native",
     "version": "0.8.0-alpha.3",
     "package": "gui-bench-dioxus-native",
     "manifest": "apps/dioxus-native/Cargo.toml",

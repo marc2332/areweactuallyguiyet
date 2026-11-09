@@ -14,7 +14,13 @@ function element(tag, text, className) {
 }
 
 const aiLabels = {
-  'no-ai': 'No AI', 'ai-assisted': 'AI-assisted', 'ai-generated': 'AI-generated', unknown: 'Unknown',
+  'no-ai': 'No AI', 'ai-assisted': 'AI-assisted', 'ai-co-developed': 'AI co-developed', 'ai-led': 'AI-led', unknown: 'Unknown',
+};
+
+const aiDescriptions = {
+  'ai-assisted': 'Human-written code with AI support',
+  'ai-co-developed': 'Substantial AI-generated code with human technical direction',
+  'ai-led': 'AI drives both implementation and technical decisions',
 };
 
 async function loadJson(path) {
@@ -129,6 +135,7 @@ function metadataRows(libraries) {
           ? involvement.scope ?? 'No explicit AI authorship disclosure found. This does not mean no AI was used.'
           : library.metadataNotes ?? 'Scope or supporting declaration is unknown.';
       const paragraphs = [value, notes];
+      if (involvement && aiDescriptions[involvement.status]) paragraphs.splice(1, 0, aiDescriptions[involvement.status]);
       if (involvement?.quote) paragraphs.push(`${involvement.basis === 'site-maintainer' ? 'Site maintainer statement' : 'Disclosure'}: ${involvement.quote}`);
       if (involvement?.status === 'ai-assisted') paragraphs.push('This establishes AI help on some changes, not the share of the whole project.');
       const version = firstCommit ? firstCommit.sha.slice(0, 12) : involvement ? involvement.reviewedCommit.slice(0, 12) : library.reviewedVersion;

@@ -20,13 +20,12 @@
       <div id="bench" hidden>
         <div class="collection-heading">
           <div><p id="collection-summary" class="collection-summary"></p><p id="collection-timing" class="small"></p></div>
-          <label id="collection-control" class="collection-control">Benchmark run <select id="run" aria-describedby="collection-run"></select></label>
+          <label id="collection-control" class="collection-control">Benchmark run <select id="run"></select></label>
         </div>
-        <p id="collection-run" class="small" role="status"></p>
         <p id="collection-machine" class="small"></p>
         <p id="startup-method-note" class="small" role="note"></p>
         <div id="toggles" class="chart-legend" role="group" aria-label="Show or hide frameworks"></div>
-        <p class="chart-hint small">Lower is better. Dots: medians. Whiskers: repetition ranges. Hover a framework to highlight it, click to hide it.</p>
+        <p class="chart-hint small">Lower is better. Dots show the median, lines show the range. Hover to highlight, click to hide.</p>
         <div id="primary-charts" class="charts"></div>
         <div id="extra-charts" class="charts additional-charts"></div>
       </div>

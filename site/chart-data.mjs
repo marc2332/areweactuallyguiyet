@@ -130,14 +130,9 @@ export function collectionDetails(run) {
   const augmentation = run.metadata.hoverAugmentation;
   const hover = augmentation?.sourceRun ?? run;
   const input = run.results.some(result => result.scenario === 'hover') ? hover.metadata.hoverInput : null;
-  const inheritedTiming = `${run.metadata.durationSeconds ?? '?'}s interaction windows · ${run.metadata.warmupSeconds ?? '?'}s warm-up · ${run.metadata.repetitions ?? '?'} repetitions`;
+  const timing = `${run.metadata.durationSeconds ?? '?'}s runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.warmupSeconds ?? '?'}s warm-up`;
   const hoverTiming = input
-    ? ` · Hover v${input.workloadVersion ?? 1}: ${hover.metadata.durationSeconds ?? '?'}s windows · ${hover.metadata.warmupSeconds ?? '?'}s warm-up · ${hover.metadata.repetitions ?? '?'} repetitions · ${input.motionsPerSecond ?? '?'}Hz · ${input.cycleSeconds ?? '?'}s full sweep · scale ${input.scale ?? '?'} · input driver: ${input.backend ?? 'unknown'}`
+    ? ` · Hover: ${hover.metadata.durationSeconds ?? '?'}s × ${hover.metadata.repetitions ?? '?'} at ${input.motionsPerSecond ?? '?'}Hz`
     : '';
-  return {
-    timing: `${augmentation ? 'Inherited non-Hover: ' : ''}${inheritedTiming}${hoverTiming}`,
-    provenance: augmentation
-      ? `Non-Hover inherited from ${augmentation.inheritedFrom.id} at ${augmentation.inheritedFrom.collectedAt}, not recollected. Hover from ${hover.id} at ${hover.collectedAt}. Toolkit backend is recorded per repetition, separately from the input driver.`
-      : '',
-  };
+  return { timing: `${timing}${hoverTiming}` };
 }
