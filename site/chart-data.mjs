@@ -39,6 +39,7 @@ export const scenarioLabels = {
   scroll: 'Scroll 2,000 rows',
   'virtual-scroll': 'Virtual scroll 100,000 rows',
   switches: '900 dummy controls',
+  hover: '900 native hover cells',
   memory: 'Medium dashboard',
 };
 
@@ -47,6 +48,13 @@ export function frameworkColor(identifier) {
   const palette = ['#facc15', '#a3e635', '#e2e8f0', '#fb7185'];
   const hash = [...identifier].reduce((value, character) => (value * 31 + character.charCodeAt(0)) >>> 0, 0);
   return palette[hash % palette.length];
+}
+
+export function frameworkVersionsForScenario(run, scenario) {
+  const metadata = scenario === 'hover' && run.metadata.hoverAugmentation
+    ? run.metadata.hoverAugmentation.sourceRun.metadata
+    : run.metadata;
+  return metadata.frameworkVersions ?? {};
 }
 
 export function groupMetricResults(run, metric, hidden = new Set()) {
@@ -116,4 +124,20 @@ export function transformChartResults(results, { metric, scenarioVersion, relati
     if (relative && fastest === null) return { framework: result.framework, status: 'relative-unavailable', value: null, unit: '×' };
     return { framework: result.framework, status: 'ok', value: relative ? measurement.value / fastest : measurement.value, unit: relative ? '×' : measurement.unit };
   });
+}
+
+export function collectionDetails(run) {
+  const augmentation = run.metadata.hoverAugmentation;
+  const hover = augmentation?.sourceRun ?? run;
+  const input = run.results.some(result => result.scenario === 'hover') ? hover.metadata.hoverInput : null;
+  const inheritedTiming = `${run.metadata.durationSeconds ?? '?'}s interaction windows · ${run.metadata.warmupSeconds ?? '?'}s warm-up · ${run.metadata.repetitions ?? '?'} repetitions`;
+  const hoverTiming = input
+    ? ` · Hover v${input.workloadVersion ?? 1}: ${hover.metadata.durationSeconds ?? '?'}s windows · ${hover.metadata.warmupSeconds ?? '?'}s warm-up · ${hover.metadata.repetitions ?? '?'} repetitions · ${input.motionsPerSecond ?? '?'}Hz · ${input.cycleSeconds ?? '?'}s full sweep · scale ${input.scale ?? '?'} · input driver: ${input.backend ?? 'unknown'}`
+    : '';
+  return {
+    timing: `${augmentation ? 'Inherited non-Hover: ' : ''}${inheritedTiming}${hoverTiming}`,
+    provenance: augmentation
+      ? `Non-Hover inherited from ${augmentation.inheritedFrom.id} at ${augmentation.inheritedFrom.collectedAt}, not recollected. Hover from ${hover.id} at ${hover.collectedAt}. Toolkit backend is recorded per repetition, separately from the input driver.`
+      : '',
+  };
 }

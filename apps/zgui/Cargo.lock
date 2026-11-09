@@ -1442,6 +1442,7 @@ name = "gui-bench-zgui"
 version = "0.1.0"
 dependencies = [
  "benchmark-common",
+ "raw-window-handle",
  "zgui",
  "zgui-image",
  "zgui-ui",

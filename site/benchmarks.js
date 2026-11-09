@@ -1,4 +1,4 @@
-import { frameworkColor, groupMetricResults, metricLabels, placePointLabels } from './chart-data.mjs';
+import { collectionDetails, frameworkColor, frameworkVersionsForScenario, groupMetricResults, metricLabels, placePointLabels } from './chart-data.mjs';
 
 const svgNamespace = 'http://www.w3.org/2000/svg';
 const primaryMetrics = ['cpu_ms', 'pss_mib', 'startup_ms'];
@@ -38,7 +38,7 @@ function axis(maximum) {
   return { maximum: count * step, ticks: Array.from({ length: count + 1 }, (_, index) => index * step) };
 }
 
-function plot(groups, metric, names, versions) {
+function plot(groups, metric, names, run) {
   const width = 1600;
   const left = 235;
   const right = width - 24;
@@ -77,6 +77,7 @@ function plot(groups, metric, names, versions) {
     );
   }
   for (const row of rows) {
+    const versions = frameworkVersionsForScenario(run, row.scenario);
     const center = row.top + row.height / 2 - (row.missing.length ? 8 : 0);
     svg.append(
       svgElement('text', { x: left - 18, y: center - 1, 'text-anchor': 'end', class: 'plot-workload' }, row.label),
@@ -122,7 +123,7 @@ function metricCard(run, metric, hidden, names) {
   chart.tabIndex = 0;
   chart.setAttribute('role', 'region');
   chart.setAttribute('aria-label', `${descriptions[metric][0]} comparison, scroll horizontally on small screens`);
-  if (groups.length) chart.append(plot(groups, metric, names, run.metadata.frameworkVersions ?? {}));
+  if (groups.length) chart.append(plot(groups, metric, names, run));
   else chart.append(element('p', 'This collection has no measurements for this metric.', 'chart-empty'));
   figure.append(chart);
   return figure;
@@ -174,11 +175,13 @@ export function renderBenchmarks(history, libraries) {
   function renderCollection() {
     names = { ...baseNames, ...selected.metadata.frameworkLabels };
     highlight(null);
-    document.querySelector('#collection-run').textContent = `Run ${selected.id} · ${new Date(selected.collectedAt).toLocaleString()} · ${selected.id === runs[0].id ? 'Latest run' : 'Historical run'} · Showing only this full collection.`;
+    const details = collectionDetails(selected);
+    document.querySelector('#collection-run').textContent = `Run ${selected.id} · ${new Date(selected.collectedAt).toLocaleString()} · ${selected.id === runs[0].id ? 'Latest run' : 'Historical run'} · Showing only this full collection. ${details.provenance}`;
     const identifiers = [...new Set(selected.results.map(result => result.framework))];
     const measured = selected.results.filter(result => result.status === 'ok').length;
-    document.querySelector('#collection-summary').textContent = `${selected.metadata.buildProfile ?? 'Unknown'} collection · ${identifiers.length} frameworks · ${measured} measured cases · ${selected.metadata.repetitions ?? '?'} repetitions`;
-    document.querySelector('#collection-timing').textContent = `${selected.metadata.durationSeconds ?? '?'}s interaction windows · ${selected.metadata.warmupSeconds ?? '?'}s warm-up`;
+    const kind = selected.metadata.hoverAugmentation ? 'augmented collection' : 'collection';
+    document.querySelector('#collection-summary').textContent = `${selected.metadata.buildProfile ?? 'Unknown'} ${kind} · ${identifiers.length} frameworks · ${measured} measured cases`;
+    document.querySelector('#collection-timing').textContent = details.timing;
     const gpu = (selected.machine.gpu ?? 'GPU unknown').replace(
       '2d:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 7590 (rev c0)',
       'AMD Radeon RX 9060 (16 GB VRAM)',

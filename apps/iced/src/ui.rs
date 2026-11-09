@@ -33,6 +33,8 @@ where
         .subscription(subscription)
         .window(iced::window::Settings {
             size: iced::Size::new(1280.0, 800.0),
+            fullscreen: cfg!(feature = "hover"),
+            decorations: !cfg!(feature = "hover"),
             ..Default::default()
         })
         .font(include_bytes!("../../../assets/fonts/DejaVuSans.ttf").as_slice())

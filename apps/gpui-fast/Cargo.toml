@@ -13,8 +13,10 @@ scroll = []
 virtual-scroll = []
 switches = []
 memory = []
+hover = ["dep:raw-window-handle"]
 
 [dependencies]
+raw-window-handle = { version = "=0.6.2", optional = true }
 benchmark-common = { path = "../../crates/benchmark-common" }
 gpui = { package = "gpui-fast", version = "=0.1.0" }
 gpui_platform = { package = "gpui-fast-platform", version = "=0.1.0", features = ["wayland", "x11"] }

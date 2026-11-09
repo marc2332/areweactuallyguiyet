@@ -1383,6 +1383,7 @@ dependencies = [
  "benchmark-common",
  "eframe",
  "image",
+ "raw-window-handle",
 ]
 
 [[package]]

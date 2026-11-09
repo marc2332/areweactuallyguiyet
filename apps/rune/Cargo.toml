@@ -16,6 +16,7 @@ startup = []
 scroll = []
 virtual-scroll = []
 switches = []
+hover = []
 memory = []
 
 [profile.release]

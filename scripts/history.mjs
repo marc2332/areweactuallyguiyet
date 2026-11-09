@@ -37,13 +37,25 @@ export function chartHistory(history) {
       id: run.id,
       collectedAt: run.collectedAt,
       machine: run.machine,
-      metadata: Object.fromEntries(metadataKeys.filter(key => key in run.metadata).map(key => [key, run.metadata[key]])),
+      metadata: run.results.some(result => result.scenario === 'hover')
+        ? run.metadata
+        : Object.fromEntries(metadataKeys.filter(key => key in run.metadata).map(key => [key, run.metadata[key]])),
       results: run.results.map(result => ({
         ...result,
-        repetitions: result.repetitions.map(repetition => ({ index: repetition.index, metrics: repetition.metrics ?? {} })),
+        repetitions: result.repetitions.map(repetition => ({
+          index: repetition.index,
+          metrics: repetition.metrics ?? {},
+          ...(result.scenario === 'hover' ? { startupBoundary: repetition.startupBoundary, events: repetition.events ?? [] } : {}),
+        })),
       })),
     })),
   };
+}
+
+export function validateFullCollection(run, adapters) {
+  const included = new Set(run.results.map(result => `${result.framework}/${result.scenario}`));
+  const missing = adapters.flatMap(adapter => Object.keys(adapter.scenarios).map(scenario => `${adapter.id}/${scenario}`)).filter(key => !included.has(key));
+  if (missing.length) throw new Error(`Only full collections can be published. Individual runs are temporary inputs. Missing ${missing.length} cases, including ${missing.slice(0, 3).join(', ')}.`);
 }
 
 export async function importRun(inputPath, historyPath = 'site/data/history.json', adapters) {
@@ -55,9 +67,7 @@ export async function importRun(inputPath, historyPath = 'site/data/history.json
   const next = { schemaVersion: 1, runs: [...history.runs.filter(item => item.id !== run.id), run] };
   validateHistory(next);
   adapters ??= JSON.parse(await readFile(new URL('../apps/catalog.json', import.meta.url), 'utf8'));
-  const included = new Set(run.results.map(result => `${result.framework}/${result.scenario}`));
-  const missing = adapters.flatMap(adapter => Object.keys(adapter.scenarios).map(scenario => `${adapter.id}/${scenario}`)).filter(key => !included.has(key));
-  if (missing.length) throw new Error(`Only full collections can be published. Individual runs are temporary inputs. Missing ${missing.length} cases, including ${missing.slice(0, 3).join(', ')}.`);
+  validateFullCollection(run, adapters);
   await writeFile(historyPath, `${JSON.stringify(next, null, 2)}\n`);
   return next;
 }

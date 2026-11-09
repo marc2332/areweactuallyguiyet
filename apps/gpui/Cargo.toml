@@ -13,6 +13,7 @@ scroll = []
 virtual-scroll = []
 switches = []
 memory = []
+hover = []
 
 [dependencies]
 benchmark-common = { path = "../../crates/benchmark-common" }

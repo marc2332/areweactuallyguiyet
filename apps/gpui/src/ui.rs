@@ -59,6 +59,14 @@ pub(crate) fn run<V: ScenarioView>() -> Result<(), Box<dyn std::error::Error>> {
     let error = Rc::new(RefCell::new(None::<String>));
     let app_harness = harness.clone();
     let app_error = error.clone();
+    #[cfg(feature = "hover")]
+    let hover_size = std::env::var("GUI_BENCH_HOVER_WIDTH")
+        .ok()
+        .zip(std::env::var("GUI_BENCH_HOVER_HEIGHT").ok())
+        .map(|(width, height)| {
+            Ok::<_, std::num::ParseFloatError>((width.parse::<f32>()?, height.parse::<f32>()?))
+        })
+        .transpose()?;
     Application::new().run(move |cx: &mut App| {
         V::bind_keys(cx);
         if let Err(failure) = cx
@@ -76,7 +84,11 @@ pub(crate) fn run<V: ScenarioView>() -> Result<(), Box<dyn std::error::Error>> {
         let task_error = app_error.clone();
         let opened = cx.open_window(
             WindowOptions {
-                window_bounds: Some(WindowBounds::Windowed(bounds)),
+                window_bounds: Some(if V::SCENARIO == Scenario::Hover {
+                    WindowBounds::Fullscreen(bounds)
+                } else {
+                    WindowBounds::Windowed(bounds)
+                }),
                 ..Default::default()
             },
             move |window, cx| {
@@ -87,7 +99,12 @@ pub(crate) fn run<V: ScenarioView>() -> Result<(), Box<dyn std::error::Error>> {
                     .spawn(cx, async move |cx| {
                         loop {
                             gpui::Timer::after(Duration::from_millis(16)).await;
-                            let done = match cx.update(|_, cx| {
+                            let done = match cx.update(|_window, cx| {
+                                #[cfg(feature = "hover")]
+                                let fullscreen_viewport =
+                                    hover_size.is_none_or(|(width, height)| {
+                                        _window.viewport_size() == size(px(width), px(height))
+                                    });
                                 task_entity.update(cx, |view, cx| {
                                     let harness = view.protocol().harness.clone();
                                     let state = match harness.borrow_mut().poll() {
@@ -105,11 +122,20 @@ pub(crate) fn run<V: ScenarioView>() -> Result<(), Box<dyn std::error::Error>> {
                                         view.protocol().reset_generation = state.reset_generation;
                                     }
                                     view.before_ready(state, cx);
-                                    if view.protocol().rendered {
-                                        if let Err(failure) = harness
+                                    let ready_to_report = view.protocol().rendered;
+                                    #[cfg(feature = "hover")]
+                                    let ready_to_report = ready_to_report && fullscreen_viewport;
+                                    if ready_to_report {
+                                        #[cfg(feature = "hover")]
+                                        let readiness = crate::selected_hover::mark_ready(
+                                            &mut harness.borrow_mut(),
+                                            _window,
+                                        );
+                                        #[cfg(not(feature = "hover"))]
+                                        let readiness = harness
                                             .borrow_mut()
-                                            .mark_ready("initial-render-returned-not-presented")
-                                        {
+                                            .mark_ready("initial-render-returned-not-presented");
+                                        if let Err(failure) = readiness {
                                             *error.borrow_mut() = Some(failure.to_string());
                                             cx.quit();
                                             return true;

@@ -1,8 +1,11 @@
+pub mod hover;
+
 use serde::Serialize;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs, io,
     process::{Child, Command},
+    time::Instant,
 };
 
 pub struct ChildGuard(pub Child);
@@ -41,6 +44,49 @@ fn parse_stat(contents: &str) -> Option<ProcessStat> {
     })
 }
 
+#[derive(Clone)]
+pub(crate) struct ProcessTree {
+    processes: BTreeMap<u32, ProcessStat>,
+    started: Instant,
+    completed: Instant,
+}
+
+impl ProcessTree {
+    fn discover(root: u32) -> io::Result<Self> {
+        let started = Instant::now();
+        let mut processes = BTreeMap::new();
+        for entry in fs::read_dir("/proc")? {
+            let entry = entry?;
+            let Ok(identifier) = entry.file_name().to_string_lossy().parse::<u32>() else {
+                continue;
+            };
+            if let Ok(contents) = fs::read_to_string(entry.path().join("stat")) {
+                if let Some(stat) = parse_stat(&contents) {
+                    processes.insert(identifier, stat);
+                }
+            }
+        }
+        let mut descendants = BTreeSet::from([root]);
+        loop {
+            let before = descendants.len();
+            for (identifier, stat) in &processes {
+                if descendants.contains(&stat.parent) {
+                    descendants.insert(*identifier);
+                }
+            }
+            if before == descendants.len() {
+                break;
+            }
+        }
+        processes.retain(|identifier, _| descendants.contains(identifier));
+        Ok(Self {
+            processes,
+            started,
+            completed: Instant::now(),
+        })
+    }
+}
+
 fn memory_kib(contents: &str, field: &str) -> Option<u64> {
     contents.lines().find_map(|line| {
         let (key, value) = line.split_once(':')?;
@@ -55,6 +101,10 @@ fn memory_kib(contents: &str, field: &str) -> Option<u64> {
 #[serde(rename_all = "camelCase")]
 pub struct Sample {
     pub elapsed_ms: f64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_started_ms: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub collection_completed_ms: Option<f64>,
     pub rss_mib: Option<f64>,
     pub pss_mib: Option<f64>,
     pub process_count: usize,
@@ -98,39 +148,13 @@ impl ProcessSampler {
     }
 
     pub fn sample(&mut self, elapsed_ms: f64) -> io::Result<()> {
-        let mut processes = BTreeMap::new();
-        for entry in fs::read_dir("/proc")? {
-            let entry = entry?;
-            let Ok(identifier) = entry.file_name().to_string_lossy().parse::<u32>() else {
-                continue;
-            };
-            if let Ok(contents) = fs::read_to_string(entry.path().join("stat")) {
-                if let Some(stat) = parse_stat(&contents) {
-                    processes.insert(identifier, stat);
-                }
-            }
-        }
-        let mut descendants = BTreeSet::from([self.root]);
-        loop {
-            let before = descendants.len();
-            for (identifier, stat) in &processes {
-                if descendants.contains(&stat.parent) {
-                    descendants.insert(*identifier);
-                }
-            }
-            if before == descendants.len() {
-                break;
-            }
-        }
+        let tree = ProcessTree::discover(self.root)?;
         let mut rss_total = 0u64;
         let mut pss_total = 0u64;
         let mut rss_available = true;
         let mut pss_available = true;
         let mut count = 0;
-        for identifier in descendants {
-            let Some(stat) = processes.get(&identifier) else {
-                continue;
-            };
+        for (identifier, stat) in tree.processes {
             count += 1;
             let key = (identifier, stat.start);
             let previous = self.previous.insert(key, stat.ticks);
@@ -161,6 +185,8 @@ impl ProcessSampler {
         self.baseline = false;
         self.samples.push(Sample {
             elapsed_ms,
+            collection_started_ms: None,
+            collection_completed_ms: None,
             rss_mib: (rss_available && count > 0).then_some(rss_total as f64 / 1024.0),
             pss_mib: (pss_available && count > 0).then_some(pss_total as f64 / 1024.0),
             process_count: count,

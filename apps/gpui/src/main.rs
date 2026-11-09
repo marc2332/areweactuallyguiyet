@@ -5,6 +5,7 @@ mod input;
     feature = "scroll",
     feature = "virtual-scroll",
     feature = "switches",
+    feature = "hover",
     feature = "memory"
 ))]
 mod ui;

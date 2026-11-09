@@ -17,3 +17,6 @@ use selected_startup as scenario;
 use selected_switches as scenario;
 #[cfg(feature = "virtual-scroll")]
 use selected_virtual_scroll as scenario;
+
+#[cfg(feature = "hover")]
+use selected_hover as scenario;

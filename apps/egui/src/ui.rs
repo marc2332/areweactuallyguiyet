@@ -147,11 +147,18 @@ impl<S: ScenarioUi> BenchmarkApp<S> {
 
 impl<S: ScenarioUi> eframe::App for BenchmarkApp<S> {
     fn logic(&mut self, context: &egui::Context, _frame: &mut eframe::Frame) {
-        if !self.ready_sent && self.initial_painted.load(Ordering::Acquire) {
-            if let Err(error) = self
+        let initial_frame_ready = self.initial_painted.load(Ordering::Acquire);
+        #[cfg(feature = "hover")]
+        let initial_frame_ready =
+            initial_frame_ready && crate::selected_hover::fullscreen_viewport_ready(context);
+        if !self.ready_sent && initial_frame_ready {
+            #[cfg(feature = "hover")]
+            let readiness = crate::selected_hover::mark_ready(&mut self.harness, context, _frame);
+            #[cfg(not(feature = "hover"))]
+            let readiness = self
                 .harness
-                .mark_ready("initial-paint-returned-following-update-not-presented")
-            {
+                .mark_ready("initial-paint-returned-following-update-not-presented");
+            if let Err(error) = readiness {
                 self.fail(context, error);
                 return;
             }
@@ -175,7 +182,7 @@ impl<S: ScenarioUi> eframe::App for BenchmarkApp<S> {
             }
             Err(error) => self.fail(context, error),
         }
-        if self.state.running {
+        if self.state.running && !cfg!(feature = "hover") {
             context.request_repaint();
         } else if self.harness.controlled() {
             context.request_repaint_after(Duration::from_millis(50));
@@ -184,7 +191,8 @@ impl<S: ScenarioUi> eframe::App for BenchmarkApp<S> {
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         self.scenario.render(ui);
-        if !self.ready_sent {
+        let can_mark_painted = !self.ready_sent;
+        if can_mark_painted {
             let painted = self.initial_painted.clone();
             let context = ui.ctx().clone();
             ui.ctx()
@@ -210,7 +218,9 @@ pub fn run<S: ScenarioUi>() -> Result<(), Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title(format!("GUI benchmark: egui / {}", S::SCENARIO.id()))
-            .with_inner_size([WIDTH, HEIGHT]),
+            .with_inner_size([WIDTH, HEIGHT])
+            .with_fullscreen(S::SCENARIO == benchmark_common::Scenario::Hover)
+            .with_decorations(S::SCENARIO != benchmark_common::Scenario::Hover),
         renderer: eframe::Renderer::Glow,
         ..Default::default()
     };

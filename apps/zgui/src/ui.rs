@@ -47,11 +47,34 @@ impl FrameProbe for Runtime {
         if window.renderer().target().is_none() {
             return;
         }
-        if let Err(error) = self
-            .harness
-            .borrow_mut()
-            .mark_ready("wgpu-configured-post-frame-probe-not-confirmed-presented")
-        {
+        let boundary = "wgpu-configured-post-frame-probe-not-confirmed-presented";
+        #[cfg(feature = "hover")]
+        let result = {
+            use raw_window_handle::RawWindowHandle;
+            let surface = window.surface();
+            if surface.fullscreen().is_none() {
+                return;
+            }
+            let backend = match surface
+                .gpu()
+                .and_then(|native| native.window_handle().ok())
+                .map(|handle| handle.as_raw())
+            {
+                Some(RawWindowHandle::Xlib(_) | RawWindowHandle::Xcb(_)) => "x11",
+                Some(RawWindowHandle::Wayland(_)) => "wayland",
+                _ => "unspecified",
+            };
+            self.harness.borrow_mut().mark_hover_ready(
+                boundary,
+                backend,
+                surface.scale_factor(),
+                (f64::from(surface.size().width.0) / surface.scale_factor()) as f32,
+                (f64::from(surface.size().height.0) / surface.scale_factor()) as f32,
+            )
+        };
+        #[cfg(not(feature = "hover"))]
+        let result = self.harness.borrow_mut().mark_ready(boundary);
+        if let Err(error) = result {
             *self.failure.borrow_mut() = Some(error.to_string());
         }
     }
@@ -71,11 +94,19 @@ pub fn run<V: IntoView + 'static>(
         Some("DejaVu Sans"),
     )?;
     let build_runtime = Rc::clone(&runtime);
-    app()
-        .with_title("zgui benchmark")
+    #[cfg(feature = "hover")]
+    let stylesheet = format!("{STYLE}{}", crate::selected_hover::style());
+    #[cfg(not(feature = "hover"))]
+    let stylesheet = STYLE;
+    let app = app();
+    #[cfg(feature = "hover")]
+    let app = app
+        .with_fullscreen(Some(FullscreenMode::Borderless))
+        .with_decorations(Decorations::None);
+    app.with_title("zgui benchmark")
         .with_size(benchmark_common::WIDTH, benchmark_common::HEIGHT)
         .with_fonts(fonts)
-        .with_stylesheet(STYLE)
+        .with_stylesheet(stylesheet)
         .with_probe(runtime.clone())
         .run(move || build(Rc::clone(&build_runtime)))?;
     if let Some(error) = runtime.failure.borrow_mut().take() {

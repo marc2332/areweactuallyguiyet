@@ -43,7 +43,16 @@ bench framework="egui" scenario="scroll" machine="desktop" *args:
 
 # Run every adapter and workload.
 bench-all machine="desktop" *args:
-    @just bench freya,freya-optimized,egui,vizia,iced,gpui,gpui-fast,dioxus-native,dioxus-native-vello,dioxus-native-vello-hybrid,slint,floem,makepad,rune,zgui startup,scroll,virtual-scroll,switches,memory "$@"
+    @just bench freya,freya-optimized,egui,vizia,vizia-optimized,iced,gpui,gpui-fast,dioxus-native,dioxus-native-vello,dioxus-native-vello-hybrid,slint,floem,makepad,rune,zgui startup,scroll,virtual-scroll,switches,memory,hover "$@"
+
+# Collect only Hover for every catalog adapter, with optional runner flags.
+bench-hover-all machine="desktop" *args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    machine="$1"
+    shift
+    frameworks="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; console.log(JSON.parse(readFileSync("apps/catalog.json", "utf8")).map(adapter => adapter.id).join(","))')"
+    just bench "$frameworks" hover "$machine" "$@"
 
 # Exercise the full runner with a short development-only real-window run.
 smoke framework="egui" scenario="scroll":

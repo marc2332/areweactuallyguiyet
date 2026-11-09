@@ -25,6 +25,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with native text inputs, interactive controls and ten embedded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -53,6 +57,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with interactive controls and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native hover responses and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -81,6 +89,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with reactive controls and embedded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration"
       }
     },
     "name": "Freya"
@@ -110,6 +122,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with reactive controls and embedded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration"
       }
     },
     "name": "Freya (optimized)",
@@ -140,6 +156,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with signal-backed controls and embedded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -170,6 +190,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with signal-backed controls and embedded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -198,6 +222,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with actual input messages and PNG image handles"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native MouseArea events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -226,6 +254,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with editable input entities and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native hover events and direct uinput coordinates, no calibration, toolkit backend unspecified"
       }
     }
   },
@@ -254,6 +286,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with editable input entities and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native hover events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -283,6 +319,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with actual HTML inputs, buttons and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native DOM hover events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -313,6 +353,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with actual HTML inputs, buttons and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native DOM hover events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -343,6 +387,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with actual HTML inputs, buttons and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native DOM hover events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -371,6 +419,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with real LineEdit controls and decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native TouchArea events and direct uinput coordinates, no calibration"
       }
     }
   },
@@ -399,6 +451,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with native text inputs and PNG image views"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native pointer events and direct uinput coordinates, no calibration, toolkit backend unspecified"
       }
     }
   },
@@ -427,6 +483,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with native TextInput/Button controls and ten decoded PNG fixtures"
+      },
+      "hover": {
+        "status": "unsupported",
+        "reason": "Pinned Makepad 1.0.0 Linux backend does not implement its public fullscreen operation"
       }
     }
   },
@@ -455,6 +515,10 @@
       "memory": {
         "status": "implemented",
         "reason": "Shared dashboard v2 with native text editing, scroll viewports and ten decoded PNGs"
+      },
+      "hover": {
+        "status": "implemented",
+        "reason": "Fullscreen Hover v3 with native hover events and direct uinput coordinates, no calibration"
       }
     }
   }

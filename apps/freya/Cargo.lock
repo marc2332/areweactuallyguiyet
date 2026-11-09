@@ -1693,6 +1693,7 @@ dependencies = [
  "freya",
  "freya-testing",
  "freya-winit",
+ "raw-window-handle",
 ]
 
 [[package]]

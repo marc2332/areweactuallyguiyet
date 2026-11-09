@@ -13,8 +13,10 @@ scroll = []
 virtual-scroll = []
 switches = []
 memory = []
+hover = ["dep:winit"]
 vizia-main = []
 
 [dependencies]
 benchmark-common = { path = "../../crates/benchmark-common" }
 vizia = { version = "=0.4.0", features = ["rayon"] }
+winit = { version = "=0.30.13", optional = true }

@@ -1265,6 +1265,7 @@ version = "0.1.0"
 dependencies = [
  "benchmark-common",
  "vizia",
+ "winit",
 ]
 
 [[package]]

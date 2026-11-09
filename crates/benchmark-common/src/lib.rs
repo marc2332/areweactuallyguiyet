@@ -1,4 +1,7 @@
 pub mod dashboard;
+pub mod hover;
+
+pub use hover::HoverObserver;
 
 use serde::{Deserialize, Serialize};
 use std::{
@@ -28,15 +31,17 @@ pub enum Scenario {
     Scroll,
     VirtualScroll,
     Switches,
+    Hover,
     Memory,
 }
 
 impl Scenario {
-    pub const ALL: [Self; 5] = [
+    pub const ALL: [Self; 6] = [
         Self::Startup,
         Self::Scroll,
         Self::VirtualScroll,
         Self::Switches,
+        Self::Hover,
         Self::Memory,
     ];
 
@@ -46,12 +51,14 @@ impl Scenario {
             Self::Scroll => "scroll",
             Self::VirtualScroll => "virtual-scroll",
             Self::Switches => "switches",
+            Self::Hover => "hover",
             Self::Memory => "memory",
         }
     }
 
     pub fn version(self) -> u32 {
         match self {
+            Self::Hover => 3,
             Self::Startup | Self::Switches | Self::Memory => 2,
             _ => 1,
         }
@@ -69,7 +76,7 @@ impl Scenario {
             Self::VirtualScroll => 100_000,
             Self::Scroll => 2_000,
             Self::Memory => 200,
-            Self::Switches => 0,
+            Self::Switches | Self::Hover => 0,
             Self::Startup => 20,
         }
     }
@@ -103,6 +110,9 @@ pub enum Command {
         switch_mode: SwitchMode,
     },
     Reset,
+    FinishHover {
+        submitted_motions: u64,
+    },
     Stop,
     Quit,
 }
@@ -119,6 +129,59 @@ pub enum Event {
         boundary: String,
     },
     Started,
+    HoverReset,
+    HoverReady {
+        backend: String,
+        scale_factor: f64,
+        logical_width: f32,
+        logical_height: f32,
+    },
+    HoverGeometry {
+        output_global: u32,
+        output_width: u32,
+        output_height: u32,
+        output_scale: i32,
+        output_transform: String,
+        logical_width: f32,
+        logical_height: f32,
+    },
+    HoverCompleted {
+        elapsed_ms: f64,
+        observations: hover::Observations,
+        verified: bool,
+    },
+    HoverResources {
+        phase: String,
+        root_process_id: u32,
+        root_start_ticks: u64,
+        new_process_start_ticks: u64,
+        cpu_baseline: hover::ResourceSampleTiming,
+        cpu_endpoint: Option<hover::ResourceSampleTiming>,
+        membership_scans: Vec<hover::ResourceSampleTiming>,
+        memory_samples: Vec<hover::ResourceSampleTiming>,
+        final_memory_completed_ms: Option<f64>,
+        maximum_memory_lateness_ms: f64,
+        cpu_ms: f64,
+        verified: bool,
+    },
+    HoverInput {
+        phase: String,
+        backend: String,
+        expected_motions: u64,
+        attempted_motions: u64,
+        submitted_motions: u64,
+        submitted_cells: Vec<usize>,
+        submitted_elapsed_ms: Vec<f64>,
+        lateness_ms: Vec<f64>,
+        /// Legacy field storing CPU-counter completion in the Hover v2 resource contract.
+        #[serde(default)]
+        endpoint_sample_elapsed_ms: Option<f64>,
+        #[serde(default)]
+        endpoint_elapsed_ms: Option<f64>,
+        #[serde(default)]
+        finish_request_elapsed_ms: Option<f64>,
+        verified: bool,
+    },
     Progress {
         elapsed_ms: f64,
         scheduled_updates: u64,
@@ -161,6 +224,8 @@ pub struct Harness {
     last_progress: Instant,
     last_dashboard: Instant,
     applied_updates: u64,
+    hover_observer: HoverObserver,
+    hover_finish: Option<(u64, Instant)>,
 }
 
 impl Harness {
@@ -188,6 +253,8 @@ impl Harness {
             last_progress: Instant::now(),
             last_dashboard: Instant::now(),
             applied_updates: 0,
+            hover_observer: HoverObserver::default(),
+            hover_finish: None,
         };
         harness.send(Event::Hello {
             protocol: PROTOCOL_VERSION,
@@ -211,12 +278,41 @@ impl Harness {
         Ok(())
     }
 
+    pub fn hover_observer(&self) -> HoverObserver {
+        self.hover_observer.clone()
+    }
+
+    /// Report the public native backend or "unspecified", and the actual exposed scale.
+    /// Logical dimensions must come from the actual native client area or root layout.
+    pub fn mark_hover_ready(
+        &mut self,
+        boundary: &str,
+        backend: &str,
+        scale_factor: f64,
+        logical_width: f32,
+        logical_height: f32,
+    ) -> io::Result<()> {
+        hover::validate_viewport(backend, scale_factor, logical_width, logical_height)
+            .map_err(|message| io::Error::new(io::ErrorKind::Unsupported, message))?;
+        if !self.ready {
+            self.send(Event::HoverReady {
+                backend: backend.to_owned(),
+                scale_factor,
+                logical_width,
+                logical_height,
+            })?;
+        }
+        self.mark_ready(boundary)
+    }
+
     pub fn switch_mode(&self) -> SwitchMode {
         self.mode
     }
 
     pub fn poll(&mut self) -> io::Result<FrameState> {
-        if self.started.is_some() && self.state.elapsed >= self.duration {
+        if self.scenario == Scenario::Hover {
+            self.poll_hover_completion(Instant::now())?;
+        } else if self.started.is_some() && self.state.elapsed >= self.duration {
             self.complete()?;
         }
         self.flush()?;
@@ -247,10 +343,15 @@ impl Harness {
                 Command::Prepare | Command::Reset => {
                     self.started = None;
                     self.applied_updates = 0;
+                    self.hover_observer.reset(false);
+                    self.hover_finish = None;
                     self.state = FrameState {
                         reset_generation: self.state.reset_generation + 1,
                         ..FrameState::default()
                     };
+                    if self.scenario == Scenario::Hover {
+                        self.send(Event::HoverReset)?;
+                    }
                 }
                 Command::Start {
                     duration_ms,
@@ -269,7 +370,28 @@ impl Harness {
                     self.state.elapsed = Duration::ZERO;
                     self.state.update_index = 0;
                     self.applied_updates = 0;
+                    self.hover_observer.reset(self.scenario == Scenario::Hover);
+                    self.hover_finish = None;
                     self.send(Event::Started)?;
+                }
+                Command::FinishHover { submitted_motions } => {
+                    if self.scenario != Scenario::Hover
+                        || self.started.is_none()
+                        || self.hover_finish.is_some()
+                        || submitted_motions != hover::motion_count(self.duration)
+                    {
+                        return Err(io::Error::new(
+                            io::ErrorKind::InvalidData,
+                            "Invalid hover finish command",
+                        ));
+                    }
+                    self.hover_finish = Some((submitted_motions, Instant::now()));
+                }
+                Command::Stop if self.scenario == Scenario::Hover => {
+                    return Err(io::Error::new(
+                        io::ErrorKind::InvalidData,
+                        "Hover requires native input verification",
+                    ));
                 }
                 Command::Stop => self.complete()?,
                 Command::Quit => self.state.should_quit = true,
@@ -277,7 +399,11 @@ impl Harness {
         }
         if let Some(started) = self.started {
             self.state.elapsed = started.elapsed().min(self.duration);
-            self.state.update_index = (self.state.elapsed.as_secs_f64() * 30.0).floor() as u64;
+            self.state.update_index = if self.scenario == Scenario::Hover {
+                0
+            } else {
+                (self.state.elapsed.as_secs_f64() * 30.0).floor() as u64
+            };
             let maximum = (self.scenario.row_count() as f32 * ROW_HEIGHT - HEIGHT).max(0.0);
             self.state.scroll_offset = scroll_offset(self.state.elapsed, maximum);
         }
@@ -304,6 +430,28 @@ impl Harness {
             self.send(Event::Dashboard {
                 snapshot: dashboard.snapshot(),
             })?;
+        }
+        Ok(())
+    }
+
+    fn poll_hover_completion(&mut self, now: Instant) -> io::Result<()> {
+        if let Some((submitted_motions, requested)) = self.hover_finish {
+            let observations = self.hover_observer.snapshot();
+            if now.duration_since(requested) >= hover::DRAIN_TIMEOUT {
+                self.hover_finish = None;
+                self.started = None;
+                self.state.running = false;
+                self.hover_observer.reset(false);
+                let verification = observations.verify(submitted_motions);
+                self.send(Event::HoverCompleted {
+                    elapsed_ms: self.state.elapsed.as_secs_f64() * 1000.0,
+                    observations,
+                    verified: verification.is_ok(),
+                })?;
+                if let Err(message) = verification {
+                    return Err(io::Error::new(io::ErrorKind::InvalidData, message));
+                }
+            }
         }
         Ok(())
     }
@@ -431,15 +579,17 @@ macro_rules! scenario_main {
             feature = "scroll",
             feature = "virtual-scroll",
             feature = "switches",
-            feature = "memory"
+            feature = "memory",
+            feature = "hover"
         )))]
         compile_error!(
-            "Enable exactly one scenario: startup, scroll, virtual-scroll, switches, memory"
+            "Enable exactly one scenario: startup, scroll, virtual-scroll, switches, memory, hover"
         );
         #[cfg(any(
             all(
                 feature = "startup",
                 any(
+                    feature = "hover",
                     feature = "scroll",
                     feature = "virtual-scroll",
                     feature = "switches",
@@ -448,15 +598,24 @@ macro_rules! scenario_main {
             ),
             all(
                 feature = "scroll",
-                any(feature = "virtual-scroll", feature = "switches", feature = "memory")
+                any(
+                    feature = "virtual-scroll",
+                    feature = "switches",
+                    feature = "memory",
+                    feature = "hover"
+                )
             ),
             all(
                 feature = "virtual-scroll",
-                any(feature = "switches", feature = "memory")
+                any(feature = "switches", feature = "memory", feature = "hover")
             ),
-            all(feature = "switches", feature = "memory")
+            all(feature = "switches", any(feature = "memory", feature = "hover")),
+            all(feature = "memory", feature = "hover")
         ))]
         compile_error!("Enable only one benchmark scenario at a time");
+        #[cfg(feature = "hover")]
+        #[path = "benchmark-hover.rs"]
+        mod selected_hover;
         #[cfg(feature = "memory")]
         #[path = "benchmark-memory.rs"]
         mod selected_memory;
@@ -473,6 +632,8 @@ macro_rules! scenario_main {
         #[path = "benchmark-virtual-scroll.rs"]
         mod selected_virtual_scroll;
         fn main() -> Result<(), Box<dyn std::error::Error>> {
+            #[cfg(feature = "hover")]
+            selected_hover::run()?;
             #[cfg(feature = "startup")]
             selected_startup::run()?;
             #[cfg(feature = "scroll")]
@@ -502,7 +663,7 @@ mod tests {
     }
 
     #[test]
-    fn dummy_controls_have_a_distinct_workload_version() {
+    fn scenario_versions_match_current_workloads() {
         assert_eq!(Scenario::Switches.version(), 2);
         assert_eq!(Scenario::Startup.version(), 2);
         assert_eq!(Scenario::Scroll.version(), 1);
@@ -560,6 +721,244 @@ mod tests {
         assert_eq!(reset.update_index, 0);
         assert_eq!(reset.reset_generation, 1);
         assert_eq!(harness.applied_updates, 0);
+    }
+
+    fn hover_harness() -> Harness {
+        Harness {
+            stream: None,
+            input: Vec::new(),
+            output: std::collections::VecDeque::new(),
+            scenario: Scenario::Hover,
+            started: Some(std::time::Instant::now()),
+            duration: Duration::from_secs(1),
+            mode: SwitchMode::Batch,
+            state: crate::FrameState {
+                running: true,
+                elapsed: Duration::from_secs(1),
+                ..Default::default()
+            },
+            ready: false,
+            last_progress: std::time::Instant::now(),
+            last_dashboard: std::time::Instant::now(),
+            applied_updates: 0,
+            hover_observer: crate::HoverObserver::default(),
+            hover_finish: None,
+        }
+    }
+
+    #[test]
+    fn hover_readiness_requires_sensible_actual_dimensions_and_scale() {
+        let mut harness = hover_harness();
+        for (backend, scale, width, height) in [
+            ("unspecified", 1.0, 740.0, 1080.0),
+            ("unspecified", 1.0, 1920.0, 720.0),
+            ("unspecified", 1.0, f32::NAN, 1080.0),
+            ("unspecified", 1.0, 1920.0, f32::INFINITY),
+            ("unspecified", 2.0, 1920.0, 1080.0),
+            ("", 1.0, 1920.0, 1080.0),
+        ] {
+            assert!(
+                harness
+                    .mark_hover_ready("native", backend, scale, width, height)
+                    .is_err()
+            );
+            assert!(!harness.ready);
+        }
+        harness
+            .mark_hover_ready("native", "wayland", 1.0, 1920.0, 1080.0)
+            .unwrap();
+        assert!(harness.ready);
+        harness
+            .mark_hover_ready("native", "wayland", 1.0, 1000.0, 780.0)
+            .unwrap();
+    }
+
+    #[test]
+    fn hover_completion_waits_for_bounded_native_drain_and_never_uses_applied_ticks() {
+        let mut harness = hover_harness();
+        harness.hover_observer.reset(true);
+        harness.report_applied(60).unwrap();
+        assert!(harness.poll().unwrap().running);
+        assert_eq!(harness.state.update_index, 0);
+        let requested = std::time::Instant::now();
+        harness.hover_finish = Some((60, requested));
+        for motion in 0..59 {
+            harness.hover_observer.enter(crate::hover::target(motion));
+        }
+        harness
+            .poll_hover_completion(
+                requested + crate::hover::DRAIN_TIMEOUT - Duration::from_nanos(1),
+            )
+            .unwrap();
+        assert!(harness.state.running);
+        harness.hover_observer.enter(crate::hover::target(59));
+        harness
+            .poll_hover_completion(requested + crate::hover::DRAIN_TIMEOUT)
+            .unwrap();
+        assert!(!harness.state.running);
+        assert!(harness.started.is_none());
+    }
+
+    #[test]
+    fn hover_drain_rejects_missing_native_input_and_stop_shortcut() {
+        let mut harness = hover_harness();
+        harness.hover_observer.reset(true);
+        let requested = std::time::Instant::now();
+        harness.hover_finish = Some((60, requested));
+        assert!(
+            harness
+                .poll_hover_completion(requested + crate::hover::DRAIN_TIMEOUT)
+                .is_err()
+        );
+        assert!(!harness.state.running);
+        assert!(harness.hover_observer.snapshot().cells.is_empty());
+        let mut harness = hover_harness();
+        harness.input.extend(b"{\"command\":\"stop\"}\n");
+        assert!(harness.poll().is_err());
+        let mut harness = hover_harness();
+        harness
+            .input
+            .extend(b"{\"command\":\"finish-hover\",\"submitted_motions\":1}\n");
+        assert!(harness.poll().is_err());
+    }
+
+    #[test]
+    fn hover_reset_clears_observations_and_extra_drain_events_fail() {
+        let mut harness = hover_harness();
+        let observer = harness.hover_observer();
+        observer.reset(true);
+        observer.enter(0);
+        harness.input.extend(b"{\"command\":\"reset\"}\n");
+        assert_eq!(harness.poll().unwrap().reset_generation, 1);
+        observer.enter(1);
+        assert!(observer.snapshot().cells.is_empty());
+        harness
+            .input
+            .extend(b"{\"command\":\"start\",\"duration_ms\":1000,\"switch_mode\":\"batch\"}\n");
+        assert!(harness.poll().unwrap().running);
+        observer.enter(0);
+        assert_eq!(observer.snapshot().cells, vec![0]);
+        for motion in 1..61 {
+            observer.enter(crate::hover::target(motion));
+        }
+        let requested = std::time::Instant::now();
+        harness.hover_finish = Some((60, requested));
+        assert!(
+            harness
+                .poll_hover_completion(requested + crate::hover::DRAIN_TIMEOUT)
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn hover_reset_stays_idle_until_started() {
+        let mut harness = hover_harness();
+        harness.input.extend(b"{\"command\":\"reset\"}\n");
+        assert!(!harness.poll().unwrap().running);
+        harness
+            .input
+            .extend(b"{\"command\":\"start\",\"duration_ms\":1000,\"switch_mode\":\"batch\"}\n");
+        assert!(harness.poll().unwrap().running);
+        harness.hover_observer.enter(0);
+        assert_eq!(harness.hover_observer.snapshot().cells, vec![0]);
+    }
+
+    #[test]
+    fn hover_resource_protocol_keeps_distinct_cpu_and_memory_times() {
+        use crate::{Event, hover::ResourceSampleTiming};
+        let event = Event::HoverResources {
+            phase: "measurement".into(),
+            root_process_id: 42,
+            root_start_ticks: 100,
+            new_process_start_ticks: 500,
+            cpu_baseline: ResourceSampleTiming {
+                started_ms: -2.0,
+                completed_ms: -1.0,
+                process_count: 1,
+            },
+            cpu_endpoint: Some(ResourceSampleTiming {
+                started_ms: 1000.0,
+                completed_ms: 1002.0,
+                process_count: 1,
+            }),
+            membership_scans: vec![ResourceSampleTiming {
+                started_ms: 900.0,
+                completed_ms: 904.0,
+                process_count: 1,
+            }],
+            memory_samples: vec![ResourceSampleTiming {
+                started_ms: 1003.0,
+                completed_ms: 1250.0,
+                process_count: 1,
+            }],
+            final_memory_completed_ms: Some(1250.0),
+            maximum_memory_lateness_ms: 2000.0,
+            cpu_ms: 250.0,
+            verified: true,
+        };
+        let value = serde_json::to_value(event).unwrap();
+        assert_eq!(value["cpu_endpoint"]["completed_ms"], 1002.0);
+        assert_eq!(value["final_memory_completed_ms"], 1250.0);
+        let decoded: Event = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(serde_json::to_value(decoded).unwrap(), value);
+    }
+
+    #[test]
+    fn hover_protocol_messages_round_trip() {
+        use crate::{Event, hover::Observations};
+        assert_eq!(Scenario::Hover.id(), "hover");
+        assert_eq!(Scenario::parse("hover"), Ok(Scenario::Hover));
+        assert!(Scenario::ALL.contains(&Scenario::Hover));
+        assert_eq!(Scenario::Hover.version(), 3);
+        assert_eq!(Scenario::Hover.row_count(), 0);
+        let old = serde_json::from_str::<Event>(r#"{"event":"completed","elapsed_ms":1000,"scheduled_updates":30,"applied_updates":30}"#).unwrap();
+        assert!(matches!(
+            old,
+            Event::Completed {
+                applied_updates: 30,
+                ..
+            }
+        ));
+        for event in [
+            Event::HoverGeometry {
+                output_global: 1,
+                output_width: 1920,
+                output_height: 1080,
+                output_scale: 1,
+                output_transform: "normal".into(),
+                logical_width: 1920.0,
+                logical_height: 1080.0,
+            },
+            Event::HoverReset,
+            Event::HoverReady {
+                backend: "x11".into(),
+                scale_factor: 1.0,
+                logical_width: crate::WIDTH,
+                logical_height: crate::HEIGHT,
+            },
+            Event::HoverCompleted {
+                elapsed_ms: 1000.0,
+                observations: Observations {
+                    cells: vec![0, 1],
+                    invalid: false,
+                },
+                verified: true,
+            },
+        ] {
+            let value = serde_json::to_value(&event).unwrap();
+            let decoded: Event = serde_json::from_value(value.clone()).unwrap();
+            assert_eq!(serde_json::to_value(decoded).unwrap(), value);
+        }
+        let command = Command::FinishHover {
+            submitted_motions: 60,
+        };
+        let encoded = serde_json::to_string(&command).unwrap();
+        assert!(matches!(
+            serde_json::from_str::<Command>(&encoded).unwrap(),
+            Command::FinishHover {
+                submitted_motions: 60
+            }
+        ));
     }
 
     #[test]

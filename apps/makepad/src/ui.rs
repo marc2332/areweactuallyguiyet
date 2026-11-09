@@ -25,9 +25,29 @@ app_design!(selected_virtual_scroll);
 app_design!(selected_switches);
 #[cfg(feature = "memory")]
 app_design!(selected_memory);
+#[cfg(feature = "hover")]
+app_design!(selected_hover);
 
 pub(crate) trait Scene: Default {
     const SCENARIO: Scenario;
+
+    fn mark_ready(
+        &self,
+        context: &mut Cx,
+        ui: &WidgetRef,
+        harness: &mut Harness,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let _ = (context, ui);
+        harness.mark_ready("native-draw-processed-and-following-event-loop-tick-not-presented")?;
+        Ok(())
+    }
+    #[cfg(feature = "hover")]
+    fn observe_hover(
+        &mut self,
+        context: &mut Cx,
+        ui: &WidgetRef,
+        observer: benchmark_common::HoverObserver,
+    ) -> Result<(), Box<dyn std::error::Error>>;
 
     fn initialize(
         &mut self,
@@ -108,6 +128,15 @@ impl App {
         let template = self.scene_template.ok_or("Missing scene template")?;
         self.ui = WidgetRef::new_from_ptr(context, Some(template));
         self.scene.initialize(context, &self.ui)?;
+        #[cfg(feature = "hover")]
+        self.scene.observe_hover(
+            context,
+            &self.ui,
+            self.harness
+                .as_ref()
+                .ok_or("Missing harness")?
+                .hover_observer(),
+        )?;
         self.timer = context.start_interval(0.016);
         self.ui.redraw(context);
         Ok(())
@@ -118,8 +147,7 @@ impl App {
             return Ok(());
         };
         if self.drawn {
-            harness
-                .mark_ready("native-draw-processed-and-following-event-loop-tick-not-presented")?;
+            self.scene.mark_ready(context, &self.ui, harness)?;
         }
         let frame = harness.poll()?;
         let mode = harness.switch_mode();

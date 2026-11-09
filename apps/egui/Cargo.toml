@@ -13,8 +13,10 @@ scroll = []
 virtual-scroll = []
 switches = []
 memory = []
+hover = ["dep:raw-window-handle"]
 
 [dependencies]
+raw-window-handle = { version = "=0.6.2", optional = true }
 benchmark-common = { path = "../../crates/benchmark-common" }
 eframe = { version = "=0.37.0", features = ["glow"] }
 image = { version = "=0.25.10", default-features = false, features = ["png"] }

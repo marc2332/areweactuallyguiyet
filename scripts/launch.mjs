@@ -6,7 +6,7 @@ const adapters = JSON.parse(await readFile('apps/catalog.json', 'utf8'));
 const adapter = adapters.find(candidate => candidate.id === framework);
 const capability = adapter?.scenarios[scenario];
 if (!adapter || !capability) {
-  console.error('Usage: node scripts/launch.mjs <framework> <startup|scroll|virtual-scroll|switches|memory>');
+  console.error('Usage: node scripts/launch.mjs <framework> <startup|scroll|virtual-scroll|switches|memory|hover>');
   process.exitCode = 1;
 } else if (capability.status !== 'implemented') {
   console.error(`${framework}/${scenario}: ${capability.status}. ${capability.reason ?? ''}`);

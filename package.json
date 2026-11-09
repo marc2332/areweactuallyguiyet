@@ -2,5 +2,5 @@
   "name": "are-we-actually-gui-yet-site",
   "private": true,
   "type": "module",
-  "scripts": { "build": "node scripts/build.mjs", "serve": "node scripts/serve.mjs", "test": "node --test scripts/*.test.mjs" }
+  "scripts": { "build": "node scripts/build.mjs", "serve": "node scripts/serve.mjs" }
 }

@@ -1,3 +1,4 @@
+#[cfg(not(feature = "hover"))]
 use base64::{Engine, engine::general_purpose::STANDARD};
 use benchmark_common::{Harness, row_body, row_title};
 use dioxus_native::prelude::*;
@@ -22,6 +23,7 @@ impl Bridge {
     }
 }
 
+#[cfg(not(feature = "hover"))]
 pub fn styles(scenario_css: &str) -> String {
     let font = STANDARD.encode(include_bytes!("../../../assets/fonts/DejaVuSans.ttf"));
     format!(
@@ -36,6 +38,7 @@ pub fn Row(index: usize) -> Element {
     rsx! { div { class: "row", div { "{title}" } div { class: "row-body", "{body}" } } }
 }
 
+#[cfg(not(feature = "hover"))]
 const CSS: &str = r#"
 html,body,main,#main { margin:0; padding:0; width:100%; height:100%; }
 * { box-sizing:border-box; font-family:Bench,"DejaVu Sans",sans-serif; }

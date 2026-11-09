@@ -2345,6 +2345,7 @@ dependencies = [
  "gpui-fast",
  "gpui-fast-platform",
  "libc",
+ "raw-window-handle",
  "unicode-segmentation",
 ]
 

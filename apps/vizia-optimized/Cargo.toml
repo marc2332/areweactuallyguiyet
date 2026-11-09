@@ -17,8 +17,10 @@ scroll = ["vizia-main"]
 virtual-scroll = ["vizia-main"]
 switches = ["vizia-main"]
 memory = ["vizia-main"]
+hover = ["vizia-main", "dep:winit"]
 vizia-main = []
 
 [dependencies]
 benchmark-common = { path = "../../crates/benchmark-common" }
 vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", features = ["rayon"] }
+winit = { version = "=0.30.13", optional = true }
