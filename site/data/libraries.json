@@ -1,6 +1,39 @@
 {
   "libraries": [
     {
+      "id": "zgui",
+      "name": "zgui",
+      "repository": "https://github.com/zortax/zgui",
+      "homepage": "https://zgui.zortax.de",
+      "classification": "Native Rust components with fine-grained reactivity and CSS styling",
+      "backend": "Retained WGPU renderer with Vello, Stylo CSS and cephal layout",
+      "creationYear": null,
+      "latestRelease": "2026-10-15",
+      "sourceUpdated": "2026-11-08",
+      "status": "Experimental pre-1.0 framework with breaking changes expected",
+      "provenance": {
+        "status": "unknown",
+        "scope": "The inspected README and contribution guide do not establish code authorship or AI involvement.",
+        "evidence": null,
+        "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
+        "reviewedDate": "2026-11-09"
+      },
+      "metadataEvidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+      "reviewedVersion": "main@80baa3c7cb0f",
+      "reviewedDate": "2026-11-09",
+      "license": "Apache-2.0",
+      "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
+      "metadataNotes": "Metadata, features and the benchmark adapter use the same pinned development commit. Platform capabilities are source-reviewed, not execution-validated here. Creation year was not established from the shallow source snapshot.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/Cargo.toml",
+        "Classification": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Backend": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Project status": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
+        "Latest release": "https://github.com/zortax/zgui/releases/tag/v0.1.0",
+        "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
+      }
+    },
+    {
       "id": "freya",
       "name": "Freya",
       "repository": "https://github.com/marc2332/freya",

@@ -1,5 +1,34 @@
 [
   {
+    "id": "zgui",
+    "name": "zgui",
+    "version": "0.1.0 (main@80baa3c7cb0f)",
+    "package": "gui-bench-zgui",
+    "manifest": "apps/zgui/Cargo.toml",
+    "scenarios": {
+      "startup": {
+        "status": "implemented",
+        "reason": "Native WGPU renderer with pinned development source. Ready at the configured renderer post-frame probe, not confirmed presentation"
+      },
+      "scroll": {
+        "status": "implemented",
+        "reason": "2,000 retained native rows with direct scroll offsets"
+      },
+      "virtual-scroll": {
+        "status": "implemented",
+        "reason": "Native Virtualize over 100,000 fixed 48px rows with four-row overscan"
+      },
+      "switches": {
+        "status": "implemented",
+        "reason": "900 plain 30px retained native controls with independent signals and changed-cell updates"
+      },
+      "memory": {
+        "status": "implemented",
+        "reason": "Shared dashboard v2 with native text inputs, interactive controls and ten embedded PNG fixtures"
+      }
+    }
+  },
+  {
     "id": "egui",
     "version": "0.37.0",
     "package": "gui-bench-egui",

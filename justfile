@@ -43,7 +43,7 @@ bench framework="egui" scenario="scroll" machine="desktop" *args:
 
 # Run every adapter and workload.
 bench-all machine="desktop" *args:
-    @just bench freya,freya-optimized,egui,vizia,iced,gpui,gpui-fast,dioxus-native,dioxus-native-vello,dioxus-native-vello-hybrid,slint,floem,makepad,rune startup,scroll,virtual-scroll,switches,memory "$@"
+    @just bench freya,freya-optimized,egui,vizia,iced,gpui,gpui-fast,dioxus-native,dioxus-native-vello,dioxus-native-vello-hybrid,slint,floem,makepad,rune,zgui startup,scroll,virtual-scroll,switches,memory "$@"
 
 # Exercise the full runner with a short development-only real-window run.
 smoke framework="egui" scenario="scroll":
