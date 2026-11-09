@@ -127,20 +127,19 @@ function metadataRows(libraries) {
       const involvement = name === 'AI involvement' ? library.provenance : null;
       const firstCommit = name === 'Creation year' ? library.firstCommit : null;
       const evidenceUrl = involvement
-        ? involvement.evidence
+        ? null
         : library.metadataFieldEvidence ? library.metadataFieldEvidence[name] : library.metadataEvidence;
       const notes = firstCommit
         ? `First repository commit: ${firstCommit.date}. This dates the available Git history, not necessarily the project's original start.`
         : involvement
-          ? involvement.scope ?? 'No explicit AI authorship disclosure found. This does not mean no AI was used.'
+          ? involvement.scope ?? 'No AI disclosure found.'
           : library.metadataNotes ?? 'Scope or supporting declaration is unknown.';
-      const paragraphs = [value, notes];
-      if (involvement && aiDescriptions[involvement.status]) paragraphs.splice(1, 0, aiDescriptions[involvement.status]);
-      if (involvement?.quote) paragraphs.push(`${involvement.basis === 'site-maintainer' ? 'Site maintainer statement' : 'Disclosure'}: ${involvement.quote}`);
-      if (involvement?.status === 'ai-assisted') paragraphs.push('This establishes AI help on some changes, not the share of the whole project.');
+      const paragraphs = involvement
+        ? [aiDescriptions[involvement.status] ?? value, ...(involvement.basis === 'site-maintainer' ? [] : [notes])]
+        : [value, notes];
       const version = firstCommit ? firstCommit.sha.slice(0, 12) : involvement ? involvement.reviewedCommit.slice(0, 12) : library.reviewedVersion;
       const date = firstCommit ? firstCommit.reviewedDate : involvement ? involvement.reviewedDate : library.reviewedDate;
-      paragraphs.push(`${version} · reviewed ${date ?? 'unknown'}`);
+      if (!involvement || involvement.basis !== 'site-maintainer') paragraphs.push(`${version} · reviewed ${date ?? 'unknown'}`);
       const button = claimButton(value, `${library.name}, ${name}: ${value}`, paragraphs, evidenceUrl);
       button.classList.add('metadata-value');
       cell.append(button);

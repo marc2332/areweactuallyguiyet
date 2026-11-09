@@ -13,7 +13,7 @@
       "status": "Pre-1.0 toolkit with native, web and Android code in the inspected tree",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "AI-assisted, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "scope": "AI-assisted. Classification by the site maintainer.",
         "evidence": null,
         "reviewedCommit": "11cd62a248bfafa496173360744bc6eb8f33b742",
         "reviewedDate": "2026-11-07",
@@ -53,7 +53,7 @@
       "status": "Pre-1.0 development framework",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged GPUI list-padding change explicitly says Claude was used to write the changes. Scope: crates/gpui, not every Zed component.",
+        "scope": "Claude was used for a GPUI list-padding change.",
         "evidence": "https://github.com/zed-industries/zed/commit/78fde14d124dbbb7c6175ec2e25da7028b0573d6",
         "quote": "Claude Fable 5.1 was used to write the changes in this PR.",
         "reviewedCommit": "78fde14d124dbbb7c6175ec2e25da7028b0573d6",
@@ -92,7 +92,7 @@
       "status": "Pre-1.0 declarative desktop framework",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "AI-assisted, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "scope": "AI-assisted. Classification by the site maintainer.",
         "evidence": null,
         "reviewedCommit": "9231260010d57380681d6bd2eca05b2b756463cb",
         "reviewedDate": "2026-11-07",
@@ -132,7 +132,7 @@
       "status": "Explicitly experimental software",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged iced_wgpu triangle-index fix credits Claude as a co-author.",
+        "scope": "Claude co-authored an iced_wgpu triangle-index fix.",
         "evidence": "https://github.com/iced-rs/iced/commit/478c363df6cb2b17f10f5a808ef0acd8e0f35873",
         "quote": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
         "reviewedCommit": "478c363df6cb2b17f10f5a808ef0acd8e0f35873",
@@ -171,7 +171,7 @@
       "status": "Active pre-1.0 development with breaking API releases",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged epaint no-break-space text-wrapping fix credits Claude as a co-author.",
+        "scope": "Claude co-authored an epaint text-wrapping fix.",
         "evidence": "https://github.com/emilk/egui/commit/91b5712dd61765c337591ae25f07acee8fee3d52",
         "quote": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
         "reviewedCommit": "91b5712dd61765c337591ae25f07acee8fee3d52",
@@ -210,7 +210,7 @@
       "status": "Stable 1.x API with ongoing development",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged Skia WGPU snapshot-rendering change credits Claude as a co-author.",
+        "scope": "Claude co-authored a Skia WGPU snapshot-rendering change.",
         "evidence": "https://github.com/slint-ui/slint/commit/bce7351a92bc9177af5d20c69b8cdee00fe33735",
         "quote": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
         "reviewedCommit": "bce7351a92bc9177af5d20c69b8cdee00fe33735",
@@ -249,7 +249,7 @@
       "status": "Pre-1.0 and explicitly still maturing",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged toolkit cleanup changes inspector, event, view and other Rust source and credits Claude as a co-author.",
+        "scope": "Claude co-authored toolkit cleanup changes.",
         "evidence": "https://github.com/lapce/floem/commit/1351ffb162faeb8be983f1301d718a0d5fb59c27",
         "quote": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
         "reviewedCommit": "1351ffb162faeb8be983f1301d718a0d5fb59c27",
@@ -288,7 +288,7 @@
       "status": "Explicitly beta with bugs and missing features",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged Dioxus Native DOM mounted-event fix credits Claude as a co-author.",
+        "scope": "Claude co-authored a DOM mounted-event fix.",
         "evidence": "https://github.com/DioxusLabs/blitz/commit/6ef4b532d59fab22df0d7cf2a0e1a7e5163af8a7",
         "quote": "Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
         "reviewedCommit": "6ef4b532d59fab22df0d7cf2a0e1a7e5163af8a7",
@@ -326,7 +326,7 @@
       "status": "Actively evolving UI/runtime and development environment",
       "provenance": {
         "status": "ai-assisted",
-        "scope": "The merged native window drag-and-drop changes credit Claude as a co-author.",
+        "scope": "Claude co-authored native window drag-and-drop changes.",
         "evidence": "https://github.com/makepad/makepad/commit/10b706f906feedb9824a33fcffb0109b87a5106f",
         "quote": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
         "reviewedCommit": "10b706f906feedb9824a33fcffb0109b87a5106f",
@@ -364,9 +364,9 @@
       "status": "Experimental performance-focused GPUI fork",
       "provenance": {
         "status": "ai-co-developed",
-        "scope": "AI co-developed, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "scope": "AI co-developed. Classification by the site maintainer.",
         "evidence": null,
-        "quote": "make gpui-fast AI co-developed",
+        "quote": "GPUI Fast is AI co-developed.",
         "reviewedCommit": "61dccec2536ecbb6845a2c0cdf5fb17651b10bc5",
         "reviewedDate": "2026-11-07",
         "supportingDisclosure": {
@@ -409,9 +409,9 @@
       "status": "Pre-release, source-pinned development framework",
       "provenance": {
         "status": "ai-led",
-        "scope": "AI-led, as stated by the site maintainer. This classification has not been independently verified against a project-level disclosure.",
+        "scope": "AI-led. Classification by the site maintainer.",
         "evidence": null,
-        "quote": "GPUI fast and rune are AI-generated",
+        "quote": "Rune is AI-led.",
         "reviewedCommit": "0637212218e264dee90d89a415787015a3f474e7",
         "reviewedDate": "2026-11-07",
         "supportingDisclosure": {
@@ -453,7 +453,7 @@
       "status": "Experimental pre-1.0 framework with breaking changes expected",
       "provenance": {
         "status": "ai-co-developed",
-        "scope": "Substantial AI-generated code with human technical direction, as stated by the site maintainer. No public authorship disclosure is linked.",
+        "scope": "AI co-developed. Classification by the site maintainer.",
         "basis": "site-maintainer",
         "quote": "it did ave a lot of LLM generated code but the guy knows what he is doing",
         "evidence": null,
