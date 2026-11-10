@@ -1,33 +1,18 @@
-use floem::{prelude::*, window::WindowConfig};
+#[cfg(all(feature = "scroll", feature = "dashboard"))]
+compile_error!("features `scroll` and `dashboard` cannot be enabled together");
+#[cfg(not(any(feature = "scroll", feature = "dashboard")))]
+compile_error!("enable exactly one of `scroll` or `dashboard`");
 
+#[cfg(feature = "dashboard")]
+mod dashboard;
+#[cfg(feature = "scroll")]
+mod scroll;
+
+#[cfg(feature = "scroll")]
 fn main() {
-    floem::Application::new()
-        .window(
-            |_| {
-                scroll(v_stack_from_iter((1..=2000).map(|number| {
-                    label(move || format!("Item {number}")).style(move |style| {
-                        style
-                            .width(960.0)
-                            .min_width(960.0)
-                            .height(48.0)
-                            .min_height(48.0)
-                            .flex_shrink(0.0)
-                            .padding(12.0)
-                            .background(if number % 2 == 1 {
-                                Color::rgb8(245, 245, 245)
-                            } else {
-                                Color::rgb8(230, 230, 230)
-                            })
-                    })
-                })))
-                .style(|style| style.size_full().font_size(14.0).color(Color::BLACK))
-            },
-            Some(
-                WindowConfig::default()
-                    .size((1000.0, 700.0))
-                    .title("Floem Scroll 2000")
-                    .apply_default_theme(false),
-            ),
-        )
-        .run();
+    scroll::main();
+}
+#[cfg(feature = "dashboard")]
+fn main() {
+    dashboard::main();
 }

@@ -4,6 +4,10 @@ export const metricLabels = {
   frame_gap_p95_ms: { label: 'p95 present-call gap', unit: 'ms' },
   frame_gap_p99_ms: { label: 'p99 present-call gap', unit: 'ms' },
   frame_gap_max_ms: { label: 'Longest present-call gap', unit: 'ms' },
+  dashboard_present_median_ms: { label: 'Median dashboard present interval', unit: 'ms' },
+  dashboard_present_p95_ms: { label: 'p95 dashboard present interval', unit: 'ms' },
+  dashboard_present_max_ms: { label: 'Longest dashboard present interval', unit: 'ms' },
+  dashboard_worst_gap_ms: { label: 'Worst presentation gap', unit: 'ms' },
   cpu_ms: { label: 'CPU time', unit: 'ms' },
   rss_mib: { label: 'RSS', unit: 'MiB' },
   pss_mib: { label: 'PSS', unit: 'MiB' },
@@ -40,6 +44,7 @@ export const frameworkColors = {
 
 export const scenarioLabels = {
   scroll: 'Scroll 2,000 rows',
+  dashboard: 'Dashboard interaction',
 };
 
 export function frameworkColor(identifier) {
@@ -155,9 +160,15 @@ export function transformChartResults(results, { metric, scenarioVersion, relati
 }
 
 export function collectionDetails(run) {
-  const timing = `${run.metadata.durationSeconds ?? '?'}s runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.warmupSeconds ?? '?'}s warm-up`;
+  const timing = run.metadata.measurement === 'mangohud-dashboard-v2'
+    ? `8s dashboard runs × ${run.metadata.repetitions ?? '?'} · four 2s phases`
+    : run.metadata.measurement === 'mangohud-dashboard-v1'
+    ? `Fixed-action runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.actionDelaySeconds ?? '?'}s between actions`
+    : `${run.metadata.durationSeconds ?? '?'}s runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.warmupSeconds ?? '?'}s warm-up`;
   const scenarioTiming = Object.entries(run.metadata.scenarioCollections ?? {})
     .map(([scenario, metadata]) => {
+      if (scenario === 'dashboard' && metadata.measurement === 'mangohud-dashboard-v2') return ` · ${scenarioLabels[scenario]}: 8s × ${metadata.repetitions ?? '?'} · four 2s phases`;
+      if (scenario === 'dashboard') return ` · ${scenarioLabels[scenario]}: fixed actions × ${metadata.repetitions ?? '?'} · ${metadata.actionDelaySeconds ?? '?'}s between actions`;
       const refreshRates = (metadata.displayRefreshProbe?.activeModes ?? []).flatMap(line =>
         line.trim().split(/\s+/).filter(field => field.includes('*')).map(field => field.replace(/[*+]/g, ''))
       ).filter(rate => Number.isFinite(Number(rate)) && Number(rate) > 0);

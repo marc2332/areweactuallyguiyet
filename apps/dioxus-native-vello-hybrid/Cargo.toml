@@ -7,4 +7,15 @@ edition = "2024"
 publish = false
 
 [dependencies]
+base64 = { version = "=0.22.1", optional = true }
+# PNG decoder shared with Blitz.
+image = { version = "=0.25.10", default-features = false, features = ["png"], optional = true }
 dioxus-native-scroll = { path = "../dioxus-native", default-features = false, features = ["vello-hybrid"] }
+
+dioxus-native = { version = "=0.8.0-alpha.3", default-features = false, features = ["prelude", "system-fonts", "vello-hybrid"] }
+
+[features]
+default = ["scroll"]
+scroll = ["dioxus-native/vello-hybrid"]
+dashboard = ["dep:base64", "dep:image", "dioxus-native/data-uri", "dioxus-native/vello-hybrid"]
+vello-hybrid = ["dioxus-native/vello-hybrid"]

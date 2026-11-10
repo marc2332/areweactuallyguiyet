@@ -3,7 +3,7 @@ import { binarySizeChart } from './binary-sizes.mjs';
 import { resolve } from 'node:path';
 import { validateFeatures, validateLibraries } from './features.mjs';
 import { validateHistory } from './history.mjs';
-import { collectionDetails, frameworkColor, frameworkVersionsForScenario, groupMetricResults, metricLabels, responsivenessDetails } from './chart-data.mjs';
+import { collectionDetails, frameworkColor, frameworkVersionsForScenario, groupMetricResults, metadataForScenario, metricLabels, responsivenessDetails } from './chart-data.mjs';
 
 const load = async name => JSON.parse(await readFile(resolve(process.cwd(), 'data', `${name}.json`), 'utf8'));
 export const binarySizes = binarySizeChart(await load('binary-sizes-snapshot'));
@@ -17,6 +17,7 @@ const baseNames = Object.fromEntries(libraries.map(library => [library.id, libra
 export const metrics = {
   renderer_fps: { ...metricLabels.renderer_fps, note: 'Closer to 144 FPS is better, matching my 144 Hz screen.' },
   frame_gap_max_ms: { ...metricLabels.frame_gap_max_ms, note: 'Includes silent periods at both ends of the workload. Lower is better, but does not establish display latency.' },
+  dashboard_worst_gap_ms: { ...metricLabels.dashboard_worst_gap_ms, note: 'Longest period without a presentation during the eight-second workload. Worst across runs. Lower is better.' },
   cpu_ms: { ...metricLabels.cpu_ms, note: 'CPU consumed during the workload. Less CPU can mean less work completed, not a faster UI.' },
   pss_mib: { ...metricLabels.pss_mib, note: 'Process-tree proportional memory. Shared pages are apportioned between processes.' },
   frame_gap_p95_ms: { ...metricLabels.frame_gap_p95_ms, note: 'Gaps between present calls, not confirmed display latency. Also inspect the longest gap.' },
@@ -30,11 +31,12 @@ export const dashboard = {
     .sort((first, second) => Date.parse(second.collectedAt) - Date.parse(first.collectedAt) || second.id.localeCompare(first.id))
     .map(run => {
       for (const result of run.results) {
-        const base = run.metadata.frameworkBaseIds?.[result.framework] ?? result.framework;
+        const scenarioMetadata = metadataForScenario(run, result.scenario);
+        const base = scenarioMetadata.frameworkBaseIds?.[result.framework] ?? result.framework;
         if (!libraries.some(library => library.id === base)) throw new Error(`Unknown framework ${result.framework}`);
-        if (base !== result.framework && !run.metadata.frameworkLabels?.[result.framework]?.trim()) throw new Error(`Unlabeled variant ${result.framework}`);
+        if (base !== result.framework && !scenarioMetadata.frameworkLabels?.[result.framework]?.trim()) throw new Error(`Unlabeled variant ${result.framework}`);
       }
-      const names = { ...baseNames, ...run.metadata.frameworkLabels };
+      const names = { ...baseNames, ...run.metadata.frameworkLabels, ...Object.assign({}, ...Object.values(run.metadata.scenarioCollections ?? {}).map(metadata => metadata.frameworkLabels ?? {})) };
       return {
         id: run.id,
         collectedAt: run.collectedAt,

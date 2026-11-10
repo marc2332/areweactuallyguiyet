@@ -7,9 +7,14 @@ edition = "2024"
 publish = false
 
 [features]
-default = ["skia"]
+default = ["scroll", "skia"]
+scroll = []
+dashboard = ["dep:base64", "dep:image", "dioxus-native/data-uri"]
 skia = ["dioxus-native/skia"]
 vello-hybrid = ["dioxus-native/vello-hybrid"]
 
 [dependencies]
+base64 = { version = "=0.22.1", optional = true }
+# PNG decoder shared with Blitz.
+image = { version = "=0.25.6", default-features = false, features = ["png"], optional = true }
 dioxus-native = { version = "=0.8.0-alpha.3", default-features = false, features = ["prelude", "system-fonts"] }

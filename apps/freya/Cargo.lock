@@ -1361,6 +1361,7 @@ name = "freya-scroll"
 version = "0.1.0"
 dependencies = [
  "freya",
+ "freya-testing",
 ]
 
 [[package]]
@@ -1411,6 +1412,22 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.10",
+]
+
+[[package]]
+name = "freya-testing"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "60481050bd18d8852880976977747705bdb2d7ef0145c044adc67c916ddfc989"
+dependencies = [
+ "accesskit",
+ "freya-clipboard",
+ "freya-components",
+ "freya-core",
+ "freya-engine",
+ "futures-channel",
+ "ragnarok",
+ "torin",
 ]
 
 [[package]]

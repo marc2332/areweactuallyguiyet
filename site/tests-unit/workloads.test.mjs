@@ -5,9 +5,9 @@ import { workloadSections } from '../src/lib/workloads.mjs';
 const group = (scenario, scenarioVersion = 1) => ({ scenario, scenarioVersion, points: [], missing: [] });
 const section = groups => workloadSections({ groups })[0];
 
-test('only scrolling is currently configured for display', () => {
+test('scrolling and dashboard workloads are configured for display', () => {
   const workloads = workloadSections({ groups: {} });
-  assert.deepEqual(workloads.map(workload => workload.scenario), ['scroll']);
+  assert.deepEqual(workloads.map(workload => workload.scenario), ['scroll', 'dashboard']);
   assert.ok(workloads.every(workload => workload.label && workload.groups.length === 0));
 });
 
@@ -20,6 +20,15 @@ test('scrolling falls back to labeled CPU measurements without cadence data', ()
   const workload = section({ cpu_ms: [group('scroll')] });
   assert.equal(workload.metric, 'cpu_ms');
   assert.equal(workload.groups[0].scenario, 'scroll');
+});
+
+test('dashboard uses the worst full-window gap instead of median intervals', () => {
+  const workloads = workloadSections({ groups: {
+    dashboard_present_median_ms: [group('dashboard')],
+    dashboard_worst_gap_ms: [group('dashboard')],
+  } });
+  assert.equal(workloads[1].metric, 'dashboard_worst_gap_ms');
+  assert.equal(workloads[1].label, 'Dashboard interaction');
 });
 
 test('workload versions remain separate and unconfigured workloads are excluded', () => {

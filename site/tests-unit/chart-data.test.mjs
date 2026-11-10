@@ -94,6 +94,29 @@ test('history format accepts future workload identifiers without a schema change
   assert.equal(validateHistory(data), data);
 });
 
+test('dashboard interval metrics are validated and use dashboard-specific collection metadata', () => {
+  const data = history();
+  const run = data.runs[0];
+  run.metadata.scenarioCollections = { dashboard: { repetitions: 2, actionDelaySeconds: 0.15, frameworkVersions: { freya: 'dashboard version' } } };
+  assert.match(collectionDetails(run).timing, /Dashboard interaction: fixed actions × 2 · 0.15s between actions/);
+  run.results.push({ framework: 'freya', scenario: 'dashboard', scenarioVersion: 1, status: 'ok', reason: null,
+    metrics: { dashboard_present_median_ms: { value: 20, unit: 'ms' }, dashboard_worst_gap_ms: { value: 1200, unit: 'ms' } }, repetitions: [{ index: 0, metrics: {
+      dashboard_present_median_ms: { value: 20, unit: 'ms' },
+    } }] });
+  assert.equal(validateHistory(data), data);
+  assert.equal(frameworkVersionsForScenario(run, 'dashboard').freya, 'dashboard version');
+  assert.equal(groupMetricResults(run, 'dashboard_present_median_ms')[0].points[0].value, 20);
+  assert.equal(groupMetricResults(run, 'dashboard_worst_gap_ms')[0].points[0].value, 1200);
+  run.results[1].metrics.dashboard_present_median_ms.unit = 'frames/s';
+  assert.throws(() => validateHistory(data), /Invalid metric/);
+});
+
+test('dashboard bursts show their eight-second workload', () => {
+  const run = history().runs[0];
+  run.metadata.scenarioCollections = { dashboard: { measurement: 'mangohud-dashboard-v2', repetitions: 2 } };
+  assert.match(collectionDetails(run).timing, /Dashboard interaction: 8s × 2 · four 2s phases/);
+});
+
 test('metric units are validated for renderer measurements', () => {
   const data = history();
   data.runs[0].results[0].metrics.renderer_fps.unit = 'ms';

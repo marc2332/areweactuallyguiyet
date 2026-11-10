@@ -89,6 +89,7 @@ class WheelInput:
                     break
                 if time.monotonic() >= deadline:
                     raise RuntimeError("Cannot activate the benchmark window")
+                time.sleep(0.01)
             self.check(self.library.xdo_move_mouse_relative_to_window(self.connection, window, width.value // 2 - 1, height.value // 2))
             self.xlib.XFlush(self.display)
             time.sleep(0.05)

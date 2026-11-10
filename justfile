@@ -15,17 +15,17 @@ build-site:
 serve port="4321":
     npm --prefix site run preview -- --port "$1"
 
-# Open a standalone scroll example without measurement or simulated input.
-app framework="freya":
-    cargo run --release --locked --manifest-path "apps/$1/Cargo.toml"
+# Open a standalone benchmark without measurement or simulated input.
+app framework="freya" benchmark="scroll":
+    cargo run --release --locked --manifest-path "apps/$1/Cargo.toml" --no-default-features --features "$2$(if [ "$1" = dioxus-native ]; then printf ',skia'; fi)"
 
 # List the standalone GUI examples.
 list:
     python3 apps/bench.py list
 
-# Build a standalone scroll example.
-bench-build framework="freya":
-    cargo build --release --locked --manifest-path "apps/$1/Cargo.toml"
+# Build a standalone benchmark.
+bench-build framework="freya" benchmark="scroll":
+    cargo build --release --locked --manifest-path "apps/$1/Cargo.toml" --no-default-features --features "$2$(if [ "$1" = dioxus-native ]; then printf ',skia'; fi)"
 
 # Run external MangoHud captures, saving history only with --save.
 bench *args:
@@ -37,5 +37,5 @@ binary-sizes *args:
 
 # Check Python compilation and build the website without running benchmarks.
 check:
-    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py apps/sizes.py
+    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py apps/dashboard.py apps/sizes.py
     npm run build

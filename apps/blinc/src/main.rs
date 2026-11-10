@@ -1,34 +1,18 @@
-use blinc_app::{prelude::*, windowed::WindowedApp};
+#[cfg(all(feature = "scroll", feature = "dashboard"))]
+compile_error!("enable either the scroll or dashboard feature, not both");
+#[cfg(not(any(feature = "scroll", feature = "dashboard")))]
+compile_error!("enable either the scroll or dashboard feature");
 
-fn main() -> Result<()> {
-    WindowedApp::run(
-        WindowConfig::new("Blinc Scroll 2000").size(1000, 700),
-        |context| {
-            let mut rows = div().flex_col().w_full().h_fit();
-            for index in 0..2000 {
-                let gray = if index % 2 == 0 {
-                    245.0 / 255.0
-                } else {
-                    230.0 / 255.0
-                };
-                rows = rows.child(
-                    div()
-                        .w(960.0)
-                        .h(48.0)
-                        .flex_shrink_0()
-                        .p_px(12.0)
-                        .bg(Color::rgb(gray, gray, gray))
-                        .child(
-                            text(format!("Item {}", index + 1))
-                                .size(14.0)
-                                .color(Color::BLACK),
-                        ),
-                );
-            }
-            div()
-                .w(context.width)
-                .h(context.height)
-                .child(scroll().w_full().h_full().child(rows))
-        },
-    )
+#[cfg(feature = "dashboard")]
+mod dashboard;
+#[cfg(feature = "scroll")]
+mod scroll;
+
+#[cfg(feature = "scroll")]
+fn main() -> blinc_app::prelude::Result<()> {
+    scroll::run()
+}
+#[cfg(all(feature = "dashboard", not(feature = "scroll")))]
+fn main() -> blinc_app::prelude::Result<()> {
+    dashboard::run()
 }

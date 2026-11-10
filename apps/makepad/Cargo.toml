@@ -6,5 +6,10 @@ version = "0.1.0"
 edition = "2024"
 publish = false
 
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []
+
 [dependencies]
 makepad-widgets = "=1.0.0"

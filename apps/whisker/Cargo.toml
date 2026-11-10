@@ -6,6 +6,15 @@ version = "0.1.0"
 edition = "2024"
 publish = false
 
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = ["dep:whisker-image", "dep:whisker-input", "dep:whisker-image-desktop", "dep:whisker-input-desktop"]
+
 [dependencies]
 whisker = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54" }
 whisker-desktop = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54" }
+whisker-image = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54", optional = true }
+whisker-input = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54", optional = true }
+whisker-image-desktop = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54", optional = true }
+whisker-input-desktop = { git = "https://github.com/whiskerrs/whisker", rev = "536dd4949e69eba99a702c703f49ce7c73531a54", optional = true }

@@ -8,6 +8,8 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import bench
+import dashboard
+from frames import Frame
 import publish
 
 
@@ -25,6 +27,24 @@ def source_run():
     }
 
 
+def dashboard_source():
+    return {
+        "id": "dashboard-fixture", "timestamp": "2026-11-10T20:00:00+00:00",
+        "measurement": "mangohud-dashboard-v1", "system": {"os": "Linux"},
+        "results": [{
+            "app": "whisker", "status": "ok", "repetition": 1, "warmup_s": 1,
+            "action_delay_s": 0.5, "fps_limit": 144, "vsync": "application-default",
+            "csv": "/dashboard.csv", "dependencies": {"whisker": {"rev": "a" * 40}},
+            "metrics": {"present_interval_ms": {"median": 20, "p95": 40, "max": 60},
+                        "per_frame": [{"elapsed_ns": 1000000, "present_interval_ms": 20},
+                                      {"elapsed_ns": 2000000, "present_interval_ms": 60}],
+                        "timing_scope": "includes idle time"},
+            "actions": [{"action": "click", "started_monotonic_s": 1, "finished_monotonic_s": 2}],
+            "timing_validation": {"valid": True},
+        }],
+    }
+
+
 class PublishTests(unittest.TestCase):
     def setUp(self):
         self.apps = bench.load_apps()
@@ -34,15 +54,68 @@ class PublishTests(unittest.TestCase):
     def convert(self):
         return publish.website_run(self.source, self.apps, self.libraries)
 
-    def test_uses_existing_history_structure_and_honest_boundary(self):
-        run = self.convert()
-        self.assertEqual(set(run), {"id", "collectedAt", "machine", "metadata", "results"})
+    def test_dashboard_conversion_uses_interval_metrics_without_fps_scores(self):
+        run = publish.website_run(dashboard_source(), self.apps, self.libraries)
         result = run["results"][0]
-        self.assertEqual(set(result), {"framework", "scenario", "scenarioVersion", "status", "reason", "metrics", "repetitions"})
-        self.assertEqual(result["metrics"]["renderer_fps"], {"value": 10, "unit": "frames/s"})
-        event = result["repetitions"][0]["events"][0]
-        self.assertEqual(event["event"], "mangohud-capture")
-        self.assertEqual(event["trace"]["boundary"], "mangohud-present-observation")
+        self.assertEqual(result["scenario"], "dashboard")
+        self.assertEqual(result["metrics"], {
+            "dashboard_present_median_ms": {"value": 20, "unit": "ms"},
+            "dashboard_present_p95_ms": {"value": 40, "unit": "ms"},
+            "dashboard_present_max_ms": {"value": 60, "unit": "ms"},
+        })
+        trace = result["repetitions"][0]["events"][0]["trace"]
+        self.assertEqual(trace["timing_scope"], "includes idle time")
+        self.assertEqual(trace["actions"][0]["action"], "click")
+        self.assertNotIn("renderer_fps", result["metrics"])
+
+    def test_full_window_worst_gap_uses_the_worst_repetition(self):
+        source = dashboard_source()
+        source["measurement"] = "mangohud-dashboard-v2"
+        capture = source["results"][0]
+        capture.update(phase_duration_s=2, input_rate_hz=240)
+        capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(1_000_000_000, 1000), Frame(9_000_000_000, 8000)], 0, 8)
+        second = copy.deepcopy(capture)
+        second["repetition"] = 2
+        second["metrics"] = dashboard.summarize([Frame(0, 1), Frame(3_000_000_000, 3000), Frame(9_000_000_000, 6000)], 0, 8)
+        source["results"].append(second)
+        run = publish.website_run(source, self.apps, self.libraries)
+        self.assertEqual(run["results"][0]["metrics"]["dashboard_worst_gap_ms"], {"value": 7000, "unit": "ms"})
+        self.assertEqual(run["results"][0]["scenarioVersion"], 2)
+        self.assertEqual(run["metadata"]["durationSeconds"], 8)
+        self.assertEqual(run["metadata"]["inputRateHz"], 240)
+        capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(9_000_000_000, 9000)], 0, 8)
+        run = publish.website_run(source, self.apps, self.libraries)
+        self.assertEqual(run["results"][0]["metrics"]["dashboard_worst_gap_ms"]["value"], 8000)
+
+    def test_partial_dashboard_merge_preserves_other_framework_metadata(self):
+        previous = self.convert()
+        previous["metadata"]["scenarioCollections"] = {"dashboard": {
+            "frameworkVersions": {"dioxus-native": "existing version"},
+            "frameworkLabels": {"dioxus-native": "Dioxus Native"},
+        }}
+        history = {"schemaVersion": 1, "runs": [previous]}
+        run = publish.website_run(dashboard_source(), self.apps, self.libraries)
+        publish.merge_latest(history, run)
+        metadata = previous["metadata"]["scenarioCollections"]["dashboard"]
+        self.assertEqual(metadata["frameworkVersions"]["dioxus-native"], "existing version")
+        self.assertIn("whisker", metadata["frameworkVersions"])
+
+    def test_dashboard_failure_is_not_relabelled_success_and_merge_preserves_scroll(self):
+        failed = copy.deepcopy(dashboard_source()["results"][0])
+        failed.update(status="failed", error="No capture")
+        failed.pop("metrics")
+        failed.pop("actions")
+        failed.pop("csv")
+        failed.pop("dependencies")
+        run = publish.website_run({**dashboard_source(), "results": [failed]}, self.apps, self.libraries)
+        previous = self.convert()
+        history = {"schemaVersion": 1, "runs": [previous]}
+        scroll_results = copy.deepcopy(previous["results"])
+        publish.merge_latest(history, run)
+        self.assertEqual(history["runs"][0]["results"][:1], scroll_results)
+        self.assertEqual(history["runs"][0]["results"][-1]["status"], "failed")
+        self.assertIn("dashboard", history["runs"][0]["metadata"]["scenarioCollections"])
+        self.assertEqual(history["runs"][0]["metadata"]["measurement"], bench.MEASUREMENT)
 
     def test_aggregates_repetitions_and_preserves_each_sample(self):
         second = copy.deepcopy(self.source["results"][0])

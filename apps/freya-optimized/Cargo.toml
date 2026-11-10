@@ -8,3 +8,8 @@ publish = false
 
 [dependencies]
 freya = { git = "https://github.com/marc2332/freya", rev = "a29eb750190ff436fba01b25f275459a2b4d66b6" }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []

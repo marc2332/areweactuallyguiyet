@@ -8,3 +8,9 @@ publish = false
 
 [dependencies]
 iced = { version = "=0.14.0", default-features = false, features = ["wgpu", "x11", "thread-pool", "crisp"] }
+image = { version = "=0.25.10", default-features = false, features = ["png"], optional = true }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = ["dep:image", "iced/image-without-codecs"]

@@ -8,3 +8,11 @@ publish = false
 
 [dependencies]
 freya = "=0.5.1"
+
+[dev-dependencies]
+freya-testing = "=0.5.1"
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []

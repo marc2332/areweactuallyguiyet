@@ -8,3 +8,8 @@ publish = false
 
 [dependencies]
 zgui = { git = "https://github.com/zortax/zgui", rev = "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a" }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []

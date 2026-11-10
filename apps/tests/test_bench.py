@@ -33,7 +33,7 @@ class BenchmarkTests(unittest.TestCase):
         self.assertFalse(dependency["default-features"])
         self.assertEqual(dependency["features"], ["vello-hybrid"])
         original = bench.tomllib.loads(apps["dioxus-native"]["manifest"].read_text())
-        self.assertEqual(original["features"]["default"], ["skia"])
+        self.assertEqual(original["features"]["default"], ["scroll", "skia"])
 
     def write_csv(self, rows, prefix="os,cpu\nLinux,Example CPU\n"):
         self.csv.write_text(prefix + "fps,frametime,elapsed\n" + rows)
@@ -245,6 +245,14 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(count, 0)
         wheel.library.xdo_click_window.assert_not_called()
 
+    def test_display_query_failure_has_actionable_error(self):
+        process = mock.Mock()
+        process.poll.return_value = None
+        failure = subprocess.CalledProcessError(1, ["xwininfo"], output='unable to open display ":0"')
+        with mock.patch.object(bench.subprocess, "check_output", side_effect=failure):
+            with self.assertRaisesRegex(RuntimeError, "Cannot query X11 windows: unable to open display"):
+                bench.wait_for_window(process, "Example", 1)
+
     def test_window_is_not_used_before_it_is_mapped(self):
         process = mock.Mock(pid=123)
         process.poll.return_value = None
@@ -305,29 +313,21 @@ class BenchmarkTests(unittest.TestCase):
         ])
         library.xdo_free.assert_called_once_with(2)
 
-    def test_no_vsync_and_no_limiter_reach_mangohud(self):
-        process = mock.Mock()
-        process.poll.return_value = None
-        arguments = SimpleNamespace(fps_limit=0, no_vsync=True, startup_timeout=1)
-        app = {"id": "example", "title": "Example Scroll 2000", "renderer": "opengl", "env": {}}
-        with mock.patch.object(bench.subprocess, "Popen", return_value=process) as launch, \
-             mock.patch.object(bench, "wait_for_window", side_effect=RuntimeError("startup failed")):
-            with self.assertRaisesRegex(RuntimeError, "startup failed"):
-                bench.capture(app, self.root / "binary", self.root / "capture", arguments)
-        config = set(launch.call_args.kwargs["env"]["MANGOHUD_CONFIG"].split(","))
-        self.assertTrue({"fps_limit=0", "gl_vsync=0", "vsync=1"}.issubset(config))
-
-    def test_capture_startup_failure_terminates_owned_process(self):
-        process = mock.Mock()
-        process.poll.return_value = None
-        arguments = mock.Mock(fps_limit=144, no_vsync=False, startup_timeout=1)
-        app = {"id": "example", "title": "Example Scroll 2000", "renderer": "opengl", "env": {}}
-        with mock.patch.object(bench.subprocess, "Popen", return_value=process), \
-             mock.patch.object(bench, "wait_for_window", side_effect=RuntimeError("startup failed")):
-            with self.assertRaisesRegex(RuntimeError, "startup failed"):
-                bench.capture(app, self.root / "binary", self.root / "capture", arguments)
-        process.terminate.assert_called_once()
-        process.wait.assert_called_once_with(timeout=5)
+    def test_capture_settings_and_startup_cleanup(self):
+        app = {"id": "example", "title": "Example", "renderer": "opengl"}
+        for benchmark in ("scroll", "dashboard"):
+            with self.subTest(benchmark=benchmark):
+                process = mock.Mock()
+                process.poll.return_value = None
+                arguments = SimpleNamespace(benchmark=benchmark, fps_limit=0, no_vsync=True, startup_timeout=1)
+                with mock.patch.object(bench.subprocess, "Popen", return_value=process) as launch, \
+                     mock.patch.object(bench, "wait_for_window", side_effect=RuntimeError("startup failed")):
+                    with self.assertRaisesRegex(RuntimeError, "startup failed"):
+                        bench.capture(app, self.root / "binary", self.root / benchmark, arguments)
+                config = set(launch.call_args.kwargs["env"]["MANGOHUD_CONFIG"].split(","))
+                self.assertTrue({"fps_limit=0", "gl_vsync=0", "vsync=1"}.issubset(config))
+                process.terminate.assert_called_once()
+                process.wait.assert_called_once_with(timeout=5)
 
 
 if __name__ == "__main__":

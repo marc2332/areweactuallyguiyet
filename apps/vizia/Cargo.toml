@@ -8,3 +8,8 @@ publish = false
 
 [dependencies]
 vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", features = ["rayon"] }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []

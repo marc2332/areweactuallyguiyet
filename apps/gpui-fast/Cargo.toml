@@ -9,3 +9,8 @@ publish = false
 [dependencies]
 gpui = { package = "gpui-fast", version = "=0.1.0" }
 gpui_platform = { package = "gpui-fast-platform", version = "=0.1.0", features = ["wayland", "x11"] }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []
