@@ -1,5 +1,6 @@
 ---
 import Features from '../components/Features.astro';
+import BinarySizes from '../components/BinarySizes.astro';
 import { dashboard } from '../lib/data.mjs';
 import '../styles/site.css';
 const generated = new Date().toISOString();
@@ -17,7 +18,7 @@ const generated = new Date().toISOString();
   <body>
     <header class="shell topbar">
       <h1><a class="brand" href="/">are we actually GUI yet?</a></h1>
-      <nav aria-label="Main navigation"><a href="#benchmarks">Benchmarks</a><a href="#features">Features</a><a href="https://github.com/marc2332/areweactuallyguiyet">GitHub ↗</a></nav>
+      <nav aria-label="Main navigation"><a href="#benchmarks">Benchmarks</a><a href="#binary-sizes">Binary sizes</a><a href="#features">Features</a><a href="https://github.com/marc2332/areweactuallyguiyet">GitHub ↗</a></nav>
     </header>
     <main class="shell">
       <section id="benchmarks" aria-labelledby="bench-heading">
@@ -32,6 +33,7 @@ const generated = new Date().toISOString();
         <div id="charts"></div>
         <noscript><p class="notice">Charts require JavaScript. <a href="/data/benchmarks.json">Download JSON</a>.</p></noscript>
       </section>
+      <BinarySizes />
       <Features />
     </main>
     <footer class="shell"><a href="https://mespin.me/">Marc Espin ↗</a><span>Built <time datetime={generated}>{generated.slice(0, 10)}</time></span></footer>

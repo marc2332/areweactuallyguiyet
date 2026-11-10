@@ -38,6 +38,8 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
   host.style.height = '210px';
   const chart = init(host, null, { renderer: 'svg' });
   const scale = axisScale(Math.max(...points.map(point => point.maximum)));
+  const isSize = description.kind === 'size';
+  const detail = group.detail ?? `${group.boundary ? `${group.boundary} · ` : ''}v${group.scenarioVersion}`;
   const names = Object.fromEntries(points.map(point => [point.framework, `${frameworks.get(point.framework)?.name ?? point.framework} ${labelNumber(point.value)}`]));
   const fontFamily = getComputedStyle(host).fontFamily;
   const context = document.createElement('canvas').getContext('2d');
@@ -70,11 +72,11 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
       animationDuration: 220,
       backgroundColor: '#111110',
       textStyle: { fontFamily, color: '#999993' },
-      aria: { enabled: true, description: `${description.label} for ${group.label}. Frameworks share a workload row. Colored dots are medians and lines are repetition ranges. Exact values are provided below.` },
+      aria: { enabled: true, description: `${description.label} for ${group.label}. ${isSize ? 'Colored dots are executable file sizes.' : 'Frameworks share a workload row. Colored dots are medians and lines are repetition ranges.'} Exact values are provided below.` },
       grid: { left, right: width - right, top, bottom: 38 + unavailableHeight, show: true, backgroundColor: '#171716', borderColor: '#33332f' },
       graphic: [
         { type: 'rect', silent: true, z: -1, shape: { x: workloadWidth, y: top, width: right - workloadWidth, height: rowHeight }, style: { fill: '#171716' } },
-        { type: 'text', left: workloadWidth - 78, top: 29, style: { text: 'Workload', fill: '#999993', font: `11px ${fontFamily}` } },
+        { type: 'text', left: workloadWidth - 78, top: 29, style: { text: isSize ? 'Artifact' : 'Workload', fill: '#999993', font: `11px ${fontFamily}` } },
         { type: 'text', left: workloadWidth, top: 13, style: { text: `${description.label} (${description.unit})`, fill: '#999993', font: `11px ${fontFamily}` } },
         ...missing.map((point, index) => ({
           type: 'text', silent: true, left: workloadWidth, top: top + rowHeight + 38 + index * 18,
@@ -82,7 +84,7 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
         })),
       ],
       tooltip: { trigger: 'item', renderMode: 'richText', confine: true, backgroundColor: '#171716', borderColor: '#55554e', textStyle: { color: '#e6e6e2', fontSize: 12, fontFamily } },
-      toolbox: { right: 14, top: 2, iconStyle: { borderColor: '#999993' }, feature: { dataZoom: { yAxisIndex: 'none', title: { zoom: 'Select horizontal zoom', back: 'Undo zoom' } }, restore: { title: 'Reset view' }, saveAsImage: { title: 'Save SVG', type: 'svg', name: `${metric}-${group.scenario}-v${group.scenarioVersion}`, backgroundColor: '#111110' } } },
+      toolbox: { right: 14, top: 2, iconStyle: { borderColor: '#999993' }, feature: { dataZoom: { yAxisIndex: 'none', title: { zoom: 'Select horizontal zoom', back: 'Undo zoom' } }, restore: { title: 'Reset view' }, saveAsImage: { title: 'Save SVG', type: 'svg', name: isSize ? 'binary-sizes' : `${metric}-${group.scenario}-v${group.scenarioVersion}`, backgroundColor: '#111110' } } },
       xAxis: ['top', 'bottom'].map(position => ({
         type: 'value', position, min: 0, max: scale.maximum, interval: scale.interval,
         axisLabel: { color: '#999993', fontSize: 10, formatter: value => `${labelNumber(value)} ${description.unit}`, showMinLabel: true, showMaxLabel: true },
@@ -91,7 +93,7 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
       })),
       yAxis: {
         type: 'category', data: [group.label], axisTick: { show: false }, axisLine: { show: false },
-        axisLabel: { margin: labelGutter + 18, formatter: () => `{workload|${group.label}}\n{version|${group.boundary ? `${group.boundary} · ` : ''}v${group.scenarioVersion}}`, rich: { workload: { color: '#e6e6e2', fontSize: 11, lineHeight: 20 }, version: { color: '#999993', fontSize: 10, lineHeight: 18 } } },
+        axisLabel: { margin: labelGutter + 18, formatter: () => `{workload|${group.label}}\n{version|${detail}}`, rich: { workload: { color: '#e6e6e2', fontSize: 11, lineHeight: 20 }, version: { color: '#999993', fontSize: 10, lineHeight: 18 } } },
       },
       series: layout.points.map(point => {
         const framework = frameworks.get(point.framework);
@@ -99,7 +101,9 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
         return {
           type: 'custom', name: framework?.name ?? point.framework, clip: false,
           data: [[point.value, 0, point.minimum, point.maximum]], encode: { x: [0, 2, 3], y: 1 },
-          tooltip: { formatter: () => `${framework?.name ?? point.framework}\n${group.versions[point.framework] ?? 'Version unreported'}\nMedian: ${number(point.value)} ${point.unit}\nRange: ${number(point.minimum)}–${number(point.maximum)} ${point.unit}\nRepetitions: ${point.repetitions}` },
+          tooltip: { formatter: () => isSize
+            ? `${framework?.name ?? point.framework}\n${group.versions[point.framework]}\nSize: ${number(point.value)} MiB\n${point.bytes.toLocaleString()} bytes`
+            : `${framework?.name ?? point.framework}\n${group.versions[point.framework] ?? 'Version unreported'}\nMedian: ${number(point.value)} ${point.unit}\nRange: ${number(point.minimum)}–${number(point.maximum)} ${point.unit}\nRepetitions: ${point.repetitions}` },
           renderItem: (parameters, api) => {
             const center = api.coord([point.value, 0]);
             const lower = api.coord([point.minimum, 0]);
@@ -112,7 +116,7 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
               type: 'group',
               children: [
                 { type: 'line', shape: { x1: lower[0], y1: vertical, x2: upper[0], y2: vertical }, style: { stroke: color, lineWidth: 2, opacity: 0.65 } },
-                ...[lower, upper].map(position => ({ type: 'line', shape: { x1: position[0], y1: vertical - 3, x2: position[0], y2: vertical + 3 }, style: { stroke: color, lineWidth: 1 } })),
+                ...(isSize ? [] : [lower, upper]).map(position => ({ type: 'line', shape: { x1: position[0], y1: vertical - 3, x2: position[0], y2: vertical + 3 }, style: { stroke: color, lineWidth: 1 } })),
                 { type: 'circle', shape: { cx: center[0], cy: vertical, r: 2.8 }, style: { fill: color }, emphasis: { style: { shadowBlur: 8, shadowColor: color } } },
                 { type: 'text', x: center[0] - 9, y: vertical, style: { text: names[point.framework], fill: color, font: `11px ${fontFamily}`, align: 'right', verticalAlign: 'middle' } },
               ],

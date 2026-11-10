@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "collectedAt": "2026-11-10T20:17:30.924889+00:00",
+  "platform": {
+    "os": "Linux",
+    "architecture": "x86_64"
+  },
+  "profile": "release",
+  "method": "Executable file size as built, no additional stripping or compression. Shared libraries and external assets excluded.",
+  "results": [
+    {
+      "framework": "blinc",
+      "name": "Blinc",
+      "binary": "blinc-scroll",
+      "bytes": 24572192,
+      "dependencies": {
+        "blinc_app": {
+          "git": "https://github.com/project-blinc/Blinc",
+          "rev": "2ca5f509e73600e7629f70d827b4f2850f5f9eb9"
+        }
+      }
+    },
+    {
+      "framework": "dioxus-native",
+      "name": "Dioxus Native",
+      "binary": "dioxus-native-scroll",
+      "bytes": 31506640,
+      "dependencies": {
+        "dioxus-native": {
+          "version": "=0.8.0-alpha.3",
+          "default-features": false,
+          "features": [
+            "prelude",
+            "system-fonts"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "dioxus-native-vello-hybrid",
+      "name": "Dioxus Native Vello Hybrid",
+      "binary": "dioxus-native-vello-hybrid-scroll",
+      "bytes": 33985792,
+      "dependencies": {
+        "dioxus-native-scroll": {
+          "path": "../dioxus-native",
+          "default-features": false,
+          "features": [
+            "vello-hybrid"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "egui",
+      "name": "egui",
+      "binary": "egui-scroll",
+      "bytes": 8783304,
+      "dependencies": {
+        "eframe": {
+          "version": "=0.37.0",
+          "default-features": false,
+          "features": [
+            "default_fonts",
+            "glow",
+            "x11"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "floem",
+      "name": "Floem",
+      "binary": "floem-scroll",
+      "bytes": 21347112,
+      "dependencies": {
+        "floem": "=0.2.0"
+      }
+    },
+    {
+      "framework": "freya",
+      "name": "Freya",
+      "binary": "freya-scroll",
+      "bytes": 34740256,
+      "dependencies": {
+        "freya": "=0.5.1"
+      }
+    },
+    {
+      "framework": "freya-optimized",
+      "name": "Freya (Optimized)",
+      "binary": "freya-optimized-scroll",
+      "bytes": 34771808,
+      "dependencies": {
+        "freya": {
+          "git": "https://github.com/marc2332/freya",
+          "rev": "a29eb750190ff436fba01b25f275459a2b4d66b6"
+        }
+      }
+    },
+    {
+      "framework": "gpui",
+      "name": "GPUI",
+      "binary": "gpui-scroll",
+      "bytes": 23481592,
+      "dependencies": {
+        "gpui": "=0.2.2"
+      }
+    },
+    {
+      "framework": "gpui-fast",
+      "name": "GPUI Fast",
+      "binary": "gpui-fast-scroll",
+      "bytes": 36251136,
+      "dependencies": {
+        "gpui": {
+          "package": "gpui-fast",
+          "version": "=0.1.0"
+        },
+        "gpui_platform": {
+          "package": "gpui-fast-platform",
+          "version": "=0.1.0",
+          "features": [
+            "wayland",
+            "x11"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "iced",
+      "name": "Iced",
+      "binary": "iced-scroll",
+      "bytes": 13868424,
+      "dependencies": {
+        "iced": {
+          "version": "=0.14.0",
+          "default-features": false,
+          "features": [
+            "wgpu",
+            "x11",
+            "thread-pool",
+            "crisp"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "makepad",
+      "name": "Makepad",
+      "binary": "makepad-scroll",
+      "bytes": 8058176,
+      "dependencies": {
+        "makepad-widgets": "=1.0.0"
+      }
+    },
+    {
+      "framework": "rune",
+      "name": "Rune",
+      "binary": "rune-scroll",
+      "bytes": 34843688,
+      "dependencies": {
+        "rune": {
+          "git": "https://github.com/anomalyco/rune",
+          "rev": "a9da7e3ebf5a8ab9bf19c3015032674b6e042df2"
+        }
+      }
+    },
+    {
+      "framework": "slint",
+      "name": "Slint",
+      "binary": "slint-scroll",
+      "bytes": 18074312,
+      "dependencies": {
+        "slint": {
+          "version": "=1.18.1",
+          "default-features": false,
+          "features": [
+            "std",
+            "backend-winit-x11",
+            "renderer-femtovg",
+            "compat-1-2"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "vizia",
+      "name": "Vizia",
+      "binary": "vizia-scroll",
+      "bytes": 35796000,
+      "dependencies": {
+        "vizia": {
+          "git": "https://github.com/vizia/vizia",
+          "rev": "a8a38adbb7fd9929397abde0a6992272ead83ecc",
+          "features": [
+            "rayon"
+          ]
+        }
+      }
+    },
+    {
+      "framework": "whisker",
+      "name": "Whisker",
+      "binary": "whisker-scroll",
+      "bytes": 31570808,
+      "dependencies": {
+        "whisker": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54"
+        },
+        "whisker-desktop": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54"
+        }
+      }
+    },
+    {
+      "framework": "zgui",
+      "name": "zgui",
+      "binary": "zgui-scroll",
+      "bytes": 47059048,
+      "dependencies": {
+        "zgui": {
+          "git": "https://github.com/zortax/zgui",
+          "rev": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
+        }
+      }
+    }
+  ]
+}

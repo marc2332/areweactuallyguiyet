@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 async function selectScrollCollection(page) {
   const dashboard = await (await page.request.get('/data/benchmarks.json')).json();
-  const run = dashboard.runs.find(collection => collection.groups.renderer_fps?.some(group => group.boundary === 'present-returned'));
+  const run = dashboard.runs.find(collection => collection.groups.renderer_fps?.some(group => ['present-returned', 'mangohud-present-observation'].includes(group.boundary)));
   expect(run).toBeTruthy();
   await page.selectOption('#run', run.id);
 }
@@ -37,14 +37,14 @@ test('scroll charts support automatic measurements, framework filters and collec
   await expect(rows).toHaveCount(initialCount - 1);
   await page.getByRole('button', { name: 'Show all', exact: true }).click();
   await expect(rows).toHaveCount(initialCount);
-  await page.selectOption('#run', { index: 1 });
+  await page.selectOption('#run', { index: await page.locator('#run option').count() > 1 ? 1 : 0 });
   await expect(page.locator('#chart-status')).toBeHidden();
   await expect(workloads).toHaveCount(1);
   await expect(scrollWorkload).toHaveAttribute('data-metric', 'renderer_fps');
   await expect(page.locator('.echart svg').first()).toBeVisible();
   for (const button of await page.locator('#toggles button').all()) await button.click();
   await expect(page.locator('#charts')).toContainText('No measured frameworks are visible');
-  await expect(page.locator('.echart svg')).toHaveCount(0);
+  await expect(page.locator('#charts .echart svg')).toHaveCount(0);
   await page.getByRole('button', { name: 'Show all', exact: true }).click();
   await expect(page.locator('.echart svg').first()).toBeVisible();
   expect(errors).toEqual([]);
@@ -172,6 +172,42 @@ test('feature evidence is usable without JavaScript', async ({ browser }) => {
   await expect(evidence).toHaveAttribute('open', '');
   await expect(evidence.getByRole('link', { name: 'Source', exact: true })).toBeVisible();
   await context.close();
+});
+
+test('binary sizes show all release executables independently of benchmark collections', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const snapshot = await (await page.request.get('/data/binary-sizes.json')).json();
+  expect(snapshot.results).toHaveLength(16);
+  await page.goto('/');
+  const section = page.locator('#binary-sizes');
+  const plot = section.locator('.echart');
+  await expect(plot.locator('svg')).toBeVisible();
+  await expect(plot).toContainText('Binary size (MiB)');
+  await expect(plot).toContainText('Artifact');
+  await expect(plot).not.toContainText('undefined');
+  await section.locator('summary').click();
+  await expect(section.locator('tbody tr')).toHaveCount(snapshot.results.length);
+  for (const result of snapshot.results) {
+    const row = section.getByRole('row').filter({ has: page.getByRole('rowheader', { name: result.name, exact: true }) });
+    await expect(row).toContainText(result.bytes.toLocaleString('en-US'));
+    expect(snapshot.group.points.find(point => point.framework === result.framework).value).toBe(result.bytes / 1048576);
+  }
+  const labels = plot.locator('svg text').filter({ hasText: /^Freya \d/ });
+  await labels.hover();
+  await expect(plot).toContainText('Size:');
+  await expect(plot).not.toContainText('Median:');
+  await expect(page.locator('#run')).toBeEnabled();
+  await page.selectOption('#run', { index: await page.locator('#run option').count() > 1 ? 1 : 0 });
+  await page.locator('#toggles button').first().click();
+  await expect(section.locator('tbody tr')).toHaveCount(16);
+  await expect(labels).toHaveCount(1);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const dimensions = await page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
+  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.width);
+  expect(await section.locator('.compact-chart-frame').evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true);
+  expect(errors).toEqual([]);
 });
 
 test('mobile layout keeps charts within the viewport', async ({ page }) => {

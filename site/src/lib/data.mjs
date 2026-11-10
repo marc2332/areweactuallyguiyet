@@ -1,10 +1,12 @@
 import { readFile } from 'node:fs/promises';
+import { binarySizeChart } from './binary-sizes.mjs';
 import { resolve } from 'node:path';
 import { validateFeatures, validateLibraries } from './features.mjs';
 import { validateHistory } from './history.mjs';
 import { collectionDetails, frameworkColor, frameworkVersionsForScenario, groupMetricResults, metricLabels, responsivenessDetails } from './chart-data.mjs';
 
 const load = async name => JSON.parse(await readFile(resolve(process.cwd(), 'data', `${name}.json`), 'utf8'));
+export const binarySizes = binarySizeChart(await load('binary-sizes-snapshot'));
 const { libraries: sourceLibraries } = validateLibraries(await load('libraries'));
 const columnOrder = library => library.id === 'whisker' ? 2 : library.id === 'blinc' ? 1 : 0;
 export const libraries = sourceLibraries.toSorted((first, second) => columnOrder(first) - columnOrder(second));

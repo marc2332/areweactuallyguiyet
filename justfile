@@ -31,7 +31,11 @@ bench-build framework="freya":
 bench *args:
     python3 apps/bench.py run "$@"
 
+# Collect release executable sizes for the website without launching apps.
+binary-sizes *args:
+    python3 apps/sizes.py "$@"
+
 # Check Python compilation and build the website without running benchmarks.
 check:
-    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py
+    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py apps/sizes.py
     npm run build

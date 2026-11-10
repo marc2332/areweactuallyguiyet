@@ -1,0 +1,51 @@
+---
+import { binarySizes } from '../lib/data.mjs';
+const number = value => value.toLocaleString('en-US', { maximumFractionDigits: 4 });
+---
+<section id="binary-sizes" aria-labelledby="binary-sizes-heading">
+  <div class="section-heading"><h2 id="binary-sizes-heading">Binary sizes</h2><a href="/data/binary-sizes.json" download>JSON ↓</a></div>
+  <p class="measurement-label">Release executable size (MiB) · Lower is smaller.</p>
+  <p class="muted">{binarySizes.platform.os} · {binarySizes.platform.architecture} · cargo build --release --locked · No additional stripping · Collected <time datetime={binarySizes.collectedAt}>{binarySizes.collectedAt.slice(0, 10)}</time>.</p>
+  <div class="chart-panel">
+    <p id="binary-size-status" role="status">Loading binary size chart…</p>
+    <div id="binary-size-frame" class="compact-chart-frame" tabindex="0" role="region" aria-label="Binary size plot, scroll horizontally on small screens" hidden>
+      <div id="binary-size-chart" class="echart" role="img" aria-label="Release executable file sizes in MiB for each GUI app. Exact values are in the following expandable table."></div>
+    </div>
+    <details class="binary-size-data">
+      <summary>Values ({binarySizes.results.length} executables)</summary>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Framework</th><th>Executable</th><th>Size (MiB)</th><th>Bytes</th></tr></thead>
+          <tbody>{binarySizes.results.map(result => <tr><th scope="row">{result.name}</th><td>{result.binary}</td><td>{number(result.bytes / (1024 * 1024))}</td><td>{result.bytes.toLocaleString('en-US')}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+  <noscript><p class="notice">The chart requires JavaScript. Exact sizes are available in the table above.</p></noscript>
+</section>
+<script>
+  import { compactChart } from '../scripts/compact-chart.js';
+
+  const status = document.querySelector('#binary-size-status');
+  const frame = document.querySelector('#binary-size-frame');
+  const host = document.querySelector('#binary-size-chart');
+  async function start() {
+    const response = await fetch('/data/binary-sizes.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const snapshot = await response.json();
+    frame.hidden = false;
+    const chart = compactChart(host, {
+      points: snapshot.group.points,
+      frameworks: new Map(snapshot.frameworks.map(framework => [framework.id, framework])),
+      group: snapshot.group,
+      metric: 'binary_size_mib',
+      description: snapshot.description,
+    });
+    new ResizeObserver(() => chart.resize()).observe(frame);
+    status.hidden = true;
+  }
+  start().catch(() => {
+    frame.hidden = true;
+    status.textContent = 'Could not render the binary size chart. Exact sizes are available in the table below.';
+  });
+</script>
