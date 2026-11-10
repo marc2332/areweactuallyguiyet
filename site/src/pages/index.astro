@@ -1,0 +1,42 @@
+---
+import Features from '../components/Features.astro';
+import { dashboard } from '../lib/data.mjs';
+import '../styles/site.css';
+const generated = new Date().toISOString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Rust GUI benchmarks and feature comparison." />
+    <title>Are we actually GUI yet?</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="shell topbar">
+      <h1><a class="brand" href="/">are we actually GUI yet?</a></h1>
+      <nav aria-label="Main navigation"><a href="#benchmarks">Benchmarks</a><a href="#features">Features</a><a href="https://github.com/marc2332/areweactuallyguiyet">GitHub ↗</a></nav>
+    </header>
+    <main class="shell">
+      <section id="benchmarks" aria-labelledby="bench-heading">
+        <div class="section-heading"><h2 id="bench-heading">Benchmarks</h2><a href="/data/benchmarks.json" download>JSON ↓</a></div>
+        <div class="controls">
+          <label>Collection<select id="run" disabled>{dashboard.runs.map((run, index) => <option value={run.id}>{index === 0 ? 'Latest · ' : ''}{run.collectedAt.slice(0, 10)} · {run.profile} · {run.id}</option>)}</select></label>
+        </div>
+        <p class="machine-specs muted">AMD Ryzen 5 5600X · AMD 9060XT 16GB · 144hz</p>
+        <div class="legend-heading"><span>Frameworks</span><button id="reset" type="button" disabled>Show all</button></div>
+        <div id="toggles" class="framework-toggles" role="group" aria-label="Visible frameworks"></div>
+        <p id="chart-status" role="status">Loading charts…</p>
+        <div id="charts"></div>
+        <noscript><p class="notice">Charts require JavaScript. <a href="/data/benchmarks.json">Download JSON</a>.</p></noscript>
+      </section>
+      <Features />
+    </main>
+    <footer class="shell"><a href="https://mespin.me/">Marc Espin ↗</a><span>Built <time datetime={generated}>{generated.slice(0, 10)}</time></span></footer>
+    <script>
+      import '../scripts/explorer.js';
+    </script>
+  </body>
+</html>

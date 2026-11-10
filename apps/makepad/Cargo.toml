@@ -1,20 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-makepad"
+name = "makepad-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
 makepad-widgets = "=1.0.0"
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-hover = []
-memory = []

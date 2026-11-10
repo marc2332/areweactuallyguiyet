@@ -1,30 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-freya-optimized"
+name = "freya-optimized-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
-[[bin]]
-name = "gui-bench-freya-optimized"
-path = "../freya/src/main.rs"
-
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
-freya = { git = "https://github.com/marc2332/freya", rev = "c546a9cc14d17187942245bccae4e2a8c7dce216" }
-freya-winit = { git = "https://github.com/marc2332/freya", rev = "c546a9cc14d17187942245bccae4e2a8c7dce216" }
-async-io = "=2.5.0"
-raw-window-handle = "=0.6.2"
-
-[dev-dependencies]
-freya-testing = { git = "https://github.com/marc2332/freya", rev = "c546a9cc14d17187942245bccae4e2a8c7dce216" }
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-memory = []
-hover = []
+freya = { git = "https://github.com/marc2332/freya", rev = "a29eb750190ff436fba01b25f275459a2b4d66b6" }

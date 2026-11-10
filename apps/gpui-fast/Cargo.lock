@@ -520,14 +520,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
-name = "benchmark-common"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "bit-set"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2118,6 +2110,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "gpui-fast-scroll"
+version = "0.1.0"
+dependencies = [
+ "gpui-fast",
+ "gpui-fast-platform",
+]
+
+[[package]]
 name = "gpui-fast-web"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2336,18 +2336,6 @@ name = "gpui-pre-ztracing-macro"
 version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d337c9acf058238e45ce0570d8a5958439242889492f91ae2d8e324211a61ccd"
-
-[[package]]
-name = "gui-bench-gpui-fast"
-version = "0.1.0"
-dependencies = [
- "benchmark-common",
- "gpui-fast",
- "gpui-fast-platform",
- "libc",
- "raw-window-handle",
- "unicode-segmentation",
-]
 
 [[package]]
 name = "half"

@@ -1,20 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-slint"
+name = "slint-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
-slint = { version = "=1.18.1", features = ["backend-winit"] }
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-hover = ["slint/unstable-winit-030"]
-memory = []
+slint = { version = "=1.18.1", default-features = false, features = ["std", "backend-winit-x11", "renderer-femtovg", "compat-1-2"] }

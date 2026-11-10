@@ -1,0 +1,6 @@
+{
+  "id": "dioxus-native",
+  "title": "Dioxus Native Scroll 2000",
+  "renderer": "opengl",
+  "env": {}
+}

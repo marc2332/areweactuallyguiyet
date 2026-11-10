@@ -1,26 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-freya"
+name = "freya-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
-freya = "=0.5.0"
-freya-winit = "=0.5.0"
-async-io = "=2.5.0"
-raw-window-handle = "=0.6.2"
-
-[dev-dependencies]
-freya-testing = "=0.5.0"
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-memory = []
-hover = []
+freya = "=0.5.1"

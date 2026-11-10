@@ -1,22 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-vizia"
+name = "vizia-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-memory = []
-hover = ["dep:winit"]
-vizia-main = []
-
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
-vizia = { version = "=0.4.0", features = ["rayon"] }
-winit = { version = "=0.30.13", optional = true }
+vizia = { git = "https://github.com/vizia/vizia", rev = "a8a38adbb7fd9929397abde0a6992272ead83ecc", features = ["rayon"] }

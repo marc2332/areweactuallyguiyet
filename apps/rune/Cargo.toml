@@ -1,26 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-rune"
+name = "rune-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
 rune = { git = "https://github.com/anomalyco/rune", rev = "a9da7e3ebf5a8ab9bf19c3015032674b6e042df2" }
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-hover = []
-memory = []
-
-[profile.release]
-opt-level = 3
-codegen-units = 16
-lto = false
-incremental = false

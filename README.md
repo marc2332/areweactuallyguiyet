@@ -1,30 +1,11 @@
-# Are we actually GUI yet?
+# [Are we actually GUI yet?](https://areweactuallyguiyet.mespin.me/)
 
-Rust GUI benchmarks and feature comparisons.
+Rust GUI feature comparisons and standalone scrolling benchmarks.
 
-## Website
-
-[Visit the website](https://areweactuallyguiyet.vercel.app/).
-
-Requires Node.js.
 
 ```sh
-just site              # Build and serve
-just build-site        # Build dist/
-just serve 8000        # Serve an existing build
-```
-
-## Benchmarks
-
-```sh
-just doctor
 just list
-just app egui scroll
-just bench egui scroll desktop --repetitions 3 --output /tmp/gui-bench
-just bench freya,freya-optimized scroll desktop --output /tmp/gui-bench
-just bench-hover-all desktop --fast --duration 4
-just smoke egui scroll
-just collect-latest desktop
+just app freya
+just bench freya egui
+just bench all --save
 ```
-
-Site design adapted from [Are we layout yet?](https://github.com/marc2332/arewelayoutyet).

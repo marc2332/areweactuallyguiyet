@@ -1,0 +1,6 @@
+{
+  "id": "gpui-fast",
+  "title": "GPUI Fast Scroll 2000",
+  "renderer": "vulkan",
+  "env": {}
+}

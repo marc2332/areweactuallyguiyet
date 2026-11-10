@@ -1,0 +1,6 @@
+{
+  "id": "dioxus-native-vello-hybrid",
+  "title": "Dioxus Native Vello Hybrid Scroll 2000",
+  "renderer": "vulkan",
+  "env": { "WGPU_BACKEND": "vulkan" }
+}

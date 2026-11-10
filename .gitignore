@@ -1,6 +1,9 @@
 /target/
 /apps/*/target/
-/dist/
+/apps/__pycache__/
+/apps/tests/__pycache__/
+/apps/*.json.lock
+/site/data/*.json.lock
 /results/
 /node_modules/
 /.pi/subagents/

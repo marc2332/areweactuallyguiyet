@@ -4,13 +4,19 @@ on:
   pull_request:
 
 jobs:
-  foundation:
+  site-and-cli:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo check --locked -p gui-bench-runner
-      - run: node scripts/build.mjs
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm --prefix site ci
+      - run: npm run build
+      - run: npm run test:site
+      - run: python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py

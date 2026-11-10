@@ -1,0 +1,8 @@
+{
+  "id": "floem",
+  "title": "Floem Scroll 2000",
+  "renderer": "vulkan",
+  "env": {
+    "WGPU_BACKEND": "vulkan"
+  }
+}

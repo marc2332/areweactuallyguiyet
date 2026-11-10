@@ -3,79 +3,35 @@ set positional-arguments
 default:
     @just --list
 
-# Build the website and serve it at http://127.0.0.1:8000.
-site: build-site
-    node scripts/serve.mjs
+# Run the Astro development server.
+site port="4321":
+    npm --prefix site run dev -- --port "$1"
 
-# Build and validate the static website.
+# Build the static Astro website.
 build-site:
-    node scripts/build.mjs
+    npm run build
 
-# Serve an already-built website.
-serve port="8000":
-    node scripts/serve.mjs "$1"
+# Preview the production website.
+serve port="4321":
+    npm --prefix site run preview -- --port "$1"
 
-# Open an interactive native application without collecting measurements.
-app framework="egui" scenario="scroll":
-    node scripts/launch.mjs "$1" "$2"
+# Open a standalone scroll example without measurement or simulated input.
+app framework="freya":
+    cargo run --release --locked --manifest-path "apps/$1/Cargo.toml"
 
-# Check local desktop and measurement prerequisites.
-doctor:
-    cargo run -p gui-bench-runner -- doctor
-
-# Show adapter and scenario availability.
+# List the standalone GUI examples.
 list:
-    cargo run -p gui-bench-runner -- list
+    python3 apps/bench.py list
 
-# Build a release benchmark executable without running it.
-bench-build framework="egui" scenario="scroll":
-    cargo run --release -p gui-bench-runner -- build --framework "$1" --scenario "$2"
+# Build a standalone scroll example.
+bench-build framework="freya":
+    cargo build --release --locked --manifest-path "apps/$1/Cargo.toml"
 
-# Collect release measurements, with optional extra runner flags.
-bench framework="egui" scenario="scroll" machine="desktop" *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    framework="$1"
-    scenario="$2"
-    machine="$3"
-    shift 3
-    cargo run --release -p gui-bench-runner -- run --framework "$framework" --scenario "$scenario" --machine "$machine" "$@"
+# Run external MangoHud captures, saving history only with --save.
+bench *args:
+    python3 apps/bench.py run "$@"
 
-# Run every adapter and workload.
-bench-all machine="desktop" *args:
-    @just bench freya,freya-optimized,egui,vizia,vizia-optimized,iced,gpui,gpui-fast,dioxus-native,dioxus-native-vello,dioxus-native-vello-hybrid,slint,floem,makepad,rune,zgui startup,scroll,virtual-scroll,switches,memory,hover "$@"
-
-# Collect only Hover for every catalog adapter, with optional runner flags.
-bench-hover-all machine="desktop" *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    machine="$1"
-    shift
-    frameworks="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; console.log(JSON.parse(readFileSync("apps/catalog.json", "utf8")).map(adapter => adapter.id).join(","))')"
-    just bench "$frameworks" hover "$machine" "$@"
-
-# Exercise the full runner with a short development-only real-window run.
-smoke framework="egui" scenario="scroll":
-    @just bench "$1" "$2" smoke --profile dev --repetitions 1 --warmup 1 --duration 3 --output /tmp/gui-bench-smoke
-
-# Import a run and rebuild the website, then refresh the browser.
-collect path:
-    node scripts/collect.mjs "$1"
-    node scripts/build.mjs
-
-# Import the latest run for a machine and rebuild the website.
-collect-latest machine="desktop":
-    #!/usr/bin/env bash
-    set -euo pipefail
-    shopt -s nullglob
-    runs=("results/$1"/*/run.json)
-    if (( ${#runs[@]} == 0 )); then
-        printf 'No benchmark runs found for machine %s\n' "$1" >&2
-        exit 1
-    fi
-    just collect "${runs[${#runs[@]} - 1]}"
-
-# Check runner compilation and website generation without running benchmarks.
+# Check Python compilation and build the website without running benchmarks.
 check:
-    cargo check --locked -p gui-bench-runner
-    node scripts/build.mjs
+    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py
+    npm run build

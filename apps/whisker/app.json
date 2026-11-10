@@ -1,0 +1,6 @@
+{
+  "id": "whisker",
+  "title": "Whisker Scroll 2000",
+  "renderer": "vulkan",
+  "env": { "WGPU_BACKEND": "vulkan" }
+}

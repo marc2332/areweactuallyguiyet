@@ -1,6 +1,14 @@
 {
-  "name": "are-we-actually-gui-yet-site",
+  "name": "are-we-actually-gui-yet",
   "private": true,
   "type": "module",
-  "scripts": { "build": "node scripts/build.mjs", "serve": "node scripts/serve.mjs" }
+  "scripts": {
+    "dev": "npm --prefix site run dev",
+    "build": "npm --prefix site run build",
+    "serve": "npm --prefix site run preview",
+    "test:site": "npm --prefix site run test:unit"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }

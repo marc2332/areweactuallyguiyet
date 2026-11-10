@@ -1,6 +1,41 @@
 {
   "libraries": [
     {
+      "id": "blinc",
+      "name": "Blinc",
+      "repository": "https://github.com/project-blinc/Blinc",
+      "homepage": "https://blinc.rs",
+      "classification": "Declarative reactive Rust UI with state machines and spring animation",
+      "backend": "Custom SDF GPU rendering through WGPU with Taffy layout",
+      "creationYear": null,
+      "latestRelease": null,
+      "sourceUpdated": "2026-11-10",
+      "status": "Pre-1.0 cross-platform framework with a preview WebGPU backend",
+      "license": "Apache-2.0",
+      "reviewedCommit": "2ca5f509e73600e7629f70d827b4f2850f5f9eb9",
+      "reviewedVersion": "main@2ca5f509e736",
+      "reviewedDate": "2026-11-10",
+      "metadataEvidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
+      "metadataNotes": "Metadata, feature claims and benchmarks use the same pinned source. Platform claims are source-reviewed, not execution-validated. Creation year and latest release were not established from the source snapshot.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/Cargo.toml",
+        "Classification": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
+        "Backend": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/Cargo.toml",
+        "Project status": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
+        "Source updated": "https://github.com/project-blinc/Blinc/commit/2ca5f509e73600e7629f70d827b4f2850f5f9eb9"
+      },
+      "provenance": {
+        "status": "ai-led",
+        "scope": "AI-led. Classification by the site maintainer.",
+        "basis": "site-maintainer",
+        "quote": "make it AI-led",
+        "evidence": null,
+        "reviewedCommit": "2ca5f509e73600e7629f70d827b4f2850f5f9eb9",
+        "reviewedDate": "2026-11-10"
+      },
+      "crate": "blinc_app"
+    },
+    {
       "id": "freya",
       "name": "Freya",
       "repository": "https://github.com/marc2332/freya",
@@ -8,7 +43,7 @@
       "classification": "Native declarative Rust components with a reactive core",
       "backend": "Skia rendering with Winit, optional web and Android integration",
       "creationYear": 2022,
-      "latestRelease": "2026-11-05",
+      "latestRelease": "2026-11-08",
       "sourceUpdated": null,
       "status": "Pre-1.0 toolkit with native, web and Android code in the inspected tree",
       "provenance": {
@@ -31,14 +66,15 @@
         "Classification": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
         "Backend": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya/Cargo.toml",
         "Project status": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/README.md",
-        "Latest release": "https://github.com/marc2332/freya/releases/tag/v0.5.0",
+        "Latest release": "https://github.com/marc2332/freya/releases/tag/v0.5.1",
         "Creation year": "https://github.com/marc2332/freya/commit/56d3213809b0b3cd5fec50bc1f3fe3a847fb38f7"
       },
       "firstCommit": {
         "sha": "56d3213809b0b3cd5fec50bc1f3fe3a847fb38f7",
         "date": "2022-07-28",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "freya"
     },
     {
       "id": "gpui",
@@ -77,7 +113,8 @@
         "sha": "b400449a58507cca1fa007197929c2cfd6beabbe",
         "date": "2021-02-20",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "gpui"
     },
     {
       "id": "vizia",
@@ -117,7 +154,8 @@
         "sha": "5b4db07dbe259d7b405c2e19e027c8ebd3919b7f",
         "date": "2021-09-17",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "vizia"
     },
     {
       "id": "iced",
@@ -156,7 +194,8 @@
         "sha": "eefdcbe06cce97b452ee71ccb6fcd1a423d29075",
         "date": "2019-05-29",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "iced"
     },
     {
       "id": "egui",
@@ -195,7 +234,8 @@
         "sha": "856bbf4dae4a69693a0324da34e8b0dd3754dfdf",
         "date": "2018-12-23",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "egui"
     },
     {
       "id": "slint",
@@ -234,7 +274,8 @@
         "sha": "c6553d007e5e9b45d0ae280763911580539e8d7e",
         "date": "2020-05-04",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "slint"
     },
     {
       "id": "floem",
@@ -273,7 +314,8 @@
         "sha": "a88d89c56f3f66555446faeab1aefb997fa52f02",
         "date": "2023-01-31",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "floem"
     },
     {
       "id": "dioxus-native",
@@ -311,7 +353,8 @@
         "sha": "38e191211ec08e6c70ba9d5a47e72377dd7782a2",
         "date": "2023-11-30",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "dioxus-native"
     },
     {
       "id": "makepad",
@@ -349,7 +392,8 @@
         "sha": "84328d949abceb02523986e6695ff12ff1b9df6d",
         "date": "2025-05-06",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "makepad-widgets"
     },
     {
       "id": "gpui-fast",
@@ -394,7 +438,8 @@
         "sha": "11a44c4882f32789a8292b3f0682ffa4e6b6e79e",
         "date": "2026-09-22",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": "gpui-fast"
     },
     {
       "id": "rune",
@@ -438,7 +483,8 @@
         "sha": "484b76675f9b02605df6a6e7e38eb2158f94b95a",
         "date": "2026-10-22",
         "reviewedDate": "2026-11-07"
-      }
+      },
+      "crate": null
     },
     {
       "id": "zgui",
@@ -473,7 +519,41 @@
         "Project status": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
         "Latest release": "https://github.com/zortax/zgui/releases/tag/v0.1.0",
         "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
-      }
+      },
+      "crate": "zgui"
+    },
+    {
+      "id": "whisker",
+      "name": "Whisker",
+      "repository": "https://github.com/whiskerrs/whisker",
+      "homepage": "https://whisker.rs/",
+      "classification": "Retained Rust element tree with fine-grained signals and platform Host renderers",
+      "backend": "Taffy layout with WGPU desktop drawing and native mobile or DOM web Hosts",
+      "creationYear": null,
+      "latestRelease": null,
+      "sourceUpdated": "2026-11-10",
+      "status": "Pre-alpha framework with evolving APIs and platform coverage",
+      "license": "MIT OR Apache-2.0",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10",
+      "reviewedCommit": "536dd4949e69eba99a702c703f49ce7c73531a54",
+      "metadataEvidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "metadataNotes": "Source-reviewed at the same commit pinned by the scroll benchmark. Release date and creation year were not established. Desktop capabilities are distinguished from mobile and web Hosts.",
+      "metadataFieldEvidence": {
+        "License": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/Cargo.toml",
+        "Classification": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+        "Backend": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
+        "Project status": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+        "Source updated": "https://github.com/whiskerrs/whisker/commit/536dd4949e69eba99a702c703f49ce7c73531a54"
+      },
+      "provenance": {
+        "status": "unknown",
+        "scope": "The inspected source and agent instructions do not establish how much code was authored with AI assistance.",
+        "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/CLAUDE.md",
+        "reviewedCommit": "536dd4949e69eba99a702c703f49ce7c73531a54",
+        "reviewedDate": "2026-11-10"
+      },
+      "crate": "whisker"
     }
   ]
 }

@@ -1,24 +1,10 @@
 [workspace]
 
 [package]
-name = "gui-bench-zgui"
+name = "zgui-scroll"
 version = "0.1.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-benchmark-common = { path = "../../crates/benchmark-common" }
 zgui = { git = "https://github.com/zortax/zgui", rev = "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a" }
-zgui-ui = { git = "https://github.com/zortax/zgui", rev = "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a" }
-zgui-image = { git = "https://github.com/zortax/zgui", rev = "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a", optional = true }
-
-raw-window-handle = { version = "0.6", optional = true }
-
-[features]
-default = []
-startup = []
-scroll = []
-virtual-scroll = []
-switches = []
-hover = ["dep:raw-window-handle"]
-memory = ["dep:zgui-image"]

@@ -1,0 +1,10 @@
+[workspace]
+
+[package]
+name = "blinc-scroll"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+blinc_app = { git = "https://github.com/project-blinc/Blinc", rev = "2ca5f509e73600e7629f70d827b4f2850f5f9eb9" }

@@ -1,0 +1,8 @@
+{
+  "id": "freya",
+  "title": "Freya Scroll 2000",
+  "renderer": "opengl",
+  "env": {
+    "FREYA_RENDERER": "opengl"
+  }
+}

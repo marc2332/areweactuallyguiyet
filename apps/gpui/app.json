@@ -1,0 +1,6 @@
+{
+  "id": "gpui",
+  "title": "GPUI Scroll 2000",
+  "renderer": "vulkan",
+  "env": {}
+}

@@ -20,6 +20,41 @@
     "not applicable"
   ],
   "claims": [
+    { "library": "blinc", "category": "Platforms", "name": "Linux", "status": "built-in", "notes": "Documented desktop Winit/WGPU Vulkan backend, not execution-validated here.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Platforms", "name": "Windows", "status": "built-in", "notes": "Documented WGPU DX12/Vulkan desktop backend, not execution-validated here.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Platforms", "name": "macOS", "status": "built-in", "notes": "Documented WGPU Metal desktop backend, not execution-validated here.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Platforms", "name": "Web", "status": "partial", "notes": "WebGPU/WASM backend is explicitly preview and requires a WebGPU-capable browser.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Platforms", "name": "Android", "status": "built-in", "notes": "Native Android NDK backend with WGPU Vulkan is documented, not execution-validated here.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Platforms", "name": "iOS", "status": "built-in", "notes": "Native UIKit/Metal backend is documented, not execution-validated here.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Rendering", "name": "GPU/software rendering", "status": "partial", "notes": "Custom WGPU SDF renderer. A software fallback was not established.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Rendering", "name": "Custom drawing", "status": "built-in", "notes": "Canvas element provides custom paint callbacks.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/canvas.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Rendering", "name": "Images", "status": "built-in", "notes": "Framework image loading and decoding crate.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_image/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Rendering", "name": "SVG", "status": "built-in", "notes": "Framework SVG parsing and rendering, not a full browser SVG DOM.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_svg/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Rendering", "name": "Clipping and transforms", "status": "built-in", "notes": "Div exposes overflow clipping, rotation, scale and translation.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/div.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Shaders", "name": "Custom shaders", "status": "built-in", "notes": "Flow shader language compiles custom effects to WGSL for the framework renderer.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_flow/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Layout and widgets", "name": "Layout models", "status": "built-in", "notes": "Declarative layout through Taffy with flexbox and sized/positioned elements.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/div.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Layout and widgets", "name": "Scrolling", "status": "built-in", "notes": "Native scroll widget with scrollbars, optional bounce physics and programmatic ScrollRef control.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/widgets/scroll.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Layout and widgets", "name": "Virtualization", "status": "built-in", "notes": "VirtualList mounts a reactive window with spacers and measured variable-height rows.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/widgets/virtual_list.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Layout and widgets", "name": "Text input", "status": "built-in", "notes": "Native single-line editable TextInput widget with caret and selection.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/widgets/text_input/mod.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Layout and widgets", "name": "Menus, tables and trees", "status": "partial", "notes": "Context/dropdown menus and table primitives are included. General tree-widget support was not established.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_cn/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Text", "name": "Selection and editing", "status": "built-in", "notes": "Text input data provides cursor movement, selection, editing and undo/redo.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/widgets/text_input/edit.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Text", "name": "IME", "status": "partial", "notes": "IME bindings and platform bridges exist. Cross-platform composition and candidate-window parity were not execution-validated.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/ime.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Text", "name": "RTL and bidirectional text", "status": "unknown", "notes": "Rustybuzz shaping is present, but complete bidirectional layout, editing and navigation were not established.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_text/src/shaper.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Animation", "name": "Transitions", "status": "built-in", "notes": "Keyframe animation, timelines and CSS motion support.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_animation/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Animation", "name": "Spring animation", "status": "built-in", "notes": "First-class spring physics with configurable damping and stiffness.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_animation/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Accessibility", "name": "Semantic tree", "status": "partial", "notes": "Platform-neutral accessibility nodes and actions exist. README still lists screen-reader semantics as ongoing work.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/accessibility.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Accessibility", "name": "Keyboard navigation", "status": "partial", "notes": "Keyboard focus routing exists. README identifies keyboard navigation in menus, overlays and OTP fields as ongoing work.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Accessibility", "name": "Focus handling", "status": "built-in", "notes": "Event router tracks focused nodes and keyboard-visible focus rings.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/event_router.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Accessibility", "name": "Assistive technology integration", "status": "partial", "notes": "An iOS semantic snapshot bridge exists. Equivalent desktop screen-reader integration was not established and accessibility remains roadmap work.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/ios/accessibility.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Integration", "name": "Clipboard", "status": "built-in", "notes": "Desktop text clipboard integration uses arboard, with native mobile bridge paths.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/widgets/text_edit.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Integration", "name": "Drag and drop", "status": "partial", "notes": "Native file-drop callback is provided. Arbitrary cross-application drag-source/data-format support was not established.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/dnd.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Integration", "name": "Dialogs", "status": "built-in", "notes": "Feature-gated native file dialogs through rfd and in-window component dialogs.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/dialog.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Integration", "name": "Multiple windows", "status": "built-in", "notes": "Desktop context opens additional native windows and exposes per-window actions.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/windowed/context/display.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Integration", "name": "Embedding", "status": "partial", "notes": "RenderTree and text measurement are exported for custom hosts. A drop-in cross-platform native-window embedding contract was not established.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/lib.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Tooling", "name": "Inspector", "status": "partial", "notes": "Standalone debugger inspects recorded UI sessions. README still lists live visual inspection as future tooling work.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_debugger/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Tooling", "name": "Hot reload", "status": "partial", "notes": "Opt-in debug hot-reload runtime integrates Subsecond and dx, with source/file watching. Not arbitrary structural live replacement.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/hot_reload.rs", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Tooling", "name": "UI testing", "status": "built-in", "notes": "Framework test-suite crate supplies UI regression tooling. API existence does not establish coverage of every platform.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_test_suite/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
+    { "library": "blinc", "category": "Tooling", "name": "Documentation and examples", "status": "built-in", "notes": "Documentation book, API reference and desktop/WebGPU examples are provided.", "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md", "reviewedVersion": "main@2ca5f509e736", "reviewedDate": "2026-11-10" },
     { "library": "zgui", "category": "Platforms", "name": "Linux", "status": "built-in", "notes": "Native Linux support with Wayland and X11 backends, not execution-validated here.", "evidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md", "reviewedVersion": "main@80baa3c7cb0f", "reviewedDate": "2026-11-09" },
     { "library": "zgui", "category": "Platforms", "name": "Windows", "status": "built-in", "notes": "Winit backend supports Windows, not execution-validated here.", "evidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/crates/zgui-platform-winit/README.md", "reviewedVersion": "main@80baa3c7cb0f", "reviewedDate": "2026-11-09" },
     { "library": "zgui", "category": "Platforms", "name": "macOS", "status": "built-in", "notes": "Winit backend supports macOS, not execution-validated here.", "evidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/crates/zgui-platform-winit/README.md", "reviewedVersion": "main@80baa3c7cb0f", "reviewedDate": "2026-11-09" },
@@ -3904,14 +3939,372 @@
       "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/README.md",
       "reviewedVersion": "dev@a9da7e3ebf5a",
       "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "Linux",
+      "status": "built-in",
+      "notes": "A native Winit/WGPU desktop Host and a separate GTK4 Linux Host are supplied.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "Windows",
+      "status": "built-in",
+      "notes": "The shared desktop Host selects Winit and WGPU DX12 on Windows.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "macOS",
+      "status": "built-in",
+      "notes": "The shared desktop Host selects Winit and WGPU Metal on macOS.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "Web",
+      "status": "built-in",
+      "notes": "The Web Host projects retained Rust frames into DOM nodes.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "Android",
+      "status": "built-in",
+      "notes": "An Android native-view Host is part of the documented cross-platform architecture.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Platforms",
+      "name": "iOS",
+      "status": "built-in",
+      "notes": "An iOS UIKit Host is supplied through the native platform distribution.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "GPU/software rendering",
+      "status": "partial",
+      "notes": "The desktop Host uses WGPU. Equivalent software-only desktop rendering was not established in this review.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/gpu/renderer.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "Custom drawing",
+      "status": "partial",
+      "notes": "Desktop native-element raster callbacks provide custom painting. A portable immediate-mode drawing API was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/element/module_definition.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "Images",
+      "status": "built-in",
+      "notes": "The first-party image module supplies image elements and desktop or web Host implementations.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/packages/whisker-image/src/lib.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "SVG",
+      "status": "built-in",
+      "notes": "The first-party SVG module supplies SVG construction and replay support.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/packages/whisker-svg/src/lib.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "Clipping and transforms",
+      "status": "built-in",
+      "notes": "The desktop scene carries transforms and clipping through retained presentation and painting.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/scene.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Shaders",
+      "name": "Custom shaders",
+      "status": "unknown",
+      "notes": "Internal WGSL pipelines exist, but a public custom-shader API was not established in the inspected source.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/gpu.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Layout and widgets",
+      "name": "Layout models",
+      "status": "built-in",
+      "notes": "The Rust runtime uses Taffy layout and structured CSS styling.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker-layout/Cargo.toml",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Layout and widgets",
+      "name": "Scrolling",
+      "status": "built-in",
+      "notes": "ScrollView provides axis selection and user scrolling while retaining every child.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker/src/builtins/mod.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Layout and widgets",
+      "name": "Virtualization",
+      "status": "built-in",
+      "notes": "The dedicated List component virtualizes keyed items. ScrollView itself is non-virtualized.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/docs/list-design.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Layout and widgets",
+      "name": "Text input",
+      "status": "built-in",
+      "notes": "The first-party input module supplies typed editable text elements with desktop Host support.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/packages/whisker-input/src/lib.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Layout and widgets",
+      "name": "Menus, tables and trees",
+      "status": "unknown",
+      "notes": "A dedicated cross-platform menu, table, or tree widget set was not established in this source review.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker/src/builtins/mod.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Text",
+      "name": "Selection and editing",
+      "status": "built-in",
+      "notes": "The desktop Host routes text selection, editing commands and clipboard shortcuts to focused text controls.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Text",
+      "name": "IME",
+      "status": "built-in",
+      "notes": "The desktop Host routes Winit IME commit and preedit events and updates the candidate cursor area.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Text",
+      "name": "RTL and bidirectional text",
+      "status": "built-in",
+      "notes": "Paragraph shaping carries text direction into Parley and preserves bidirectional paragraph geometry.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/text/paragraph.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Animation",
+      "name": "Transitions",
+      "status": "built-in",
+      "notes": "Rust-owned animation supports CSS transitions and keyframes while scheduling frames only during active work.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/docs/animation-design.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Animation",
+      "name": "Spring animation",
+      "status": "built-in",
+      "notes": "Animation configuration includes a stateful spring integrator and spring constructors.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker-animation/src/config.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Accessibility",
+      "name": "Semantic tree",
+      "status": "built-in",
+      "notes": "The retained desktop scene projects semantic nodes into AccessKit tree updates.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/accessibility.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Accessibility",
+      "name": "Keyboard navigation",
+      "status": "partial",
+      "notes": "Desktop keyboard handling covers text-editing commands. General Tab traversal across arbitrary controls was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Accessibility",
+      "name": "Focus handling",
+      "status": "partial",
+      "notes": "Focus state and AccessKit focus actions are provided. General traversal policy was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/accessibility.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Accessibility",
+      "name": "Assistive technology integration",
+      "status": "built-in",
+      "notes": "AccessKit adapters are selected for desktop platforms, including Unix accessibility support on Linux.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Integration",
+      "name": "Clipboard",
+      "status": "built-in",
+      "notes": "The desktop Host uses arboard for text copy, cut and paste shortcuts.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Integration",
+      "name": "Drag and drop",
+      "status": "unknown",
+      "notes": "A public cross-platform drag-and-drop API was not established in the inspected desktop event routing.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Integration",
+      "name": "Dialogs",
+      "status": "unknown",
+      "notes": "A built-in cross-platform dialog API was not established in the inspected public application API.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/lib.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Integration",
+      "name": "Multiple windows",
+      "status": "unknown",
+      "notes": "The standalone desktop application configuration owns one window. A public multi-window API was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Integration",
+      "name": "Embedding",
+      "status": "partial",
+      "notes": "Platform module definitions can supply native desktop elements and raster content. Embedding the entire Host into an existing application was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/element/module_definition.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Tooling",
+      "name": "Inspector",
+      "status": "unknown",
+      "notes": "Hot reload is documented, but an interactive UI or layout inspector was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Tooling",
+      "name": "Hot reload",
+      "status": "built-in",
+      "notes": "The development runtime hot-patches edited components while preserving unrelated component state.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/docs/hot-reload-internals.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Tooling",
+      "name": "UI testing",
+      "status": "partial",
+      "notes": "Host-conformance fixtures cover layout, painting and interaction contracts. A general headless user-application UI runner was not established.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker-host-conformance/src/lib.rs",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Tooling",
+      "name": "Documentation and examples",
+      "status": "built-in",
+      "notes": "Public documentation, framework guides and example applications are provided.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
     }
   ],
   "review": {
     "date": "2026-11-06",
     "scope": "Development-branch source snapshots, not the older versions pinned by benchmark adapters. Features were source-reviewed, not execution-tested on every platform.",
     "method": "Read repository documentation, manifests, API implementations, examples and regression tests at immutable commits. Built-in means a provided API, not specification completeness. Partial records a specific limitation or specialized scope. Different model identifies delegated/browser/low-level contracts. Unknown means the review did not establish the capability, not that it is absent. Unsupported requires an explicit source statement.",
-    "claimCount": 420,
+    "claimCount": 490,
     "repositories": [
+      {
+        "id": "blinc",
+        "repository": "project-blinc/Blinc",
+        "sha": "2ca5f509e73600e7629f70d827b4f2850f5f9eb9",
+        "branch": "main",
+        "commitDate": "2026-11-10T06:59:02+00:00",
+        "reviewedDate": "2026-11-10"
+      },
       {
         "id": "zgui",
         "repository": "zortax/zgui",
@@ -3997,8 +4390,16 @@
         "sha": "a9da7e3ebf5a8ab9bf19c3015032674b6e042df2",
         "commitDate": "2026-11-07T07:49:24-06:00",
         "reviewedDate": "2026-11-07"
+      },
+      {
+        "id": "whisker",
+        "repository": "whiskerrs/whisker",
+        "sha": "536dd4949e69eba99a702c703f49ce7c73531a54",
+        "branch": "main",
+        "commitDate": "2026-11-10T23:55:55+09:00",
+        "reviewedDate": "2026-11-10"
       }
     ],
-    "incrementalNote": "Rune was added on 2026-11-07 and zgui on 2026-11-09, each with its own source review date. Earlier library and claim dates remain unchanged."
+    "incrementalNote": "Rune was added on 2026-11-07, zgui on 2026-11-09 and Blinc on 2026-11-10, each with its own source review date. Earlier library and claim dates remain unchanged."
   }
 }

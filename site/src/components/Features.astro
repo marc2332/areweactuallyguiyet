@@ -1,0 +1,68 @@
+---
+import { features, libraries as sourceLibraries } from '../lib/data.mjs';
+const columnOrder = library => library.id === 'whisker' ? 2 : library.id === 'blinc' ? 1 : 0;
+const libraries = sourceLibraries.toSorted((first, second) => columnOrder(first) - columnOrder(second));
+const labels = {
+  'built-in': 'Yes (built-in)', ecosystem: 'Partially (ecosystem)', partial: 'Partially (partial)',
+  'different model': 'Different model', unsupported: 'No', unknown: 'Unknown', 'not applicable': 'N/A',
+};
+const indicators = { 'built-in': 'yes', ecosystem: 'partial', partial: 'partial', 'different model': 'different', unsupported: 'no', unknown: 'unknown', 'not applicable': 'na' };
+const legend = [
+  { kind: 'yes', label: 'Yes' },
+  { kind: 'partial', label: 'Partially' },
+  { kind: 'no', label: 'No' },
+  { kind: 'different', label: 'Different model' },
+  { kind: 'unknown', label: 'Unknown' },
+  { kind: 'na', label: 'N/A' },
+];
+const markerText = kind => kind === 'unknown' ? '?' : kind === 'na' ? 'N/A' : '';
+const provenanceLabels = { 'no-ai': 'No AI', 'ai-assisted': 'AI-assisted', 'ai-co-developed': 'AI co-developed', 'ai-led': 'AI-led', unknown: 'Unknown' };
+const fields = [
+  ['License', library => library.license ?? 'Unknown'],
+  ['Creation year', library => library.creationYear ?? 'Unknown'],
+  ['Latest release', library => library.latestRelease ?? 'Unknown'],
+  ['AI involvement', library => provenanceLabels[library.provenance.status]],
+];
+---
+<section id="features" aria-labelledby="features-heading">
+  <div class="section-heading"><h2 id="features-heading">Features</h2></div>
+  <div class="feature-legend">{legend.map(({ kind, label }) => <span><span class="status-mark" data-status={kind} aria-hidden="true">{markerText(kind)}</span>{label}</span>)}</div>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Framework feature comparison">
+    <table>
+      <caption>Select a value for evidence.</caption>
+      <thead><tr><th scope="col">Feature</th>{libraries.map(library => <th scope="col"><a href={library.repository}>{library.name}</a></th>)}</tr></thead>
+      <tbody>
+        <tr class="downloads-row"><th scope="row">Recent downloads</th>{libraries.map(library => <td>
+          {library.crate
+            ? <a href={`https://crates.io/crates/${library.crate}`}><img src={`https://img.shields.io/crates/dr/${library.crate}.svg?label=recent`} alt={`${library.name} recent downloads`} height="20" loading="lazy" /></a>
+            : <span class="muted">Not published</span>}
+        </td>)}</tr>
+        {fields.map(([name, value]) => <tr><th scope="row">{name}</th>{libraries.map(library => {
+          const provenance = name === 'AI involvement' ? library.provenance : null;
+          const firstCommit = name === 'Creation year' ? library.firstCommit : null;
+          const evidence = provenance ? provenance.evidence : library.metadataFieldEvidence?.[name] ?? library.metadataEvidence;
+          const text = String(value(library));
+          return <td><details><summary title={text}>{text.length > 25 ? `${text.slice(0, 24)}…` : text}</summary>
+            {text.length > 25 && <p>{text}</p>}
+            <p>{provenance?.scope ?? library.metadataNotes ?? 'Scope unknown.'}</p>
+            {firstCommit && <p>First available repository commit: {firstCommit.date}. This is not necessarily the project start.</p>}
+            <p>{provenance ? provenance.reviewedCommit.slice(0, 12) : library.reviewedVersion} · reviewed {provenance?.reviewedDate ?? library.reviewedDate ?? 'unknown'}</p>
+            {evidence && <a href={evidence}>Source</a>}
+          </details></td>;
+        })}</tr>)}
+        {features.categories.map(category => <>
+          <tr class="category-row"><th colspan={libraries.length + 1} scope="rowgroup">{category}</th></tr>
+          {[...new Set(features.claims.filter(claim => claim.category === category).map(claim => claim.name))].map(name => <tr>
+            <th scope="row">{name}</th>
+            {libraries.map(library => {
+              const claim = features.claims.find(claim => claim.library === library.id && claim.category === category && claim.name === name);
+              return <td class={claim.status}><details class="feature-status"><summary aria-label={`${library.name}, ${name}: ${labels[claim.status]}`} title={labels[claim.status]}><span class="status-mark" data-status={indicators[claim.status]} aria-hidden="true">{markerText(indicators[claim.status])}</span></summary>
+                <p>{labels[claim.status]}</p><p>{claim.notes}</p><p>{claim.reviewedVersion} · reviewed {claim.reviewedDate ?? 'unknown'}</p><a href={claim.evidence}>Source</a>
+              </details></td>;
+            })}
+          </tr>)}
+        </>)}
+      </tbody>
+    </table>
+  </div>
+</section>
