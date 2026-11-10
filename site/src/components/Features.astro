@@ -1,7 +1,5 @@
 ---
-import { features, libraries as sourceLibraries } from '../lib/data.mjs';
-const columnOrder = library => library.id === 'whisker' ? 2 : library.id === 'blinc' ? 1 : 0;
-const libraries = sourceLibraries.toSorted((first, second) => columnOrder(first) - columnOrder(second));
+import { features, libraries } from '../lib/data.mjs';
 const labels = {
   'built-in': 'Yes (built-in)', ecosystem: 'Partially (ecosystem)', partial: 'Partially (partial)',
   'different model': 'Different model', unsupported: 'No', unknown: 'Unknown', 'not applicable': 'N/A',

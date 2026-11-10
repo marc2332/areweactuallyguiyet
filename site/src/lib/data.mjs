@@ -5,7 +5,9 @@ import { validateHistory } from './history.mjs';
 import { collectionDetails, frameworkColor, frameworkVersionsForScenario, groupMetricResults, metricLabels, responsivenessDetails } from './chart-data.mjs';
 
 const load = async name => JSON.parse(await readFile(resolve(process.cwd(), 'data', `${name}.json`), 'utf8'));
-export const { libraries } = validateLibraries(await load('libraries'));
+const { libraries: sourceLibraries } = validateLibraries(await load('libraries'));
+const columnOrder = library => library.id === 'whisker' ? 2 : library.id === 'blinc' ? 1 : 0;
+export const libraries = sourceLibraries.toSorted((first, second) => columnOrder(first) - columnOrder(second));
 export const features = validateFeatures(await load('features'), libraries);
 const history = validateHistory(await load('history'));
 const baseNames = Object.fromEntries(libraries.map(library => [library.id, library.name]));
@@ -39,7 +41,13 @@ export const dashboard = {
         profile: run.metadata.buildProfile ?? 'Unknown profile',
         timing: collectionDetails(run).timing,
         responsiveness: responsivenessDetails(run),
-        frameworks: [...new Set(run.results.map(result => result.framework))].map(id => ({ id, name: names[id] ?? id, color: frameworkColor(id) })),
+        frameworks: [...new Set(run.results.map(result => result.framework))]
+          .sort((first, second) => {
+            const firstBase = run.metadata.frameworkBaseIds?.[first] ?? first;
+            const secondBase = run.metadata.frameworkBaseIds?.[second] ?? second;
+            return libraries.findIndex(library => library.id === firstBase) - libraries.findIndex(library => library.id === secondBase);
+          })
+          .map(id => ({ id, name: names[id] ?? id, color: frameworkColor(id) })),
         groups: Object.fromEntries(Object.keys(metrics).map(metric => [metric, groupMetricResults(run, metric).map(group => ({
           ...group,
           versions: frameworkVersionsForScenario(run, group.scenario),
