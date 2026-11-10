@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "runs": [
     {
-      "id": "mangohud-56591d00-e0bd-4a58-a9f3-2614283255e4",
+      "id": "56591d00-e0bd-4a58-a9f3-2614283255e4",
       "collectedAt": "2026-11-10T19:33:28.144903+00:00",
       "machine": {
         "id": "unreported",

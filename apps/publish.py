@@ -100,7 +100,7 @@ def website_run(source, apps, libraries):
     duration, warmup, fps_limit, vsync, rate = configurations.pop()
     metadata.update({"durationSeconds": duration, "warmupSeconds": warmup, "fpsLimit": fps_limit,
                      "vsync": vsync, "wheelRateHz": rate, "repetitions": max(map(len, samples.values()))})
-    return {"id": "mangohud-" + source["id"], "collectedAt": source["timestamp"],
+    return {"id": source["id"], "collectedAt": source["timestamp"],
             "machine": {"id": "unreported", "label": "External MangoHud capture", "os": source.get("system", {}).get("os"), "cpu": None, "gpu": None},
             "results": results, "metadata": metadata}
 
