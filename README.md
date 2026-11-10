@@ -1,6 +1,6 @@
 # [Are we actually GUI yet?](https://areweactuallyguiyet.mespin.me/)
 
-Rust GUI feature comparisons and standalone scroll and dashboard benchmarks.
+Rust GUI features and benchmarks comparisons.
 
 
 ```sh
