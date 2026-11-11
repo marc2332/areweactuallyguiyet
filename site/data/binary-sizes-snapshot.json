@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "collectedAt": "2026-11-10T20:17:30.924889+00:00",
+  "collectedAt": "2026-11-11T08:34:00.163789+00:00",
   "platform": {
     "os": "Linux",
     "architecture": "x86_64"
   },
-  "profile": "release",
+  "profile": "production",
   "method": "Executable file size as built, no additional stripping or compression. Shared libraries and external assets excluded.",
   "results": [
     {
       "framework": "blinc",
       "name": "Blinc",
       "binary": "blinc-scroll",
-      "bytes": 24572192,
+      "bytes": 15800240,
       "dependencies": {
         "blinc_app": {
           "git": "https://github.com/project-blinc/Blinc",
@@ -24,8 +24,20 @@
       "framework": "dioxus-native",
       "name": "Dioxus Native",
       "binary": "dioxus-native-scroll",
-      "bytes": 31506640,
+      "bytes": 18404784,
       "dependencies": {
+        "base64": {
+          "version": "=0.22.1",
+          "optional": true
+        },
+        "image": {
+          "version": "=0.25.6",
+          "default-features": false,
+          "features": [
+            "png"
+          ],
+          "optional": true
+        },
         "dioxus-native": {
           "version": "=0.8.0-alpha.3",
           "default-features": false,
@@ -40,12 +52,33 @@
       "framework": "dioxus-native-vello-hybrid",
       "name": "Dioxus Native Vello Hybrid",
       "binary": "dioxus-native-vello-hybrid-scroll",
-      "bytes": 33985792,
+      "bytes": 19579184,
       "dependencies": {
+        "base64": {
+          "version": "=0.22.1",
+          "optional": true
+        },
+        "image": {
+          "version": "=0.25.10",
+          "default-features": false,
+          "features": [
+            "png"
+          ],
+          "optional": true
+        },
         "dioxus-native-scroll": {
           "path": "../dioxus-native",
           "default-features": false,
           "features": [
+            "vello-hybrid"
+          ]
+        },
+        "dioxus-native": {
+          "version": "=0.8.0-alpha.3",
+          "default-features": false,
+          "features": [
+            "prelude",
+            "system-fonts",
             "vello-hybrid"
           ]
         }
@@ -55,7 +88,7 @@
       "framework": "egui",
       "name": "egui",
       "binary": "egui-scroll",
-      "bytes": 8783304,
+      "bytes": 5782128,
       "dependencies": {
         "eframe": {
           "version": "=0.37.0",
@@ -65,6 +98,14 @@
             "glow",
             "x11"
           ]
+        },
+        "image": {
+          "version": "=0.25.10",
+          "default-features": false,
+          "features": [
+            "png"
+          ],
+          "optional": true
         }
       }
     },
@@ -72,7 +113,7 @@
       "framework": "floem",
       "name": "Floem",
       "binary": "floem-scroll",
-      "bytes": 21347112,
+      "bytes": 13358072,
       "dependencies": {
         "floem": "=0.2.0"
       }
@@ -81,7 +122,7 @@
       "framework": "freya",
       "name": "Freya",
       "binary": "freya-scroll",
-      "bytes": 34740256,
+      "bytes": 26042112,
       "dependencies": {
         "freya": "=0.5.1"
       }
@@ -90,7 +131,7 @@
       "framework": "freya-optimized",
       "name": "Freya (Optimized)",
       "binary": "freya-optimized-scroll",
-      "bytes": 34771808,
+      "bytes": 26038344,
       "dependencies": {
         "freya": {
           "git": "https://github.com/marc2332/freya",
@@ -102,7 +143,7 @@
       "framework": "gpui",
       "name": "GPUI",
       "binary": "gpui-scroll",
-      "bytes": 23481592,
+      "bytes": 13572384,
       "dependencies": {
         "gpui": "=0.2.2"
       }
@@ -111,7 +152,7 @@
       "framework": "gpui-fast",
       "name": "GPUI Fast",
       "binary": "gpui-fast-scroll",
-      "bytes": 36251136,
+      "bytes": 22037392,
       "dependencies": {
         "gpui": {
           "package": "gpui-fast",
@@ -131,7 +172,7 @@
       "framework": "iced",
       "name": "Iced",
       "binary": "iced-scroll",
-      "bytes": 13868424,
+      "bytes": 8569224,
       "dependencies": {
         "iced": {
           "version": "=0.14.0",
@@ -142,6 +183,14 @@
             "thread-pool",
             "crisp"
           ]
+        },
+        "image": {
+          "version": "=0.25.10",
+          "default-features": false,
+          "features": [
+            "png"
+          ],
+          "optional": true
         }
       }
     },
@@ -149,7 +198,7 @@
       "framework": "makepad",
       "name": "Makepad",
       "binary": "makepad-scroll",
-      "bytes": 8058176,
+      "bytes": 6088984,
       "dependencies": {
         "makepad-widgets": "=1.0.0"
       }
@@ -158,7 +207,7 @@
       "framework": "rune",
       "name": "Rune",
       "binary": "rune-scroll",
-      "bytes": 34843688,
+      "bytes": 22785256,
       "dependencies": {
         "rune": {
           "git": "https://github.com/anomalyco/rune",
@@ -170,7 +219,7 @@
       "framework": "slint",
       "name": "Slint",
       "binary": "slint-scroll",
-      "bytes": 18074312,
+      "bytes": 11970024,
       "dependencies": {
         "slint": {
           "version": "=1.18.1",
@@ -188,7 +237,7 @@
       "framework": "vizia",
       "name": "Vizia",
       "binary": "vizia-scroll",
-      "bytes": 35796000,
+      "bytes": 27212536,
       "dependencies": {
         "vizia": {
           "git": "https://github.com/vizia/vizia",
@@ -203,7 +252,7 @@
       "framework": "whisker",
       "name": "Whisker",
       "binary": "whisker-scroll",
-      "bytes": 31570808,
+      "bytes": 20507472,
       "dependencies": {
         "whisker": {
           "git": "https://github.com/whiskerrs/whisker",
@@ -212,6 +261,26 @@
         "whisker-desktop": {
           "git": "https://github.com/whiskerrs/whisker",
           "rev": "536dd4949e69eba99a702c703f49ce7c73531a54"
+        },
+        "whisker-image": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54",
+          "optional": true
+        },
+        "whisker-input": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54",
+          "optional": true
+        },
+        "whisker-image-desktop": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54",
+          "optional": true
+        },
+        "whisker-input-desktop": {
+          "git": "https://github.com/whiskerrs/whisker",
+          "rev": "536dd4949e69eba99a702c703f49ce7c73531a54",
+          "optional": true
         }
       }
     },
@@ -219,7 +288,7 @@
       "framework": "zgui",
       "name": "zgui",
       "binary": "zgui-scroll",
-      "bytes": 47059048,
+      "bytes": 27654384,
       "dependencies": {
         "zgui": {
           "git": "https://github.com/zortax/zgui",

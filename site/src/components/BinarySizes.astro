@@ -4,12 +4,13 @@ const number = value => value.toLocaleString('en-US', { maximumFractionDigits: 4
 ---
 <section id="binary-sizes" aria-labelledby="binary-sizes-heading">
   <div class="section-heading"><h2 id="binary-sizes-heading">Binary sizes</h2><a href="/data/binary-sizes.json" download>JSON ↓</a></div>
-  <p class="measurement-label">Release executable size (MiB) · Lower is smaller.</p>
-  <p class="muted">{binarySizes.platform.os} · {binarySizes.platform.architecture} · cargo build --release --locked · No additional stripping · Collected <time datetime={binarySizes.collectedAt}>{binarySizes.collectedAt.slice(0, 10)}</time>.</p>
+  <p class="measurement-label">{binarySizes.group.label} size (MiB) · Lower is smaller.</p>
+  <p class="muted">{binarySizes.platform.os} · {binarySizes.platform.architecture} · {`cargo build --profile ${binarySizes.profile} --locked`} · {binarySizes.profile === 'production' ? 'LTO · 1 codegen unit · Stripped' : 'No additional stripping'} · Collected <time datetime={binarySizes.collectedAt}>{binarySizes.collectedAt.slice(0, 10)}</time>.</p>
+  {binarySizes.pendingFrameworks?.length > 0 && <p class="notice">Production rebuild incomplete: {binarySizes.results.length} executables measured, {binarySizes.pendingFrameworks.length} pending.</p>}
   <div class="chart-panel">
     <p id="binary-size-status" role="status">Loading binary size chart…</p>
     <div id="binary-size-frame" class="compact-chart-frame" tabindex="0" role="region" aria-label="Binary size plot, scroll horizontally on small screens" hidden>
-      <div id="binary-size-chart" class="echart" role="img" aria-label="Release executable file sizes in MiB for each GUI app. Exact values are in the following expandable table."></div>
+      <div id="binary-size-chart" class="echart" role="img" aria-label="Executable file sizes in MiB for each GUI app. Exact values are in the following expandable table."></div>
     </div>
     <details class="binary-size-data">
       <summary>Values ({binarySizes.results.length} executables)</summary>

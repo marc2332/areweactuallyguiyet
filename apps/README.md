@@ -61,6 +61,27 @@ python3 apps/publish.py results/apps/<run-id>/run.json --save --latest
 
 Requires MangoHud, X11/XWayland, `xwininfo`, `xprop`, and the X11 input libraries. Dependencies are pinned in each app's manifest and lockfile. The runner builds with `--no-default-features --features <benchmark>` plus the app's default renderer features, and retains a benchmark-specific executable copy. Direct Dioxus Native commands also need `skia`, for example `--features dashboard,skia`. `--no-build` uses those copies, so first build each app and benchmark with `bench.py`, not just `cargo build`.
 
+## Binary sizes
+
+```sh
+just binary-sizes
+```
+
+This rebuilds all 16 scroll apps with `cargo build --profile production --locked` and updates `site/data/binary-sizes-snapshot.json`. Each app defines this profile:
+
+```toml
+[profile.production]
+inherits = "release"
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
+strip = true
+incremental = false
+```
+
+Sizes measure the resulting executable without additional stripping or compression. Shared libraries and external assets are excluded. Production executable copies are separate from release runtime-benchmark copies. `just binary-sizes --no-build` reuses only production copies previously built by this command.
+
 ## Persistence and artifacts
 
 Neither command opens or changes history without `--save`. `--history` alone only selects a destination. Explicit saves use locking and atomic replacement and reject incompatible measurement identities. Artifacts and `run.json` are written under `results/apps/<run-id>/` regardless of saving. Application logs and failures remain available there. Interrupted runs do not save history.

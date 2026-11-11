@@ -23,10 +23,11 @@ class BinarySizesTests(unittest.TestCase):
                 snapshot = sizes.collect(apps, output, True)
             self.assertEqual(build.call_count, 2)
             self.assertTrue(all(call.args[2] for call in build.call_args_list))
+            self.assertTrue(all(call.kwargs == {"profile": "production"} for call in build.call_args_list))
             self.assertEqual(snapshot["results"][0]["bytes"], 1234)
             self.assertEqual(snapshot["results"][1]["name"], "Freya (Optimized)")
             self.assertEqual(snapshot["results"][0]["dependencies"], {"freya": "=0.5.1"})
-            self.assertEqual(snapshot["profile"], "release")
+            self.assertEqual(snapshot["profile"], "production")
             json.dumps(snapshot, allow_nan=False)
 
 

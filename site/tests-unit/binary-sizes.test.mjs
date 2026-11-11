@@ -6,7 +6,7 @@ const snapshot = () => ({
   schemaVersion: 1,
   collectedAt: '2026-11-10T12:00:00Z',
   platform: { os: 'Linux', architecture: 'x86_64' },
-  profile: 'release',
+  profile: 'production',
   method: 'As built',
   results: [{ framework: 'freya', name: 'Freya', binary: 'freya-scroll', bytes: 1572864 }],
 });
@@ -21,6 +21,8 @@ test('binary sizes convert bytes to MiB without inventing repetitions', () => {
   assert.equal(chart.description.kind, 'size');
   assert.equal(chart.frameworks[0].color, '#34d399');
   assert.equal(chart.group.detail, 'Linux · x86_64');
+  assert.equal(chart.group.label, 'Production executable');
+  assert.equal(binarySizeChart({ ...snapshot(), profile: 'release' }).group.label, 'Release executable');
 });
 
 test('binary sizes reject invalid measurements and duplicate frameworks', () => {
@@ -34,4 +36,5 @@ test('binary sizes reject invalid measurements and duplicate frameworks', () => 
   assert.throws(() => binarySizeChart(duplicate));
   assert.throws(() => binarySizeChart({ ...snapshot(), results: [] }));
   assert.throws(() => binarySizeChart({ ...snapshot(), collectedAt: 'invalid' }));
+  assert.throws(() => binarySizeChart({ ...snapshot(), profile: 'dev' }));
 });

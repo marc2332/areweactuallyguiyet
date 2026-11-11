@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect release executable file sizes without launching the GUI apps."""
+"""Collect production executable file sizes without launching the GUI apps."""
 import argparse
 import datetime
 import json
@@ -16,7 +16,7 @@ import bench
 def collect(apps, output, skip_build):
     results = []
     for app in apps.values():
-        binary = bench.build(app, output, skip_build)
+        binary = bench.build(app, output, skip_build, profile="production")
         manifest = tomllib.loads(app["manifest"].read_text())
         name = app["title"].removesuffix(" Scroll 2000")
         base = next((identifier for identifier in sorted(apps, key=len, reverse=True)
@@ -34,7 +34,7 @@ def collect(apps, output, skip_build):
         "schemaVersion": 1,
         "collectedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "platform": {"os": platform.system(), "architecture": platform.machine()},
-        "profile": "release",
+        "profile": "production",
         "method": "Executable file size as built, no additional stripping or compression. Shared libraries and external assets excluded.",
         "results": results,
     }
@@ -42,7 +42,7 @@ def collect(apps, output, skip_build):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--no-build", action="store_true", help="Measure existing release binaries without rebuilding")
+    parser.add_argument("--no-build", action="store_true", help="Measure existing production binaries without rebuilding")
     parser.add_argument("--output", type=Path, default=bench.ROOT / "site/data/binary-sizes-snapshot.json")
     arguments = parser.parse_args()
     try:

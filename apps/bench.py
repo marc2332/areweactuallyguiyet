@@ -85,14 +85,14 @@ def new_run(command, benchmark="scroll"):
     }
 
 
-def build(app, output, skip_build, benchmark="scroll"):
+def build(app, output, skip_build, benchmark="scroll", profile="release"):
     manifest = str(app["manifest"])
     defaults = tomllib.loads(app["manifest"].read_text()).get("features", {}).get("default", [])
     features = ",".join([benchmark, *(feature for feature in defaults if feature not in ("scroll", "dashboard"))])
     if not skip_build:
-        print(f"Building {app['id']} ({benchmark})...", file=sys.stderr)
+        print(f"Building {app['id']} ({benchmark}, {profile})...", file=sys.stderr)
         with (output / f"build-{app['id']}.log").open("w") as log:
-            subprocess.run(["cargo", "build", "--release", "--locked", "--manifest-path", manifest,
+            subprocess.run(["cargo", "build", "--profile", profile, "--locked", "--manifest-path", manifest,
                             "--no-default-features", "--features", features],
                            stdout=log, stderr=subprocess.STDOUT, check=True)
     metadata = json.loads(subprocess.check_output([
@@ -102,13 +102,16 @@ def build(app, output, skip_build, benchmark="scroll"):
     binaries = [target["name"] for target in package["targets"] if "bin" in target["kind"]]
     if len(binaries) != 1:
         raise ValueError(f"Expected exactly one binary for {app['id']}")
-    binary = Path(metadata["target_directory"]) / "release" / binaries[0]
-    selected = Path(metadata["target_directory"]) / "benchmarks" / benchmark / app["id"] / binary.name
+    binary = Path(metadata["target_directory"]) / profile / binaries[0]
+    selected = Path(metadata["target_directory"]) / "benchmarks" / benchmark / app["id"]
+    if profile != "release":
+        selected /= profile
+    selected /= binary.name
     if not skip_build:
         selected.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(binary, selected)
     if not selected.is_file():
-        raise ValueError(f"Missing {benchmark} release binary: {selected}. Build it with bench.py first")
+        raise ValueError(f"Missing {benchmark} {profile} binary: {selected}. Rebuild without --no-build first")
     return selected
 
 

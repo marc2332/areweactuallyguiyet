@@ -118,7 +118,7 @@ test('compact plots share a workload row with readable inline labels', async ({ 
 test('redesign uses monochrome styling with green accents and Whisker last', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#run')).toBeEnabled();
-  await expect(page.locator('h1')).toHaveText('are we actually GUI yet?');
+  await expect(page.locator('h1')).toHaveText('are we actually GUI yet? 🚧 experimental');
   await expect(page.locator('#bench-heading')).toHaveText('Benchmarks');
   await expect(page.locator('#features-heading')).toHaveText('Features');
   await expect(page.locator('#features thead th').last()).toHaveText('Whisker');

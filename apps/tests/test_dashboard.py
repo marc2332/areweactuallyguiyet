@@ -104,7 +104,7 @@ class DashboardTests(unittest.TestCase):
             self.assertEqual(arguments.fps_limit, 0)
             self.assertTrue(arguments.no_vsync)
 
-    def test_build_copies_feature_binary_and_no_build_never_uses_another_scenario(self):
+    def test_build_keeps_features_and_profiles_separate(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = root / "Cargo.toml"
@@ -121,6 +121,16 @@ class DashboardTests(unittest.TestCase):
                 command = build.call_args.args[0]
                 self.assertEqual(command[-3:], ["--no-default-features", "--features", "scroll"])
                 self.assertEqual(selected.read_bytes(), b"scroll executable")
+                with self.assertRaisesRegex(ValueError, "Missing scroll production binary"):
+                    bench.build(app, root, True, profile="production")
+                production_binary = root / "production" / "example"
+                production_binary.parent.mkdir()
+                production_binary.write_bytes(b"production executable")
+                production = bench.build(app, root, False, profile="production")
+                self.assertEqual(build.call_args.args[0][2:4], ["--profile", "production"])
+                self.assertNotEqual(production, selected)
+                self.assertEqual(production.read_bytes(), b"production executable")
+                self.assertEqual(bench.build(app, root, True, profile="production"), production)
                 binary.write_bytes(b"dashboard executable")
                 self.assertEqual(bench.build(app, root, True, "scroll").read_bytes(), b"scroll executable")
                 with self.assertRaisesRegex(ValueError, "Missing dashboard release binary"):

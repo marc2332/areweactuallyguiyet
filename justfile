@@ -31,7 +31,7 @@ bench-build framework="freya" benchmark="scroll":
 bench *args:
     python3 apps/bench.py run "$@"
 
-# Collect release executable sizes for the website without launching apps.
+# Build production executables and collect their sizes for the website without launching apps.
 binary-sizes *args:
     python3 apps/sizes.py "$@"
 

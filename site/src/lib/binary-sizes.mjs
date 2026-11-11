@@ -1,7 +1,7 @@
 import { frameworkColor } from './chart-data.mjs';
 
 export function binarySizeChart(snapshot) {
-  if (snapshot.schemaVersion !== 1 || !Number.isFinite(Date.parse(snapshot.collectedAt)) || snapshot.profile !== 'release'
+  if (snapshot.schemaVersion !== 1 || !Number.isFinite(Date.parse(snapshot.collectedAt)) || !['release', 'production'].includes(snapshot.profile)
     || !snapshot.platform?.os || !snapshot.platform?.architecture || !snapshot.method || !Array.isArray(snapshot.results) || !snapshot.results.length) {
     throw new Error('Invalid binary size snapshot');
   }
@@ -18,7 +18,7 @@ export function binarySizeChart(snapshot) {
     description: { label: 'Binary size', unit: 'MiB', kind: 'size' },
     group: {
       scenario: 'binary-size',
-      label: 'Release executable',
+      label: snapshot.profile === 'production' ? 'Production executable' : 'Release executable',
       detail: `${snapshot.platform.os} · ${snapshot.platform.architecture}`,
       versions: Object.fromEntries(snapshot.results.map(result => [result.framework, result.binary])),
       points: snapshot.results.map(result => {
