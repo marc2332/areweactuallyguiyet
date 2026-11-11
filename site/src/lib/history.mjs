@@ -1,5 +1,5 @@
 const statuses = new Set(['ok', 'unsupported', 'unavailable', 'failed', 'timed-out', 'invalid-output']);
-const metricUnits = { startup_ms: 'ms', cpu_ms: 'ms', rss_mib: 'MiB', pss_mib: 'MiB', peak_rss_mib: 'MiB', renderer_frames: 'frames', renderer_fps: 'frames/s', frame_gap_p95_ms: 'ms', frame_gap_p99_ms: 'ms', frame_gap_max_ms: 'ms', dashboard_present_median_ms: 'ms', dashboard_present_p95_ms: 'ms', dashboard_present_max_ms: 'ms', dashboard_worst_gap_ms: 'ms' };
+const metricUnits = { dashboard_rss_min_mib: 'MiB', dashboard_rss_mean_mib: 'MiB', dashboard_rss_max_mib: 'MiB', startup_ms: 'ms', cpu_ms: 'ms', rss_mib: 'MiB', pss_mib: 'MiB', peak_rss_mib: 'MiB', renderer_frames: 'frames', renderer_fps: 'frames/s', frame_gap_p95_ms: 'ms', frame_gap_p99_ms: 'ms', frame_gap_max_ms: 'ms', dashboard_present_median_ms: 'ms', dashboard_present_p95_ms: 'ms', dashboard_present_max_ms: 'ms', dashboard_worst_gap_ms: 'ms' };
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const exactKeys = (value, keys) => object(value) && Object.keys(value).sort().join(',') === [...keys].sort().join(',');
 

@@ -43,6 +43,8 @@ select { width: 100%; min-width: 0; padding: 9px 8px; color: #e6e6e2; background
 .framework-toggle[aria-pressed="false"] { opacity: .4; text-decoration: line-through; }
 .workload-section { padding: 24px 0; }
 .workload-section + .workload-section { border-top: 1px solid var(--line); }
+.workload-section.workload-has-continuation { padding-bottom: 8px; }
+.workload-section.workload-continuation { padding-top: 8px; border-top: 0; }
 .workload-section h3 { margin: 0 0 8px; font-size: 15px; }
 .workload-section > .muted { margin: 0 0 14px; }
 .measurement-label { margin: 0 0 6px; font-size: 12px; }

@@ -3,6 +3,7 @@ import { scenarioLabels } from './chart-data.mjs';
 const definitions = [
   { scenario: 'scroll', metrics: ['renderer_fps', 'cpu_ms'] },
   { scenario: 'dashboard', metrics: ['dashboard_worst_gap_ms'] },
+  { scenario: 'dashboard', metrics: ['dashboard_rss_mean_mib'] },
 ];
 
 export function workloadSections(run) {

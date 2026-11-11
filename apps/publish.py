@@ -181,7 +181,17 @@ def dashboard_website_run(source, apps, libraries):
                         or not math.isclose(worst, max([trailing, *intervals]), rel_tol=1e-9, abs_tol=1e-9)):
                     raise ValueError("Dashboard worst gap does not match the full eight-second window")
                 repetition_metrics["dashboard_worst_gap_ms"] = {"value": worst, "unit": "ms"}
-            repetitions.append({"index": index - 1, "metrics": repetition_metrics, "status": "ok", "events": [{
+            memory = capture.get("memory")
+            if memory:
+                memory_samples = memory["samples_mib"]
+                if not memory_samples or not all(isinstance(value, (int, float)) and not isinstance(value, bool)
+                                                 and math.isfinite(value) and value >= 0 for value in memory_samples):
+                    raise ValueError("Invalid dashboard memory samples")
+                for name, value in (("min", min(memory_samples)), ("mean", statistics.mean(memory_samples)),
+                                    ("max", max(memory_samples))):
+                    repetition_metrics[f"dashboard_rss_{name}_mib"] = {"value": value, "unit": "MiB"}
+            events = [{"event": "dashboard-memory", "trace": memory}] if memory else []
+            events.append({
                 "event": "dashboard-present-intervals", "trace": {
                     "boundary": BOUNDARY, "csv": capture["csv"], "timing_scope": metrics["timing_scope"],
                     "per_frame": metrics["per_frame"], "actions": capture["actions"],
@@ -191,7 +201,8 @@ def dashboard_website_run(source, apps, libraries):
                         "measurement_duration_s", "trailing_gap_ms") if key in metrics},
                     "timing_validation": capture.get("timing_validation", {}),
                 },
-            }]})
+            })
+            repetitions.append({"index": index - 1, "metrics": repetition_metrics, "status": "ok", "events": events})
             version = dependency_versions(capture["dependencies"])
             previous = metadata["frameworkVersions"].setdefault(identifier, version)
             if previous != version:
@@ -200,8 +211,18 @@ def dashboard_website_run(source, apps, libraries):
         aggregate = {}
         for metric in {metric for repetition in successful for metric in repetition["metrics"]}:
             values = [repetition["metrics"][metric] for repetition in successful if metric in repetition["metrics"]]
-            combine = max if metric == "dashboard_worst_gap_ms" else statistics.median
-            aggregate[metric] = {"value": combine(value["value"] for value in values), "unit": "ms"}
+            combine = statistics.median
+            if metric in ("dashboard_worst_gap_ms", "dashboard_rss_max_mib"):
+                combine = max
+            elif metric == "dashboard_rss_min_mib":
+                combine = min
+            if metric == "dashboard_rss_mean_mib":
+                all_samples = [sample for capture in captures if capture["status"] == "ok"
+                               for sample in capture.get("memory", {}).get("samples_mib", [])]
+                value = statistics.mean(all_samples)
+            else:
+                value = combine(value["value"] for value in values)
+            aggregate[metric] = {"value": value, "unit": values[0]["unit"]}
         results.append({"framework": identifier, "scenario": "dashboard",
                         "scenarioVersion": DASHBOARD_MEASUREMENTS[source["measurement"]],
                         "status": "ok" if successful else "failed", "reason": " · ".join(failures) or None,

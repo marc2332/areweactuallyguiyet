@@ -321,7 +321,19 @@ def capture_dashboard(app, binary, output, arguments):
                         time.sleep(0.005)
                         poll()
                     start_ns = trace.frames[-1].elapsed_ns
-                    workload = dashboard.exercise(input, poll, arguments.rate)
+                    memory_samples = []
+                    next_memory_sample = time.monotonic()
+
+                    def poll_workload():
+                        nonlocal next_memory_sample
+                        poll()
+                        now = time.monotonic()
+                        if now >= next_memory_sample:
+                            resident_pages = int(Path(f"/proc/{process.pid}/statm").read_text().split()[1])
+                            memory_samples.append(resident_pages * os.sysconf("SC_PAGE_SIZE") / 1024 ** 2)
+                            next_memory_sample = now + 0.05
+
+                    workload = dashboard.exercise(input, poll_workload, arguments.rate)
                     end_ns = start_ns + round(workload["duration_s"] * 1e9)
                     deadline = time.monotonic() + arguments.startup_timeout
                     while trace.frames[-1].elapsed_ns < end_ns:
@@ -361,6 +373,10 @@ def capture_dashboard(app, binary, output, arguments):
                     "actual_workload_duration_s": workload["actual_duration_s"],
                     "phases": workload["phases"], "actions": workload["actions"],
                     "csv": str(trace.path), "metrics": metrics,
+                    "memory": {"minimum_mib": min(memory_samples),
+                               "average_mib": sum(memory_samples) / len(memory_samples),
+                               "maximum_mib": max(memory_samples), "samples_mib": memory_samples,
+                               "sample_interval_s": 0.05, "scope": "Application process RSS during the dashboard workload"},
                     "input_scope": "Fixed XTest actions sent to the window. Widget effects are not automatically verified.",
                     "mangohud_control": messages.decode(errors="replace"), "timing_validation": validation,
                 }

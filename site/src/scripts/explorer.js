@@ -17,14 +17,14 @@ const resizeObserver = new ResizeObserver(() => charts.forEach(chart => chart.re
 const chartContainer = document.querySelector('#charts');
 resizeObserver.observe(chartContainer);
 
-function dataTable(points, missing, frameworks, versions) {
+function dataTable(points, missing, frameworks, versions, description) {
   const details = element('details', undefined, 'chart-data');
   details.append(element('summary', `Values and unavailable results (${points.length + missing.length})`));
   const scroll = element('div', undefined, 'table-scroll');
   const table = element('table');
   const head = element('thead');
   const headings = element('tr');
-  for (const title of ['Framework', 'Version', 'Median', 'Range', 'Samples / status']) headings.append(element('th', title));
+  for (const title of ['Framework', 'Version', description.kind === 'memory' ? 'Average' : 'Median', 'Range', 'Repetitions / status']) headings.append(element('th', title));
   head.append(headings);
   const body = element('tbody');
   for (const point of [...points, ...missing]) {
@@ -59,16 +59,25 @@ async function start() {
     status.hidden = workloads.some(workload => workload.groups.length);
     status.textContent = 'This collection has no compatible measurements for these workloads.';
     const frameworks = new Map(selected.frameworks.map(framework => [framework.id, framework]));
+    let previousScenario;
+    let workloadHeading;
     for (const workload of workloads) {
       const { metric } = workload;
       const description = dashboard.metrics[metric];
       const section = element('section', undefined, 'workload-section');
       section.dataset.scenario = workload.scenario;
       section.dataset.metric = metric;
-      const heading = element('h3', workload.label);
-      heading.id = `workload-${workload.scenario}`;
-      section.setAttribute('aria-labelledby', heading.id);
-      section.append(heading, element('p', `${description.label} (${description.unit})`, 'measurement-label'));
+      if (workload.scenario !== previousScenario) {
+        workloadHeading = element('h3', workload.label);
+        workloadHeading.id = `workload-${workload.scenario}-${metric}`;
+        section.append(workloadHeading);
+      } else {
+        section.classList.add('workload-continuation');
+        chartContainer.lastElementChild?.classList.add('workload-has-continuation');
+      }
+      previousScenario = workload.scenario;
+      section.setAttribute('aria-labelledby', workloadHeading.id);
+      section.append(element('p', `${description.label} (${description.unit})`, 'measurement-label'));
       if (description.note) section.append(element('p', description.note, 'muted'));
       chartContainer.append(section);
       if (!workload.groups.length) section.append(element('p', 'This collection has no compatible measurements for this workload.', 'notice'));
@@ -93,7 +102,7 @@ async function start() {
           panel.append(element('p', group.points.length ? 'No measured frameworks are visible. Use “Show all” to restore them.' : 'No successful measurements in this collection. See unavailable results below.', 'notice'));
           for (const point of missing) panel.append(element('p', `${frameworks.get(point.framework)?.name ?? point.framework}: no data`, 'muted'));
         }
-        panel.append(dataTable(points, missing, frameworks, group.versions));
+        panel.append(dataTable(points, missing, frameworks, group.versions, description));
       }
     }
     for (const button of document.querySelectorAll('#toggles button')) button.setAttribute('aria-pressed', String(!hidden.has(button.dataset.framework)));

@@ -68,6 +68,26 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(trace["actions"][0]["action"], "click")
         self.assertNotIn("renderer_fps", result["metrics"])
 
+    def test_dashboard_memory_uses_sample_mean_and_extremes(self):
+        source = dashboard_source()
+        source["results"][0]["memory"] = {"samples_mib": [10, 20, 60]}
+        second = copy.deepcopy(source["results"][0])
+        second.update(repetition=2, memory={"samples_mib": [30]})
+        source["results"].append(second)
+        result = publish.website_run(source, self.apps, self.libraries)["results"][0]
+        self.assertEqual(result["metrics"]["dashboard_rss_min_mib"], {"value": 10, "unit": "MiB"})
+        self.assertEqual(result["metrics"]["dashboard_rss_mean_mib"], {"value": 30, "unit": "MiB"})
+        self.assertEqual(result["metrics"]["dashboard_rss_max_mib"], {"value": 60, "unit": "MiB"})
+        self.assertEqual(result["repetitions"][0]["events"][0]["trace"]["samples_mib"], [10, 20, 60])
+
+    def test_dashboard_memory_rejects_invalid_samples(self):
+        for samples in ([], [-1], [float("nan")], [True]):
+            with self.subTest(samples=samples):
+                source = dashboard_source()
+                source["results"][0]["memory"] = {"samples_mib": samples}
+                with self.assertRaisesRegex(ValueError, "Invalid dashboard memory"):
+                    publish.website_run(source, self.apps, self.libraries)
+
     def test_full_window_worst_gap_uses_the_worst_repetition(self):
         source = dashboard_source()
         source["measurement"] = dashboard.MEASUREMENT
