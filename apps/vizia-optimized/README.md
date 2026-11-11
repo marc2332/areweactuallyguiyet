@@ -11,5 +11,5 @@ just app vizia-optimized dashboard
 Run automated dashboard captures:
 
 ```sh
-python3 apps/bench.py run vizia-optimized --benchmark dashboard --repetitions 2
+python3 apps/bench.py dashboard vizia-optimized --repetitions 2
 ```

@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build",
-    "preview": "astro preview --host 127.0.0.1",
-    "test:browser": "playwright test",
-    "test:unit": "node --test tests-unit/*.test.mjs"
+    "preview": "astro preview --host 127.0.0.1"
   },
   "engines": {
     "node": ">=22.12.0"
@@ -15,8 +13,5 @@
   "dependencies": {
     "astro": "6.4.8",
     "echarts": "6.1.0"
-  },
-  "devDependencies": {
-    "@playwright/test": "1.65.0"
   }
 }

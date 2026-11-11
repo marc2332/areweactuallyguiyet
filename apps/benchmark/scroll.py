@@ -1,9 +1,4 @@
-#!/usr/bin/env python3
-import argparse
-import contextlib
 import ctypes
-import math
-import socket
 import time
 
 XRES_CLIENT_ID_PID_MASK = 2
@@ -134,38 +129,3 @@ class WheelInput:
 
     def __exit__(self, *_):
         self.close()
-
-
-def positive_number(value):
-    number = float(value)
-    if not math.isfinite(number) or number <= 0:
-        raise argparse.ArgumentTypeError("must be finite and positive")
-    return number
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Send external XTest wheel events and control MangoHud logging.")
-    parser.add_argument("window", type=lambda value: int(value, 0), help="X11 window ID from xwininfo")
-    parser.add_argument("--duration", type=positive_number, default=15)
-    parser.add_argument("--rate", type=positive_number, default=144, help="Wheel notches per second")
-    parser.add_argument("--control", default="freya-scroll", help="MangoHud abstract control socket name")
-    arguments = parser.parse_args()
-    with WheelInput(arguments.window) as wheel:
-        time.sleep(0.5)
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as control:
-            control.connect("\0" + arguments.control)
-            wheel.scroll(2, arguments.rate)
-            control.sendall(b":logging=1;")
-            try:
-                count = wheel.scroll(arguments.duration, arguments.rate)
-            except BaseException:
-                with contextlib.suppress(OSError):
-                    control.sendall(b":logging=0;")
-                raise
-            control.sendall(b":logging=0;")
-            wheel.scroll(0.5, arguments.rate)
-            print(f"Sent {count} wheel notches during the requested {arguments.duration:g}s capture.")
-
-
-if __name__ == "__main__":
-    main()

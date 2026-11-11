@@ -1,7 +1,6 @@
 /target/
 /apps/*/target/
-/apps/__pycache__/
-/apps/tests/__pycache__/
+__pycache__/
 /apps/*.json.lock
 /apps/history.json
 /apps/dashboard-v*-history.json

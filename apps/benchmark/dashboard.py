@@ -3,8 +3,8 @@ import math
 import statistics
 import time
 
-from frames import summarize as summarize_window
-from scroll import WheelInput
+from benchmark.frames import summarize as summarize_window
+from benchmark.scroll import WheelInput
 
 MEASUREMENT = "mangohud-dashboard-v3"
 RECORD_COUNT = 1000

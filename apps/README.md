@@ -9,17 +9,19 @@ cargo run --release --locked --manifest-path apps/freya/Cargo.toml --no-default-
 just app freya dashboard
 ```
 
+`apps/bench.py` is the only Python entry point. Implementation modules live in `apps/benchmark/`. Use `python3 apps/bench.py <command> --help` for command options, or `just bench <command>` as a shortcut.
+
 ## Scrolling
 
 The scroll UI is a non-virtualized list configured by `SCROLL_ROWS`, defaulting to 1,000 rows when launched directly. The runner captures four sizes by default: 1,000, 3,000, 5,000, and 7,000 rows. Each row is 960 × 48 logical pixels, with 12 px padding, black 14 px `Item N` text, and alternating `#f5f5f5` / `#e6e6e6` backgrounds. Font families remain toolkit-native.
 
 ```sh
 SCROLL_ROWS=3000 just app freya
-python3 apps/bench.py run all
-python3 apps/bench.py run freya --rows 1000 3000 5000 7000 --repetitions 3
-python3 apps/bench.py run freya --no-build --rows 3000 --duration 15 --repetitions 3
-python3 apps/bench.py run all --fps-limit 0 --no-vsync
-python3 apps/bench.py run freya --save
+python3 apps/bench.py scroll all
+python3 apps/bench.py scroll freya --rows 1000 3000 5000 7000 --repetitions 3
+python3 apps/bench.py scroll freya --no-build --rows 3000 --duration 15 --repetitions 3
+python3 apps/bench.py scroll all --fps-limit 0 --no-vsync
+python3 apps/bench.py scroll freya --save
 ```
 
 The runner builds each app once and passes each size through `SCROLL_ROWS`, overriding the inherited environment. Every capture records its row count. Input reverses direction every half second to reduce the risk of reaching an edge in the smallest list. Custom rates and toolkit wheel distances can still reach an edge, so visually verify the workload when changing input settings. The website plots one line per framework against row count, with repetition medians and range whiskers, plus a separate p95 presentation-interval chart. Legacy 2,000-row captures remain separate.
@@ -29,7 +31,7 @@ The runner sends continuous wheel input. Defaults are a 144 FPS limit, two-secon
 Recording begins during input pre-roll. After warmup the measurement anchors to a fresh validated CSV frame and requires a frame bracketing the full endpoint. The exact window retains stalls and its trailing silent period. Corrupt clocks, malformed rows, and truncated captures fail rather than produce normalized estimates. No valid frame in a fully bracketed window means zero FPS, not an omitted result.
 
 ```sh
-python3 apps/bench.py parse /path/to/capture.csv --app freya --duration 15
+python3 apps/bench.py parse scroll freya /path/to/capture.csv --duration 15
 ```
 
 CSV parsing expects `log_interval=0` and elapsed nanoseconds. `--start` selects the first frame at or after the requested elapsed seconds. Imported captures do not claim automated input or warmup verification. MangoHud summary CSVs are not valid per-frame inputs.
@@ -41,8 +43,8 @@ Scroll history defaults to `apps/scroll-v3-history.json`, with identity `mangohu
 To refresh the latest website collection, run these commands from a desktop session with X11 access. This replaces its old scroll results while preserving dashboard results and older collections. All library lines are visible by default.
 
 ```sh
-python3 apps/bench.py run all --duration 3 --warmup 1 --repetitions 3 --save > /tmp/scroll-run.json &&
-python3 apps/publish.py /tmp/scroll-run.json --save --latest &&
+python3 apps/bench.py scroll all --duration 3 --warmup 1 --repetitions 3 --save > /tmp/scroll-run.json &&
+python3 apps/bench.py publish /tmp/scroll-run.json --save --latest &&
 npm run build
 ```
 
@@ -51,13 +53,13 @@ npm run build
 The dashboard has a fixed toolbar with a text input, a Refresh button with a visible counter, an enabled toggle, and a scrollable list of 1,000 project records with text and images. Toolkit-native styling is retained. The client area is 1000 × 700 logical pixels. The runner scales input coordinates to the physical client area for desktop scaling.
 
 ```sh
-python3 apps/bench.py run freya --benchmark dashboard
-python3 apps/bench.py run all --benchmark dashboard --repetitions 3 --save
-python3 apps/bench.py run egui --benchmark dashboard --rate 240
-python3 apps/bench.py parse /path/to/dashboard.csv --app egui --benchmark dashboard
+python3 apps/bench.py dashboard freya
+python3 apps/bench.py dashboard all --repetitions 3 --save
+python3 apps/bench.py dashboard egui --rate 240
+python3 apps/bench.py parse dashboard egui /path/to/dashboard.csv
 ```
 
-The runner focuses and clears the input before warmup. The measured workload then runs four consecutive two-second phases: type/delete text, click Refresh, toggle enabled, and scroll down/up. Total input time is eight seconds, with no pauses between phases. Warmup is separate. Input is paced at a requested 240 events/s by default, configurable with `--rate`, with actual sent events recorded per phase. Dashboard defaults to no FPS limiter and requested disabled VSync. Use `--fps-limit` or `--vsync` to override. `--duration` applies only to scroll captures. There are no app timers or forced redraws.
+The runner focuses and clears the input before warmup. The measured workload then runs four consecutive two-second phases: type/delete text, click Refresh, toggle enabled, and scroll down/up. Total input time is eight seconds, with no pauses between phases. Warmup is separate. Input is paced at a requested 240 events/s by default, configurable with `--rate`, with actual sent events recorded per phase. Dashboard defaults to no FPS limiter and requested disabled VSync. Use `--fps-limit` or `--vsync` to override. `--duration` is available only for scroll captures. There are no app timers or forced redraws.
 
 The main dashboard metric is the worst presentation gap anywhere in the eight-second workload. Logging starts before measurement, a validated frame anchors the start, and capture continues until a frame brackets the endpoint. Gaps crossing phase transitions and trailing silence through the endpoint are included. Pre-workload idle is excluded. Repetitions are combined by taking the worst gap, not their median. Older captures without a bracketed workload window cannot supply this metric.
 
@@ -68,7 +70,7 @@ Dashboard results also retain per-frame intervals, median, and p95 as diagnostic
 Dashboard history defaults to `apps/dashboard-v3-history.json`, with identity `mangohud-dashboard-v3`. Version 3 uses 1,000 records instead of 100 to avoid reaching the bottom during the scrolling phase. It cannot be mixed with scroll history or earlier dashboard captures. Cached dashboard binaries are versioned, so rebuild before using `--no-build`. To add dashboard results to the latest website collection without replacing its scroll results:
 
 ```sh
-python3 apps/publish.py results/apps/<run-id>/run.json --save --latest
+python3 apps/bench.py publish results/apps/<run-id>/run.json --save --latest
 ```
 
 ## Build and capture requirements
@@ -98,13 +100,13 @@ Sizes measure the resulting executable without additional stripping or compressi
 
 ## Persistence and artifacts
 
-Neither command opens or changes history without `--save`. `--history` alone only selects a destination. Explicit saves use locking and atomic replacement and reject incompatible measurement identities. Artifacts and `run.json` are written under `results/apps/<run-id>/` regardless of saving. Application logs and failures remain available there. Interrupted runs do not save history.
+Capture, parse, and publish commands do not change history without `--save`. `--history` alone only selects a destination. Explicit saves use locking and atomic replacement and reject incompatible measurement identities. Artifacts and `run.json` are written under `results/apps/<run-id>/` regardless of saving. Application logs and failures remain available there. Interrupted runs do not save history.
 
 The two measurement schemas are not automatically combined with the website's historical collections. Original row-style screenshots and validation artifacts remain under `results/apps/row-style-validation/`. Earlier version-1 scrolling captures are diagnostic only and are not comparable to corrected version-2 captures. Blinc logs with impossible frametimes are rejected rather than published.
 
 ## Checks
 
 ```sh
-python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py apps/dashboard.py
-python3 -m unittest discover -s apps/tests -p 'test_dashboard.py'
+just check
+python3 -m unittest discover -s apps/tests
 ```

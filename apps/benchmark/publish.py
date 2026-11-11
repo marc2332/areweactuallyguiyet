@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 """Publish MangoHud captures using the website's existing collection format."""
-import argparse
 import collections
 import datetime
 import fcntl
@@ -9,10 +7,9 @@ import math
 from pathlib import Path
 import statistics
 import subprocess
-import sys
 import tempfile
 
-import bench
+from benchmark import runner
 
 BOUNDARY = "mangohud-present-observation"
 DASHBOARD_MEASUREMENTS = {f"mangohud-dashboard-v{version}": version for version in (1, 2, 3)}
@@ -34,7 +31,7 @@ def dependency_versions(dependencies):
 def website_run(source, apps, libraries):
     if source.get("measurement") in DASHBOARD_MEASUREMENTS:
         return dashboard_website_run(source, apps, libraries)
-    if source.get("measurement") not in (bench.MEASUREMENT, "mangohud-scroll-v2") or not source.get("results"):
+    if source.get("measurement") not in (runner.MEASUREMENT, "mangohud-scroll-v2") or not source.get("results"):
         raise ValueError("Expected a supported MangoHud run with results")
     datetime.datetime.fromisoformat(source["timestamp"])
     names = {library["id"]: library["name"] for library in libraries}
@@ -252,7 +249,7 @@ def merge_latest(history, run):
     if not history.get("runs"):
         raise ValueError("Cannot merge results without an existing website run")
     latest = max(history["runs"], key=lambda previous: datetime.datetime.fromisoformat(previous["collectedAt"]))
-    if run["metadata"].get("measurement") == bench.MEASUREMENT:
+    if run["metadata"].get("measurement") == runner.MEASUREMENT:
         if not run["results"] or any(not result["scenario"].startswith("scroll-") for result in run["results"]):
             raise ValueError("Scroll replacement requires row-count scenarios")
         previous = latest["metadata"]
@@ -285,7 +282,7 @@ def save(path, run, latest=False):
         if history.get("schemaVersion") != 1 or not isinstance(history.get("runs"), list):
             raise ValueError("Expected the existing website history format")
         if latest:
-            if run["metadata"].get("measurement") not in (*DASHBOARD_MEASUREMENTS, bench.MEASUREMENT):
+            if run["metadata"].get("measurement") not in (*DASHBOARD_MEASUREMENTS, runner.MEASUREMENT):
                 raise ValueError("--latest requires dashboard or row-count scroll captures")
             merge_latest(history, run)
         else:
@@ -295,7 +292,7 @@ def save(path, run, latest=False):
         content = json.dumps(history, indent=2, allow_nan=False, ensure_ascii=False) + "\n"
         subprocess.run(["node", "--input-type=module", "-e",
                         "import {validateHistory} from './site/src/lib/history.mjs'; let input=''; for await (const chunk of process.stdin) input+=chunk; validateHistory(JSON.parse(input));"],
-                       cwd=bench.ROOT, input=content, text=True, check=True)
+                       cwd=runner.ROOT, input=content, text=True, check=True)
         temporary = None
         try:
             with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, delete=False) as destination:
@@ -306,31 +303,3 @@ def save(path, run, latest=False):
         finally:
             if temporary:
                 temporary.unlink(missing_ok=True)
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("run", type=Path, help="A completed bench.py run.json artifact")
-    parser.add_argument("--history", type=Path, default=bench.ROOT / "site/data/history.json")
-    parser.add_argument("--save", action="store_true", help="Publish to website history, otherwise print only")
-    parser.add_argument("--latest", action="store_true", help="Replace latest scroll results or merge dashboard results, preserving other workloads")
-    arguments = parser.parse_args()
-    if arguments.latest and not arguments.save:
-        parser.error("--latest requires --save")
-    try:
-        libraries = json.loads((bench.ROOT / "site/data/libraries.json").read_text())["libraries"]
-        run = website_run(json.loads(arguments.run.read_text()), bench.load_apps(), libraries)
-        if arguments.save:
-            save(arguments.history, run, latest=arguments.latest)
-            destination_id = run["id"] if not arguments.latest else "latest run"
-            print(f"Published {destination_id} to {arguments.history}")
-        else:
-            print(json.dumps(run, indent=2, allow_nan=False))
-        return 0
-    except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
-        print(f"Error: {error}", file=sys.stderr)
-        return 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())

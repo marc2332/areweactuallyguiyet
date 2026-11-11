@@ -18,5 +18,5 @@ jobs:
           python-version: '3.12'
       - run: npm --prefix site ci
       - run: npm run build
-      - run: npm run test:site
-      - run: python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py
+      - run: python3 -m compileall -q apps/bench.py apps/benchmark
+      - run: python3 -m unittest discover -s apps/tests

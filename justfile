@@ -23,19 +23,15 @@ app framework="freya" benchmark="scroll":
 list:
     python3 apps/bench.py list
 
-# Build a standalone benchmark.
-bench-build framework="freya" benchmark="scroll":
-    cargo build --release --locked --manifest-path "apps/$1/Cargo.toml" --no-default-features --features "$2$(if [ "$1" = dioxus-native ]; then printf ',skia'; fi)"
-
-# Run external MangoHud captures, saving history only with --save.
+# Run benchmark commands, saving history only with --save.
 bench *args:
-    python3 apps/bench.py run "$@"
+    python3 apps/bench.py "$@"
 
 # Build production executables and collect their sizes for the website without launching apps.
 binary-sizes *args:
-    python3 apps/sizes.py "$@"
+    python3 apps/bench.py sizes "$@"
 
 # Check Python compilation and build the website without running benchmarks.
 check:
-    python3 -m py_compile apps/bench.py apps/frames.py apps/scroll.py apps/dashboard.py apps/sizes.py
+    python3 -m compileall -q apps/bench.py apps/benchmark
     npm run build

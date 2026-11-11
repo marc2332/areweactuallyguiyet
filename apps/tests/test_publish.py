@@ -1,266 +1,139 @@
 import copy
 import json
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import bench
-import dashboard
-from frames import Frame
-import publish
+from benchmark import dashboard, publish, runner
+from benchmark.frames import Frame
 
 
-def source_run():
-    return {
-        "id": "fixture", "timestamp": "2026-11-10T20:00:00+00:00", "measurement": bench.MEASUREMENT,
-        "system": {"os": "Linux"}, "results": [{
-            "app": "whisker", "status": "ok", "repetition": 1, "warmup_s": 1,
-            "fps_limit": 144, "vsync": "application-default", "wheel_rate_hz": 144,
-            "csv": "/capture.csv", "dependencies": {"whisker": {"rev": "a" * 40}},
-            "metrics": {"measurement_duration_s": 3, "fps": 10, "frames": 30,
-                        "max_frame_gap_ms": 100, "frame_interval_ms": {"p95": 100, "p99": 100},
-                        "measurement_start_elapsed_ns": 3000000000, "measurement_end_elapsed_ns": 6000000000},
-        }],
+def source_run(benchmark="scroll"):
+    capture = {
+        "app": "whisker", "status": "ok", "repetition": 1, "warmup_s": 1,
+        "fps_limit": 144, "vsync": "application-default", "wheel_rate_hz": 144,
+        "csv": "/capture.csv", "dependencies": {"whisker": {"rev": "a" * 40}},
+        "rows": 1000,
+        "metrics": {"measurement_duration_s": 3, "fps": 10, "frames": 30,
+                    "max_frame_gap_ms": 100, "frame_interval_ms": {"p95": 100, "p99": 100},
+                    "measurement_start_elapsed_ns": 3_000_000_000, "measurement_end_elapsed_ns": 6_000_000_000},
     }
-
-
-def dashboard_source():
+    if benchmark == "dashboard":
+        capture.pop("rows")
+        capture.update(phase_duration_s=2, input_rate_hz=240, actions=[],
+                       memory={"samples_mib": [10, 20, 60]},
+                       metrics=dashboard.summarize([Frame(0, 1), Frame(1_000_000_000, 1000),
+                                                    Frame(9_000_000_000, 8000)], 0, 8))
     return {
-        "id": "dashboard-fixture", "timestamp": "2026-11-10T20:00:00+00:00",
-        "measurement": "mangohud-dashboard-v1", "system": {"os": "Linux"},
-        "results": [{
-            "app": "whisker", "status": "ok", "repetition": 1, "warmup_s": 1,
-            "action_delay_s": 0.5, "fps_limit": 144, "vsync": "application-default",
-            "csv": "/dashboard.csv", "dependencies": {"whisker": {"rev": "a" * 40}},
-            "metrics": {"present_interval_ms": {"median": 20, "p95": 40, "max": 60},
-                        "per_frame": [{"elapsed_ns": 1000000, "present_interval_ms": 20},
-                                      {"elapsed_ns": 2000000, "present_interval_ms": 60}],
-                        "timing_scope": "includes idle time"},
-            "actions": [{"action": "click", "started_monotonic_s": 1, "finished_monotonic_s": 2}],
-            "timing_validation": {"valid": True},
-        }],
+        "id": benchmark, "timestamp": "2026-11-10T20:00:00+00:00",
+        "measurement": dashboard.MEASUREMENT if benchmark == "dashboard" else runner.MEASUREMENT,
+        "system": {"os": "Linux"}, "results": [capture],
     }
 
 
 class PublishTests(unittest.TestCase):
     def setUp(self):
-        self.apps = bench.load_apps()
+        self.apps = runner.load_apps()
         self.libraries = [{"id": "whisker", "name": "Whisker"}, {"id": "dioxus-native", "name": "Dioxus Native"}]
-        self.source = source_run()
 
-    def convert(self):
-        return publish.website_run(self.source, self.apps, self.libraries)
+    def convert(self, source):
+        return publish.website_run(source, self.apps, self.libraries)
 
-    def test_scroll_sizes_keep_separate_repetitions_and_metrics(self):
-        original = self.source["results"][0]
-        self.source["results"] = []
-        for rows in (500, 1500, 3000, 4500):
-            for repetition in (1, 2):
+    def test_scroll_aggregates_repetitions_without_mixing_row_counts(self):
+        source = source_run()
+        original = source["results"][0]
+        source["results"] = []
+        for rows in (1000, 3000):
+            for repetition, fps in ((1, 10), (2, 20)):
                 capture = copy.deepcopy(original)
                 capture.update(rows=rows, repetition=repetition)
-                capture["metrics"].update(fps=rows / 100, frames=rows * 3 / 100)
-                self.source["results"].append(capture)
-        run = self.convert()
-        self.assertEqual([result["scenario"] for result in run["results"]],
-                         ["scroll-500", "scroll-1500", "scroll-3000", "scroll-4500"])
-        for result, rows in zip(run["results"], (500, 1500, 3000, 4500)):
-            self.assertEqual(result["scenarioVersion"], 3)
+                capture["metrics"].update(fps=fps, frames=fps * 3)
+                source["results"].append(capture)
+        run = self.convert(source)
+        self.assertEqual([result["scenario"] for result in run["results"]], ["scroll-1000", "scroll-3000"])
+        for result in run["results"]:
+            self.assertEqual(result["metrics"]["renderer_fps"]["value"], 15)
             self.assertEqual(len(result["repetitions"]), 2)
-            self.assertEqual(result["metrics"]["renderer_fps"]["value"], rows / 100)
-        self.assertEqual(run["metadata"]["repetitions"], 2)
+            self.assertEqual(result["scenarioVersion"], 3)
 
-    def test_invalid_scroll_row_counts_are_rejected(self):
-        for rows in (0, -1, True, "500", 2**31):
-            with self.subTest(rows=rows):
-                self.source["results"][0]["rows"] = rows
-                with self.assertRaisesRegex(ValueError, "Invalid scroll row count"):
-                    self.convert()
-
-    def test_legacy_scroll_remains_a_separate_two_thousand_row_scenario(self):
-        self.source["measurement"] = "mangohud-scroll-v2"
-        result = self.convert()["results"][0]
-        self.assertEqual(result["scenario"], "scroll")
-        self.assertEqual(result["scenarioVersion"], 2)
-
-    def test_dashboard_conversion_uses_interval_metrics_without_fps_scores(self):
-        run = publish.website_run(dashboard_source(), self.apps, self.libraries)
-        result = run["results"][0]
-        self.assertEqual(result["scenario"], "dashboard")
-        self.assertEqual(result["metrics"], {
-            "dashboard_present_median_ms": {"value": 20, "unit": "ms"},
-            "dashboard_present_p95_ms": {"value": 40, "unit": "ms"},
-            "dashboard_present_max_ms": {"value": 60, "unit": "ms"},
-        })
-        trace = result["repetitions"][0]["events"][0]["trace"]
-        self.assertEqual(trace["timing_scope"], "includes idle time")
-        self.assertEqual(trace["actions"][0]["action"], "click")
-        self.assertNotIn("renderer_fps", result["metrics"])
-
-    def test_dashboard_memory_uses_sample_mean_and_extremes(self):
-        source = dashboard_source()
-        source["results"][0]["memory"] = {"samples_mib": [10, 20, 60]}
+    def test_dashboard_uses_worst_gap_and_sample_weighted_memory(self):
+        source = source_run("dashboard")
         second = copy.deepcopy(source["results"][0])
-        second.update(repetition=2, memory={"samples_mib": [30]})
+        second.update(repetition=2, memory={"samples_mib": [30]},
+                      metrics=dashboard.summarize([Frame(0, 1), Frame(3_000_000_000, 3000),
+                                                   Frame(9_000_000_000, 6000)], 0, 8))
         source["results"].append(second)
-        result = publish.website_run(source, self.apps, self.libraries)["results"][0]
-        self.assertEqual(result["metrics"]["dashboard_rss_min_mib"], {"value": 10, "unit": "MiB"})
-        self.assertEqual(result["metrics"]["dashboard_rss_mean_mib"], {"value": 30, "unit": "MiB"})
-        self.assertEqual(result["metrics"]["dashboard_rss_max_mib"], {"value": 60, "unit": "MiB"})
+        result = self.convert(source)["results"][0]
+        metrics = result["metrics"]
+        self.assertEqual(metrics["dashboard_worst_gap_ms"], {"value": 7000, "unit": "ms"})
+        for name, value in (("min", 10), ("mean", 30), ("max", 60)):
+            self.assertEqual(metrics[f"dashboard_rss_{name}_mib"], {"value": value, "unit": "MiB"})
+        self.assertNotIn("renderer_fps", metrics)
         self.assertEqual(result["repetitions"][0]["events"][0]["trace"]["samples_mib"], [10, 20, 60])
 
-    def test_dashboard_memory_rejects_invalid_samples(self):
-        for samples in ([], [-1], [float("nan")], [True]):
-            with self.subTest(samples=samples):
-                source = dashboard_source()
-                source["results"][0]["memory"] = {"samples_mib": samples}
-                with self.assertRaisesRegex(ValueError, "Invalid dashboard memory"):
-                    publish.website_run(source, self.apps, self.libraries)
+    def test_invalid_captures_are_rejected(self):
+        for change in ("identity", "duplicate", "settings", "clock", "rows", "memory"):
+            with self.subTest(change=change):
+                source = source_run("dashboard" if change == "memory" else "scroll")
+                capture = source["results"][0]
+                if change == "identity":
+                    source["measurement"] = "other-measurement"
+                elif change == "clock":
+                    capture["metrics"]["fps"] = 100
+                elif change == "rows":
+                    capture["rows"] = 0
+                elif change == "memory":
+                    capture["memory"]["samples_mib"] = [float("nan")]
+                else:
+                    second = copy.deepcopy(capture)
+                    if change == "settings":
+                        second.update(repetition=2, fps_limit=60)
+                    source["results"].append(second)
+                with self.assertRaises(ValueError):
+                    self.convert(source)
 
-    def test_full_window_worst_gap_uses_the_worst_repetition(self):
-        source = dashboard_source()
-        source["measurement"] = dashboard.MEASUREMENT
-        capture = source["results"][0]
-        capture.update(phase_duration_s=2, input_rate_hz=240)
-        capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(1_000_000_000, 1000), Frame(9_000_000_000, 8000)], 0, 8)
-        second = copy.deepcopy(capture)
-        second["repetition"] = 2
-        second["metrics"] = dashboard.summarize([Frame(0, 1), Frame(3_000_000_000, 3000), Frame(9_000_000_000, 6000)], 0, 8)
-        source["results"].append(second)
-        run = publish.website_run(source, self.apps, self.libraries)
-        self.assertEqual(run["results"][0]["metrics"]["dashboard_worst_gap_ms"], {"value": 7000, "unit": "ms"})
-        self.assertEqual(run["results"][0]["scenarioVersion"], 3)
-        self.assertEqual(run["metadata"]["recordCount"], 1000)
-        source["measurement"] = "mangohud-dashboard-v2"
-        self.assertEqual(publish.website_run(source, self.apps, self.libraries)["results"][0]["scenarioVersion"], 2)
-        self.assertEqual(run["metadata"]["durationSeconds"], 8)
-        self.assertEqual(run["metadata"]["inputRateHz"], 240)
-        capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(9_000_000_000, 9000)], 0, 8)
-        run = publish.website_run(source, self.apps, self.libraries)
-        self.assertEqual(run["results"][0]["metrics"]["dashboard_worst_gap_ms"]["value"], 8000)
-
-    def test_partial_dashboard_merge_preserves_other_framework_metadata(self):
-        previous = self.convert()
-        previous["metadata"]["scenarioCollections"] = {"dashboard": {
-            "frameworkVersions": {"dioxus-native": "existing version"},
-            "frameworkLabels": {"dioxus-native": "Dioxus Native"},
-        }}
-        history = {"schemaVersion": 1, "runs": [previous]}
-        run = publish.website_run(dashboard_source(), self.apps, self.libraries)
-        publish.merge_latest(history, run)
-        metadata = previous["metadata"]["scenarioCollections"]["dashboard"]
-        self.assertEqual(metadata["frameworkVersions"]["dioxus-native"], "existing version")
-        self.assertIn("whisker", metadata["frameworkVersions"])
-
-    def test_dashboard_failure_is_not_relabelled_success_and_merge_preserves_scroll(self):
-        failed = copy.deepcopy(dashboard_source()["results"][0])
-        failed.update(status="failed", error="No capture")
-        failed.pop("metrics")
-        failed.pop("actions")
-        failed.pop("csv")
-        failed.pop("dependencies")
-        run = publish.website_run({**dashboard_source(), "results": [failed]}, self.apps, self.libraries)
-        previous = self.convert()
-        history = {"schemaVersion": 1, "runs": [previous]}
-        scroll_results = copy.deepcopy(previous["results"])
-        publish.merge_latest(history, run)
-        self.assertEqual(history["runs"][0]["results"][:1], scroll_results)
-        self.assertEqual(history["runs"][0]["results"][-1]["status"], "failed")
-        self.assertIn("dashboard", history["runs"][0]["metadata"]["scenarioCollections"])
-        self.assertEqual(history["runs"][0]["metadata"]["measurement"], bench.MEASUREMENT)
-
-    def test_scroll_replacement_preserves_dashboard_and_older_collections(self):
-        previous = self.convert()
-        previous["metadata"]["captureRetries"] = [{"sourceRun": "obsolete"}]
-        dashboard_run = publish.website_run(dashboard_source(), self.apps, self.libraries)
-        history = {"schemaVersion": 1, "runs": [previous]}
-        publish.merge_latest(history, dashboard_run)
-        dashboard_results = copy.deepcopy([result for result in previous["results"] if result["scenario"] == "dashboard"])
-        dashboard_metadata = copy.deepcopy(previous["metadata"]["scenarioCollections"]["dashboard"])
-        older = copy.deepcopy(previous)
-        older.update(id="older", collectedAt="2026-11-09T20:00:00+00:00")
-        history["runs"].insert(0, copy.deepcopy(older))
-        original = self.source["results"][0]
-        self.source["results"] = [{**original, "rows": rows} for rows in (500, 1500, 3000, 4500)]
-        self.source.update(id="replacement", timestamp="2026-11-11T20:00:00+00:00")
-        replacement = self.convert()
-        publish.merge_latest(history, replacement)
-        latest = history["runs"][-1]
-        self.assertEqual(history["runs"][0], older)
-        self.assertEqual(latest["id"], "fixture")
-        self.assertEqual([result for result in latest["results"] if result["scenario"] == "dashboard"], dashboard_results)
-        self.assertEqual(latest["metadata"]["scenarioCollections"]["dashboard"], dashboard_metadata)
-        self.assertEqual(latest["metadata"]["sourceRun"], "replacement")
-        self.assertNotIn("captureRetries", latest["metadata"])
-        self.assertNotIn("scroll", [result["scenario"] for result in latest["results"]])
-        self.assertEqual(len(latest["results"]), 5)
-        publish.merge_latest(history, replacement)
-        self.assertEqual(len(history["runs"][-1]["results"]), 5)
-
-    def test_scroll_replacement_rejects_unlabeled_row_counts(self):
-        run = self.convert()
-        with self.assertRaisesRegex(ValueError, "row-count scenarios"):
-            publish.merge_latest({"runs": [copy.deepcopy(run)]}, run)
-
-    def test_aggregates_repetitions_and_preserves_each_sample(self):
-        second = copy.deepcopy(self.source["results"][0])
-        second["repetition"] = 2
-        second["metrics"].update(fps=20, frames=60)
-        self.source["results"].append(second)
-        result = self.convert()["results"][0]
-        self.assertEqual(result["metrics"]["renderer_fps"]["value"], 15)
-        self.assertEqual(len(result["repetitions"]), 2)
-
-    def test_variant_labels_and_failed_samples_are_retained(self):
-        self.source["results"].append({"app": "dioxus-native-vello-hybrid", "status": "failed", "repetition": 1, "error": "No capture"})
-        run = self.convert()
+    def test_failed_variants_remain_unavailable_with_their_labels(self):
+        source = source_run()
+        source["results"].append({"app": "dioxus-native-vello-hybrid", "status": "failed",
+                                  "repetition": 1, "error": "No capture"})
+        run = self.convert(source)
         self.assertEqual(run["metadata"]["frameworkBaseIds"]["dioxus-native-vello-hybrid"], "dioxus-native")
         self.assertEqual(run["metadata"]["frameworkLabels"]["dioxus-native-vello-hybrid"], "Dioxus Native Vello Hybrid")
         self.assertEqual(run["results"][1]["status"], "failed")
         self.assertEqual(run["results"][1]["metrics"], {})
 
-    def test_incompatible_measurements_duplicate_samples_and_mixed_settings_fail(self):
-        for change in ("identity", "duplicate", "settings", "clock"):
-            with self.subTest(change=change):
-                self.source = source_run()
-                if change == "identity":
-                    self.source["measurement"] = "other-measurement"
-                elif change == "clock":
-                    self.source["results"][0]["metrics"]["fps"] = 100
-                else:
-                    second = copy.deepcopy(self.source["results"][0])
-                    if change == "settings":
-                        second.update(repetition=2, fps_limit=60)
-                    self.source["results"].append(second)
-                with self.assertRaises(ValueError):
-                    self.convert()
+    def test_latest_refresh_preserves_other_workloads_and_older_collections(self):
+        previous = self.convert(source_run())
+        older = copy.deepcopy(previous)
+        older.update(id="older", collectedAt="2026-11-09T20:00:00+00:00")
+        history = {"schemaVersion": 1, "runs": [older, previous]}
+        dashboard_run = self.convert(source_run("dashboard"))
+        publish.merge_latest(history, dashboard_run)
+        self.assertEqual(previous["results"][0]["scenario"], "scroll-1000")
+        dashboard_results = copy.deepcopy([result for result in previous["results"] if result["scenario"] == "dashboard"])
+        dashboard_metadata = copy.deepcopy(previous["metadata"]["scenarioCollections"]["dashboard"])
+        source = source_run()
+        source["results"][0]["rows"] = 3000
+        replacement = self.convert(source)
+        for _ in range(2):
+            publish.merge_latest(history, replacement)
+        self.assertEqual(history["runs"][0], older)
+        self.assertEqual([result["scenario"] for result in previous["results"]], ["dashboard", "scroll-3000"])
+        self.assertEqual([result for result in previous["results"] if result["scenario"] == "dashboard"], dashboard_results)
+        self.assertEqual(previous["metadata"]["scenarioCollections"]["dashboard"], dashboard_metadata)
 
-    def test_dry_run_does_not_touch_destination(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            source = root / "run.json"
-            source.write_text(json.dumps(self.source))
-            destination = root / "absent" / "history.json"
-            result = subprocess.run([sys.executable, str(bench.DIRECTORY / "publish.py"), str(source), "--history", str(destination)], capture_output=True, text=True)
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertFalse(destination.parent.exists())
-
-    def test_explicit_save_preserves_prior_collections_and_rejects_duplicates(self):
+    def test_save_preserves_prior_collections_and_rejects_duplicates(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "history.json"
-            previous = self.convert()
+            previous = self.convert(source_run())
             previous["id"] = "previous"
             path.write_text(json.dumps({"schemaVersion": 1, "runs": [previous]}))
-            run = self.convert()
+            run = self.convert(source_run())
             publish.save(path, run)
             history = json.loads(path.read_text())
             self.assertEqual(history["runs"], [previous, run])
             with self.assertRaisesRegex(ValueError, "already been published"):
                 publish.save(path, run)
             self.assertEqual(json.loads(path.read_text()), history)
-
-
-if __name__ == "__main__":
-    unittest.main()

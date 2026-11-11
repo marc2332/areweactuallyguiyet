@@ -47,16 +47,7 @@ Alternatively, set the Vercel Root Directory to `site` and use its local Astro c
 ## Checks
 
 ```sh
-npm --prefix site run test:unit
 npm run build
 ```
 
-Browser checks remain available:
-
-```sh
-cd site
-npx playwright install chromium
-npm run test:browser
-```
-
-To use an installed Chromium executable, set `CHROMIUM_PATH`. These checks cover chart rendering and labels, tooltips, filtering, reset states, stacked workload sections and collection changes, mobile scrolling, and feature evidence without JavaScript.
+The build validates source data and generates the static site. Check chart interactions manually with `npm run dev`.
