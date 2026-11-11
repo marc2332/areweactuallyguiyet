@@ -11,7 +11,7 @@ const element = (tag, text, className) => {
 const number = value => value.toLocaleString(undefined, { maximumFractionDigits: 4 });
 const runSelector = document.querySelector('#run');
 const status = document.querySelector('#chart-status');
-const defaultHidden = ['freya', 'vizia', 'blinc', 'whisker'];
+const defaultHidden = ['vizia', 'blinc', 'whisker'];
 let hidden = new Set(defaultHidden);
 const charts = [];
 const resizeObserver = new ResizeObserver(() => charts.forEach(chart => chart.resize()));

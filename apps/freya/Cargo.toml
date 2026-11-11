@@ -16,10 +16,10 @@ edition = "2024"
 publish = false
 
 [dependencies]
-freya = "=0.5.1"
+freya = "=0.5.2"
 
 [dev-dependencies]
-freya-testing = "=0.5.1"
+freya-testing = "=0.5.2"
 
 [features]
 default = ["scroll"]
