@@ -15,7 +15,7 @@ const history = validateHistory(await load('history'));
 const baseNames = Object.fromEntries(libraries.map(library => [library.id, library.name]));
 
 export const metrics = {
-  dashboard_rss_mean_mib: { label: 'Dashboard memory usage', unit: 'MiB', kind: 'memory', note: 'Application process RSS sampled every 50 ms during the eight-second workload. Connected dots show minimum, average, and maximum. Excludes child processes and GPU memory.' },
+  dashboard_rss_mean_mib: { label: 'Dashboard memory usage', unit: 'MiB', kind: 'memory', note: 'Application process RSS sampled every 50 ms during the eight-second workload. Dots show average RSS. Excludes child processes and GPU memory.' },
   renderer_fps: { ...metricLabels.renderer_fps, note: 'Closer to 144 FPS is better, matching my 144 Hz screen.' },
   frame_gap_max_ms: { ...metricLabels.frame_gap_max_ms, note: 'Includes silent periods at both ends of the workload. Lower is better, but does not establish display latency.' },
   dashboard_worst_gap_ms: { ...metricLabels.dashboard_worst_gap_ms, note: 'Longest period without a presentation during the eight-second workload. Worst across runs. Lower is better.' },
@@ -55,10 +55,9 @@ export const dashboard = {
           .map(id => ({ id, name: names[id] ?? id, color: frameworkColor(id) })),
         groups: Object.fromEntries(Object.keys(metrics).map(metric => [metric, groupMetricResults(run, metric).map(group => ({
           ...group,
-          ...(metric === 'dashboard_rss_mean_mib' ? { points: group.points.map(point => {
-            const result = run.results.find(result => result.framework === point.framework && result.scenario === group.scenario && result.scenarioVersion === group.scenarioVersion);
-            return { ...point, minimum: result.metrics.dashboard_rss_min_mib.value, maximum: result.metrics.dashboard_rss_max_mib.value };
-          }) } : {}),
+          ...(metric === 'dashboard_rss_mean_mib' ? { points: group.points.map(point => ({
+            ...point, minimum: point.value, maximum: point.value,
+          })) } : {}),
           versions: frameworkVersionsForScenario(run, group.scenario),
         }))])),
       };

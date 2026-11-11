@@ -18,13 +18,14 @@ const chartContainer = document.querySelector('#charts');
 resizeObserver.observe(chartContainer);
 
 function dataTable(points, missing, frameworks, versions, description) {
+  const isMemory = description.kind === 'memory';
   const details = element('details', undefined, 'chart-data');
   details.append(element('summary', `Values and unavailable results (${points.length + missing.length})`));
   const scroll = element('div', undefined, 'table-scroll');
   const table = element('table');
   const head = element('thead');
   const headings = element('tr');
-  for (const title of ['Framework', 'Version', description.kind === 'memory' ? 'Average' : 'Median', 'Range', 'Repetitions / status']) headings.append(element('th', title));
+  for (const title of ['Framework', 'Version', isMemory ? 'Average' : 'Median', ...(isMemory ? [] : ['Range']), 'Repetitions / status']) headings.append(element('th', title));
   head.append(headings);
   const body = element('tbody');
   for (const point of [...points, ...missing]) {
@@ -32,8 +33,8 @@ function dataTable(points, missing, frameworks, versions, description) {
     const framework = element('th', frameworks.get(point.framework)?.name ?? point.framework);
     framework.scope = 'row';
     row.append(framework, element('td', versions[point.framework] ?? 'Unreported'));
-    if (point.status === 'ok') row.append(element('td', `${number(point.value)} ${point.unit}`), element('td', `${number(point.minimum)}–${number(point.maximum)}`), element('td', String(point.repetitions)));
-    else row.append(element('td', 'Unavailable'), element('td', 'Not plotted'), element('td', `${point.status}${point.reason ? `: ${point.reason}` : ''}`));
+    if (point.status === 'ok') row.append(element('td', `${number(point.value)} ${point.unit}`), ...(isMemory ? [] : [element('td', `${number(point.minimum)}–${number(point.maximum)}`)]), element('td', String(point.repetitions)));
+    else row.append(element('td', 'Unavailable'), ...(isMemory ? [] : [element('td', 'Not plotted')]), element('td', `${point.status}${point.reason ? `: ${point.reason}` : ''}`));
     body.append(row);
   }
   table.append(head, body);

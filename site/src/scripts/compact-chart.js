@@ -51,7 +51,7 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
   const isSize = description.kind === 'size';
   const isMemory = description.kind === 'memory';
   const detail = group.detail ?? `${group.boundary ? `${group.boundary} · ` : ''}v${group.scenarioVersion}`;
-  const names = Object.fromEntries(points.map(point => [point.framework, `${frameworks.get(point.framework)?.name ?? point.framework}${isMemory ? '' : ` ${labelNumber(point.value)}`}`]));
+  const names = Object.fromEntries(points.map(point => [point.framework, `${frameworks.get(point.framework)?.name ?? point.framework} ${labelNumber(point.value)}`]));
   const fontFamily = getComputedStyle(host).fontFamily;
   const context = document.createElement('canvas').getContext('2d');
   if (context) context.font = `11px ${fontFamily}`;
@@ -63,9 +63,9 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
     if (width === previousWidth) return;
     previousWidth = width;
     const workloadWidth = 205;
-    const right = width - (isMemory ? 300 : 36);
+    const right = width - 36;
     const plotWidth = right - workloadWidth;
-    const labelGutter = isMemory ? Math.max(0, Math.ceil(Math.max(0, ...Object.values(labelWidths))) - workloadWidth + 36) : Math.ceil(Math.max(0, ...points.map(point => {
+    const labelGutter = Math.ceil(Math.max(0, ...points.map(point => {
       const fraction = (point.value - scale.minimum) / (scale.maximum - scale.minimum);
       if (fraction >= 1) return 0;
       return (labelWidths[point.framework] + 17 - fraction * plotWidth) / (1 - fraction);
@@ -73,10 +73,8 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
     const left = workloadWidth + labelGutter;
     const top = 62;
     const laneSpacing = 16;
-    const layout = isMemory
-      ? { points: points.map((point, index) => ({ ...point, lane: index })), laneCount: points.length }
-      : placeLeftLabels(points, { left, right, minimum: scale.minimum, maximum: scale.maximum, labelWidths });
-    const rowHeight = isMemory ? points.length * 42 : Math.max(110, layout.laneCount * laneSpacing + 26);
+    const layout = placeLeftLabels(points, { left, right, minimum: scale.minimum, maximum: scale.maximum, labelWidths });
+    const rowHeight = Math.max(110, layout.laneCount * laneSpacing + 26);
     const unavailableHeight = missing.length ? missing.length * 18 + 12 : 0;
     host.style.height = `${rowHeight + top + 38 + unavailableHeight}px`;
     chart.resize();
@@ -85,15 +83,11 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
       animationDuration: 220,
       backgroundColor: '#111110',
       textStyle: { fontFamily, color: '#999993' },
-      aria: { enabled: true, description: `${description.label} for ${group.label}. ${isMemory ? 'Connected dots show minimum, average, and maximum application process RSS.' : isSize ? 'Colored dots are executable file sizes.' : 'Frameworks share a workload row. Colored dots are medians and lines are repetition ranges.'} Exact values are provided below.` },
+      aria: { enabled: true, description: `${description.label} for ${group.label}. ${isMemory ? 'Frameworks share a workload row. Colored dots show average application process RSS.' : isSize ? 'Colored dots are executable file sizes.' : 'Frameworks share a workload row. Colored dots are medians and lines are repetition ranges.'} Exact values are provided below.` },
       grid: { left, right: width - right, top, bottom: 38 + unavailableHeight, show: true, backgroundColor: '#171716', borderColor: '#33332f' },
       graphic: [
         { type: 'rect', silent: true, z: -1, shape: { x: workloadWidth, y: top, width: right - workloadWidth, height: rowHeight }, style: { fill: '#171716' } },
-        { type: 'text', left: isMemory ? 18 : workloadWidth - 78, top: 29, style: { text: isMemory ? 'Library' : isSize ? 'Artifact' : 'Workload', fill: '#999993', font: `11px ${fontFamily}` } },
-        ...(isMemory ? ['Min', 'Average', 'Max'].map((label, index) => ({
-          type: 'text', x: right + 85 + index * 90, y: 36,
-          style: { text: `${label} (MiB)`, fill: '#999993', font: `11px ${fontFamily}`, align: 'right' },
-        })) : []),
+        { type: 'text', left: workloadWidth - 78, top: 29, style: { text: isSize ? 'Artifact' : 'Workload', fill: '#999993', font: `11px ${fontFamily}` } },
         { type: 'text', left: workloadWidth, top: 13, style: { text: `${description.label} (${description.unit})`, fill: '#999993', font: `11px ${fontFamily}` } },
         ...missing.map((point, index) => ({
           type: 'text', silent: true, left: workloadWidth, top: top + rowHeight + 38 + index * 18,
@@ -109,46 +103,36 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
         splitLine: { show: position === 'bottom', lineStyle: { color: '#33332f' } },
       })),
       yAxis: {
-        type: 'category', data: isMemory ? layout.points.map(point => point.framework) : [group.label], inverse: isMemory,
+        type: 'category', data: [group.label],
         axisTick: { show: false }, axisLine: { show: false },
-        splitLine: { show: isMemory, lineStyle: { color: '#33332f', opacity: 0.5 } },
-        axisLabel: isMemory ? {
-          margin: 18, color: '#e6e6e2', fontSize: 11,
-          formatter: identifier => frameworks.get(identifier)?.name ?? identifier,
-        } : { margin: labelGutter + 18, formatter: () => `{workload|${group.label}}\n{version|${detail}}`, rich: { workload: { color: '#e6e6e2', fontSize: 11, lineHeight: 20 }, version: { color: '#999993', fontSize: 10, lineHeight: 18 } } },
+        splitLine: { show: false },
+        axisLabel: { margin: labelGutter + 18, formatter: () => `{workload|${group.label}}\n{version|${detail}}`, rich: { workload: { color: '#e6e6e2', fontSize: 11, lineHeight: 20 }, version: { color: '#999993', fontSize: 10, lineHeight: 18 } } },
       },
       series: layout.points.map(point => {
         const framework = frameworks.get(point.framework);
         const color = framework?.color ?? '#cbd5e1';
         return {
           type: 'custom', name: framework?.name ?? point.framework, clip: false,
-          data: [[point.value, isMemory ? point.lane : 0, point.minimum, point.maximum]], encode: { x: [0, 2, 3], y: 1 },
+          data: [[point.value, 0, point.minimum, point.maximum]], encode: { x: [0, 2, 3], y: 1 },
           tooltip: { formatter: () => isSize
             ? `${framework?.name ?? point.framework}\n${group.versions[point.framework]}\nSize: ${number(point.value)} MiB\n${point.bytes.toLocaleString()} bytes`
-            : `${framework?.name ?? point.framework}\n${group.versions[point.framework] ?? 'Version unreported'}\n${isMemory ? 'Average' : 'Median'}: ${number(point.value)} ${point.unit}\n${isMemory ? 'Minimum' : 'Range'}: ${number(point.minimum)}${isMemory ? ` ${point.unit}\nMaximum: ` : '–'}${number(point.maximum)} ${point.unit}\nRepetitions: ${point.repetitions}` },
+            : `${framework?.name ?? point.framework}\n${group.versions[point.framework] ?? 'Version unreported'}\n${isMemory ? 'Average' : 'Median'}: ${number(point.value)} ${point.unit}${isMemory ? '' : `\nRange: ${number(point.minimum)}–${number(point.maximum)} ${point.unit}`}\nRepetitions: ${point.repetitions}` },
           renderItem: (parameters, api) => {
-            const row = isMemory ? point.lane : 0;
+            const row = 0;
             const center = api.coord([point.value, row]);
             const lower = api.coord([point.minimum, row]);
             const upper = api.coord([point.maximum, row]);
             if (center[0] < left || center[0] > right) return null;
             lower[0] = Math.max(left, Math.min(right, lower[0]));
             upper[0] = Math.max(left, Math.min(right, upper[0]));
-            const vertical = isMemory ? center[1] : top + 15 + point.lane * laneSpacing;
+            const vertical = top + 15 + point.lane * laneSpacing;
             return {
               type: 'group',
               children: [
-                { type: 'line', shape: { x1: lower[0], y1: vertical, x2: upper[0], y2: vertical }, style: { stroke: color, lineWidth: 2, opacity: 0.65 } },
-                ...(isSize ? [] : [lower, upper]).map(position => isMemory
-                  ? { type: 'circle', shape: { cx: position[0], cy: vertical, r: 3.5 }, style: { fill: '#171716', stroke: color, lineWidth: 1.5 } }
-                  : { type: 'line', shape: { x1: position[0], y1: vertical - 3, x2: position[0], y2: vertical + 3 }, style: { stroke: color, lineWidth: 1 } }),
+                ...(isMemory ? [] : [{ type: 'line', shape: { x1: lower[0], y1: vertical, x2: upper[0], y2: vertical }, style: { stroke: color, lineWidth: 2, opacity: 0.65 } }]),
+                ...(isSize || isMemory ? [] : [lower, upper]).map(position => ({ type: 'line', shape: { x1: position[0], y1: vertical - 3, x2: position[0], y2: vertical + 3 }, style: { stroke: color, lineWidth: 1 } })),
                 { type: 'circle', shape: { cx: center[0], cy: vertical, r: 2.8 }, style: { fill: color }, emphasis: { style: { shadowBlur: 8, shadowColor: color } } },
-                ...(isMemory
-                  ? [point.minimum, point.value, point.maximum].map((value, index) => ({
-                    type: 'text', x: right + 85 + index * 90, y: vertical,
-                    style: { text: labelNumber(value), fill: color, font: `11px ${fontFamily}`, align: 'right', verticalAlign: 'middle' },
-                  }))
-                  : [{ type: 'text', x: center[0] - 9, y: vertical, style: { text: names[point.framework], fill: color, font: `11px ${fontFamily}`, align: 'right', verticalAlign: 'middle' } }]),
+                { type: 'text', x: center[0] - 9, y: vertical, style: { text: names[point.framework], fill: color, font: `11px ${fontFamily}`, align: 'right', verticalAlign: 'middle' } },
               ],
             };
           },

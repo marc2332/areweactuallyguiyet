@@ -7,7 +7,11 @@ const section = groups => workloadSections({ groups })[0];
 
 test('scrolling and dashboard workloads are configured for display', () => {
   const workloads = workloadSections({ groups: {} });
-  assert.deepEqual(workloads.map(workload => workload.scenario), ['scroll', 'dashboard']);
+  assert.deepEqual(workloads.map(({ scenario, metric }) => ({ scenario, metric })), [
+    { scenario: 'scroll', metric: 'renderer_fps' },
+    { scenario: 'dashboard', metric: 'dashboard_worst_gap_ms' },
+    { scenario: 'dashboard', metric: 'dashboard_rss_mean_mib' },
+  ]);
   assert.ok(workloads.every(workload => workload.label && workload.groups.length === 0));
 });
 
@@ -29,6 +33,20 @@ test('dashboard uses the worst full-window gap instead of median intervals', () 
   } });
   assert.equal(workloads[1].metric, 'dashboard_worst_gap_ms');
   assert.equal(workloads[1].label, 'Dashboard interaction');
+});
+
+test('dashboard memory remains separate from responsiveness and excludes other workloads', () => {
+  const responsiveness = group('dashboard');
+  const memory = group('dashboard');
+  const workloads = workloadSections({ groups: {
+    dashboard_worst_gap_ms: [responsiveness],
+    dashboard_rss_mean_mib: [memory, group('scroll')],
+  } });
+  assert.deepEqual(workloads[1].groups, [responsiveness]);
+  assert.equal(workloads[2].scenario, 'dashboard');
+  assert.equal(workloads[2].metric, 'dashboard_rss_mean_mib');
+  assert.equal(workloads[2].label, 'Dashboard interaction');
+  assert.deepEqual(workloads[2].groups, [memory]);
 });
 
 test('workload versions remain separate and unconfigured workloads are excluded', () => {
