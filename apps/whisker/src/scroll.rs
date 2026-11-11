@@ -1,8 +1,11 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use whisker::prelude::*;
 use whisker_desktop::DesktopAppConfig;
 
 pub fn run() -> Result<(), whisker_desktop::DesktopAppError> {
-    let mut config = DesktopAppConfig::new("Whisker Scroll 2000");
+    let mut config = DesktopAppConfig::new("Whisker Scroll");
     config.width = 1000.0;
     config.height = 700.0;
     whisker_desktop::run(config, app)
@@ -22,7 +25,7 @@ fn app() -> Element {
                             .flex_shrink(0.0),
                     )
                     .body(|rows| {
-                        for number in 1..=2000 {
+                        for number in 1..=scroll_config::row_count() {
                             rows.push(
                                 View::builder()
                                     .style(

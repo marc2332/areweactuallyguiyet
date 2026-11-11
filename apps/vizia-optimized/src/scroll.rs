@@ -1,9 +1,12 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use vizia::prelude::*;
 
 pub fn main() -> Result<(), ApplicationError> {
     Application::new(|cx| {
         ScrollView::new(cx, |cx| {
-            for number in 1..=2000 {
+            for number in 1..=scroll_config::row_count() {
                 Label::new(cx, format!("Item {number}"))
                     .height(Pixels(48.0))
                     .width(Pixels(960.0))
@@ -21,7 +24,7 @@ pub fn main() -> Result<(), ApplicationError> {
         .width(Stretch(1.0))
         .height(Stretch(1.0));
     })
-    .title("Vizia (Optimized) Scroll 2000")
+    .title("Vizia (Optimized) Scroll")
     .inner_size((1000, 700))
     .run()
 }

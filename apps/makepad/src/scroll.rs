@@ -1,3 +1,6 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use makepad_widgets::*;
 
 live_design! {
@@ -20,7 +23,7 @@ live_design! {
     App = {{App}} {
         ui: <Root> {
             main_window = <Window> {
-                window: {inner_size: vec2(1000, 700), title: "Makepad Scroll 2000"}
+                window: {inner_size: vec2(1000, 700), title: "Makepad Scroll"}
                 body = <FlatList> {
                     width: Fill, height: Fill,
                     Even = <ItemRow> {}
@@ -50,7 +53,7 @@ impl LiveRegister for App {
 impl MatchEvent for App {
     fn handle_startup(&mut self, cx: &mut Cx) {
         let list = self.ui.flat_list(id!(body));
-        for index in 0..2000 {
+        for index in 0..scroll_config::row_count() as u64 {
             let template = if index % 2 == 0 {
                 live_id!(Even)
             } else {

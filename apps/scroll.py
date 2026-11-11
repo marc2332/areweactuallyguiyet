@@ -113,7 +113,7 @@ class WheelInput:
                 break
             now = time.monotonic()
             if now >= next_event:
-                button = 5 if int((now - start) / 4) % 2 == 0 else 4
+                button = 5 if int((now - start) / 0.5) % 2 == 0 else 4
                 self.check(self.library.xdo_click_window(self.connection, 0, button))
                 self.xlib.XFlush(self.display)
                 self.events_sent += 1

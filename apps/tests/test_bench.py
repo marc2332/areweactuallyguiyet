@@ -219,6 +219,33 @@ class BenchmarkTests(unittest.TestCase):
         process.terminate.assert_called_once()
         self.assertFalse(self.history.exists())
 
+    def test_scroll_captures_each_size_without_rebuilding(self):
+        arguments = SimpleNamespace(
+            apps=["freya"], output=self.root / "results", no_build=False,
+            repetitions=2, benchmark="scroll", rows=[1000, 3000, 5000, 7000],
+        )
+        with mock.patch.object(bench.shutil, "which", return_value="/usr/bin/tool"), \
+             mock.patch.dict(bench.os.environ, {"DISPLAY": ":0"}), \
+             mock.patch.object(bench, "build", return_value=self.root / "binary") as build, \
+             mock.patch.object(bench, "capture", return_value={"app": "freya", "status": "ok"}) as capture, \
+             mock.patch.object(bench, "finish") as finish:
+            self.assertEqual(bench.run_benchmarks(arguments, {"freya": {"id": "freya"}}), 0)
+        build.assert_called_once()
+        self.assertEqual([call.args[3].rows for call in capture.call_args_list],
+                         [1000, 1000, 3000, 3000, 5000, 5000, 7000, 7000])
+        results = finish.call_args.args[0]["results"]
+        self.assertEqual([result["repetition"] for result in results], [1, 2] * 4)
+        self.assertEqual(len({call.args[2] for call in capture.call_args_list}), 8)
+
+    def test_launch_passes_row_count_to_the_application(self):
+        arguments = SimpleNamespace(benchmark="scroll", rows=3000, fps_limit=144, no_vsync=False)
+        process = mock.Mock()
+        process.poll.return_value = 0
+        with mock.patch.object(bench.subprocess, "Popen", return_value=process) as launch:
+            with bench.launch_app({"env": {}}, self.root / "binary", self.root / "capture", arguments):
+                pass
+        self.assertEqual(launch.call_args.kwargs["env"]["SCROLL_ROWS"], "3000")
+
     def test_low_wheel_rate_does_not_overrun_phase(self):
         wheel = bench.WheelInput.__new__(bench.WheelInput)
         wheel.library = mock.Mock()

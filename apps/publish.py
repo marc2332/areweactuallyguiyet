@@ -34,7 +34,7 @@ def dependency_versions(dependencies):
 def website_run(source, apps, libraries):
     if source.get("measurement") in DASHBOARD_MEASUREMENTS:
         return dashboard_website_run(source, apps, libraries)
-    if source.get("measurement") != bench.MEASUREMENT or not source.get("results"):
+    if source.get("measurement") not in (bench.MEASUREMENT, "mangohud-scroll-v2") or not source.get("results"):
         raise ValueError("Expected a supported MangoHud run with results")
     datetime.datetime.fromisoformat(source["timestamp"])
     names = {library["id"]: library["name"] for library in libraries}
@@ -42,16 +42,19 @@ def website_run(source, apps, libraries):
     for result in source["results"]:
         if result.get("app") not in apps or result.get("status") not in ("ok", "failed"):
             raise ValueError("Unknown application or result status")
-        samples[result["app"]].append(result)
+        rows = result.get("rows")
+        if rows is not None and (type(rows) is not int or not 0 < rows <= 2**31 - 1):
+            raise ValueError("Invalid scroll row count")
+        samples[(result["app"], rows)].append(result)
     metadata = {
-        "buildProfile": "release", "measurement": bench.MEASUREMENT,
+        "buildProfile": "release", "measurement": source["measurement"],
         "responsivenessVersion": 3,
         "responsivenessScope": "MangoHud present observations, not confirmed displayed frames or present-return timing",
         "sourceRun": source["id"], "frameworkLabels": {}, "frameworkBaseIds": {}, "frameworkVersions": {},
     }
     results = []
     configurations = set()
-    for identifier, captures in samples.items():
+    for (identifier, rows), captures in samples.items():
         base = next((name for name in sorted(names, key=len, reverse=True)
                      if identifier == name or identifier.startswith(name + "-")), None)
         if base is None:
@@ -99,7 +102,8 @@ def website_run(source, apps, libraries):
         for metric in {metric for repetition in successful for metric in repetition["metrics"]}:
             values = [repetition["metrics"][metric] for repetition in successful if metric in repetition["metrics"]]
             metrics[metric] = {"value": statistics.median(value["value"] for value in values), "unit": values[0]["unit"]}
-        results.append({"framework": identifier, "scenario": "scroll", "scenarioVersion": 2,
+        results.append({"framework": identifier, "scenario": f"scroll-{rows}" if rows is not None else "scroll",
+                        "scenarioVersion": 3 if rows is not None else 2,
                         "status": "ok" if successful else "failed", "reason": " · ".join(failures) or None,
                         "metrics": metrics, "repetitions": repetitions})
     if len(configurations) != 1:
@@ -246,8 +250,21 @@ def dashboard_website_run(source, apps, libraries):
 
 def merge_latest(history, run):
     if not history.get("runs"):
-        raise ValueError("Cannot merge dashboard results without an existing website run")
+        raise ValueError("Cannot merge results without an existing website run")
     latest = max(history["runs"], key=lambda previous: datetime.datetime.fromisoformat(previous["collectedAt"]))
+    if run["metadata"].get("measurement") == bench.MEASUREMENT:
+        if not run["results"] or any(not result["scenario"].startswith("scroll-") for result in run["results"]):
+            raise ValueError("Scroll replacement requires row-count scenarios")
+        previous = latest["metadata"]
+        collections = {scenario: metadata for scenario, metadata in previous.get("scenarioCollections", {}).items()
+                       if scenario != "scroll" and not scenario.startswith("scroll-")}
+        retained = [result for result in latest["results"]
+                    if result["scenario"] != "scroll" and not result["scenario"].startswith("scroll-")]
+        for scenario in {result["scenario"] for result in retained}:
+            collections.setdefault(scenario, {key: value for key, value in previous.items() if key != "scenarioCollections"})
+        latest["results"] = retained + run["results"]
+        latest["metadata"] = {**run["metadata"], "sourceCollectedAt": run["collectedAt"], "scenarioCollections": collections}
+        return history
     dashboard = [result for result in run["results"] if result["scenario"] == "dashboard"]
     keys = {(result["framework"], result["scenario"]) for result in dashboard}
     latest["results"] = [result for result in latest["results"] if (result["framework"], result["scenario"]) not in keys] + dashboard
@@ -268,8 +285,8 @@ def save(path, run, latest=False):
         if history.get("schemaVersion") != 1 or not isinstance(history.get("runs"), list):
             raise ValueError("Expected the existing website history format")
         if latest:
-            if run["metadata"].get("measurement") not in DASHBOARD_MEASUREMENTS:
-                raise ValueError("--latest is only supported for dashboard captures")
+            if run["metadata"].get("measurement") not in (*DASHBOARD_MEASUREMENTS, bench.MEASUREMENT):
+                raise ValueError("--latest requires dashboard or row-count scroll captures")
             merge_latest(history, run)
         else:
             if any(previous["id"] == run["id"] for previous in history["runs"]):
@@ -296,7 +313,7 @@ def main():
     parser.add_argument("run", type=Path, help="A completed bench.py run.json artifact")
     parser.add_argument("--history", type=Path, default=bench.ROOT / "site/data/history.json")
     parser.add_argument("--save", action="store_true", help="Publish to website history, otherwise print only")
-    parser.add_argument("--latest", action="store_true", help="Merge dashboard results into the latest website run")
+    parser.add_argument("--latest", action="store_true", help="Replace latest scroll results or merge dashboard results, preserving other workloads")
     arguments = parser.parse_args()
     if arguments.latest and not arguments.save:
         parser.error("--latest requires --save")

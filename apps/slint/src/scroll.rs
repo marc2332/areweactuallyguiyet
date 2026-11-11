@@ -1,8 +1,12 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 slint::slint! {
     import { Palette, ScrollView } from "std-widgets.slint";
 
     export component ScrollWindow inherits Window {
-        title: "Slint Scroll 2000";
+        title: "Slint Scroll";
+        in property <int> row-count;
         width: 1000px;
         height: 700px;
         background: white;
@@ -12,10 +16,10 @@ slint::slint! {
             width: parent.width;
             height: parent.height;
             content-width: 960px;
-            content-height: 2000 * 48px;
+            content-height: root.row-count * 48px;
             horizontal-scrollbar-policy: always-off;
 
-            for index in 2000: Rectangle {
+            for index in root.row-count: Rectangle {
                 y: index * 48px;
                 width: 960px;
                 height: 48px;
@@ -37,5 +41,7 @@ slint::slint! {
 }
 
 pub fn run() -> Result<(), slint::PlatformError> {
-    ScrollWindow::new()?.run()
+    let window = ScrollWindow::new()?;
+    window.set_row_count(scroll_config::row_count() as i32);
+    window.run()
 }

@@ -15,6 +15,9 @@ export const metricLabels = {
 };
 
 export const frameworkColors = {
+  blinc: '#f97316',
+  zgui: '#a78bfa',
+  whisker: '#38bdf8',
   freya: '#34d399',
   'freya-optimized': '#ef4444',
   'freya-attemp-1': '#2dd4bf',
@@ -44,6 +47,10 @@ export const frameworkColors = {
 
 export const scenarioLabels = {
   scroll: 'Scroll 2,000 rows',
+  'scroll-1000': 'Scroll 1,000 rows',
+  'scroll-3000': 'Scroll 3,000 rows',
+  'scroll-5000': 'Scroll 5,000 rows',
+  'scroll-7000': 'Scroll 7,000 rows',
   dashboard: 'Dashboard interaction',
 };
 
@@ -88,8 +95,10 @@ export function groupMetricResults(run, metric, hidden = new Set()) {
     for (const scenarioVersion of versions) {
       const versioned = results.filter(result => result.scenarioVersion === scenarioVersion);
       const rendererMetric = metric.startsWith('renderer_') || metric.startsWith('frame_gap_');
+      const rows = /^scroll-([1-9][0-9]*)$/.exec(scenario)?.[1];
       const boundaries = rendererMetric
-        ? [...new Set(versioned.map(rendererBoundary))].filter(boundary => ['present-returned', 'mangohud-present-observation'].includes(boundary))
+        ? [...new Set((rows ? run.results.filter(result => /^scroll-[1-9][0-9]*$/.test(result.scenario) && result.scenarioVersion === scenarioVersion) : versioned)
+          .map(rendererBoundary))].filter(boundary => ['present-returned', 'mangohud-present-observation'].includes(boundary))
         : [null];
       for (const boundary of boundaries) {
         const compatible = boundary === null ? versioned : versioned.map(result =>
@@ -97,7 +106,8 @@ export function groupMetricResults(run, metric, hidden = new Set()) {
             ? { ...result, status: 'unsupported', reason: `No compatible ${boundary} capture. Other renderer boundaries are excluded.` }
             : result
         );
-        if (!compatible.some(result => result.status === 'ok' && result.metrics[metric])) continue;
+        if (!compatible.some(result => result.status === 'ok' && result.metrics[metric])
+          && !(rows && rendererMetric && compatible.some(result => result.status !== 'ok'))) continue;
         const transformed = transformChartResults(compatible, { metric, scenarioVersion, hidden });
         const points = transformed.filter(point => point.status === 'ok').map(point => {
           const source = compatible.find(result => result.framework === point.framework);
@@ -107,7 +117,10 @@ export function groupMetricResults(run, metric, hidden = new Set()) {
           });
           return { ...point, minimum: Math.min(point.value, ...repetitions), maximum: Math.max(point.value, ...repetitions), repetitions: repetitions.length };
         });
-        groups.push({ scenario, scenarioVersion, boundary, label: scenarioLabels[scenario] ?? scenario, points, missing: transformed.filter(point => point.status !== 'ok') });
+        groups.push({ scenario, scenarioVersion, boundary,
+          ...(rows ? { rows: Number(rows) } : {}),
+          label: rows ? `Scroll ${Number(rows).toLocaleString('en-US')} rows` : scenarioLabels[scenario] ?? scenario,
+          points, missing: transformed.filter(point => point.status !== 'ok') });
       }
     }
   }

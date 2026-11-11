@@ -49,6 +49,19 @@ test('dashboard memory remains separate from responsiveness and excludes other w
   assert.deepEqual(workloads[2].groups, [memory]);
 });
 
+test('scroll scaling uses sorted row counts and a separate frame interval chart', () => {
+  const sizes = [7000, 1000, 5000, 3000].map(rows => ({ ...group(`scroll-${rows}`, 3), rows }));
+  const workloads = workloadSections({ groups: {
+    renderer_fps: [group('scroll', 2), ...sizes],
+    frame_gap_p95_ms: sizes,
+  } });
+  assert.equal(workloads[0].scaling, true);
+  assert.equal(workloads[0].label, 'Scroll scaling');
+  assert.deepEqual(workloads[0].groups.map(group => group.rows), [1000, 3000, 5000, 7000]);
+  assert.equal(workloads[1].metric, 'frame_gap_p95_ms');
+  assert.equal(workloads[1].scaling, true);
+});
+
 test('workload versions remain separate and unconfigured workloads are excluded', () => {
   const first = group('scroll', 1);
   const second = group('scroll', 2);

@@ -23,7 +23,7 @@ from scroll import WheelInput, positive_number, window_client_pid
 
 DIRECTORY = Path(__file__).resolve().parent
 ROOT = DIRECTORY.parent
-MEASUREMENT = "mangohud-scroll-v2"
+MEASUREMENT = "mangohud-scroll-v3"
 
 
 def load_apps():
@@ -103,7 +103,7 @@ def build(app, output, skip_build, benchmark="scroll", profile="release"):
     if len(binaries) != 1:
         raise ValueError(f"Expected exactly one binary for {app['id']}")
     binary = Path(metadata["target_directory"]) / profile / binaries[0]
-    benchmark_directory = dashboard.MEASUREMENT.removeprefix("mangohud-") if benchmark == "dashboard" else benchmark
+    benchmark_directory = (dashboard.MEASUREMENT if benchmark == "dashboard" else MEASUREMENT).removeprefix("mangohud-")
     selected = Path(metadata["target_directory"]) / "benchmarks" / benchmark_directory / app["id"]
     if profile != "release":
         selected /= profile
@@ -170,6 +170,8 @@ def launch_app(app, binary, output, arguments):
     for variable in ("WAYLAND_DISPLAY", "WAYLAND_SOCKET", "MANGOHUD_CONFIGFILE"):
         environment.pop(variable, None)
     environment.update(app.get("env", {}))
+    if getattr(arguments, "benchmark", "scroll") == "scroll":
+        environment["SCROLL_ROWS"] = str(getattr(arguments, "rows", 1000))
     environment["WINIT_UNIX_BACKEND"] = "x11"
     environment["MANGOHUD_CONFIG"] = (
         f"fps,frametime,frame_timing,cpu_stats=0,gpu_stats=0,permit_upload=0,"
@@ -201,7 +203,7 @@ def capture(app, binary, output, arguments):
 def capture_scroll(app, binary, output, arguments):
     with launch_app(app, binary, output, arguments) as (process, control_name):
         with contextlib.ExitStack() as stack:
-            window = wait_for_window(process, app["title"], arguments.startup_timeout)
+            window = wait_for_window(process, app["title"].removesuffix(" 2000"), arguments.startup_timeout)
             with WheelInput(window) as wheel:
                 control = stack.enter_context(connect_control(process, control_name, arguments.startup_timeout))
                 messages = bytearray()
@@ -399,23 +401,31 @@ def run_benchmarks(arguments, apps):
     output = arguments.output.resolve() / run["id"]
     output.mkdir(parents=True)
     run["output_directory"] = str(output)
+    sizes = getattr(arguments, "rows", [1000, 3000, 5000, 7000]) if benchmark == "scroll" else [None]
     binaries = {}
     for name in requested:
         try:
             binaries[name] = build(apps[name], output, arguments.no_build, benchmark)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
-            run["results"].append({"app": name, "status": "failed", "stage": "build", "error": str(error)})
+            for rows in sizes:
+                run["results"].append({"app": name, "status": "failed", "stage": "build", "error": str(error),
+                                       **({"rows": rows} if rows is not None else {})})
     for name in requested:
         if name not in binaries:
             continue
-        for repetition in range(1, arguments.repetitions + 1):
-            print(f"Capturing {name} ({repetition}/{arguments.repetitions})...", file=sys.stderr)
-            destination = output / f"{name}-{repetition}"
-            try:
-                result = capture(apps[name], binaries[name], destination, arguments)
-            except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
-                result = {"app": name, "status": "failed", "stage": "capture", "error": str(error)}
-            run["results"].append({**result, "repetition": repetition})
+        for rows in sizes:
+            capture_arguments = argparse.Namespace(**vars(arguments))
+            capture_arguments.rows = rows
+            for repetition in range(1, arguments.repetitions + 1):
+                label = f"{name}-{rows}-rows" if rows is not None else name
+                print(f"Capturing {label} ({repetition}/{arguments.repetitions})...", file=sys.stderr)
+                destination = output / f"{label}-{repetition}"
+                try:
+                    result = capture(apps[name], binaries[name], destination, capture_arguments)
+                except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
+                    result = {"app": name, "status": "failed", "stage": "capture", "error": str(error)}
+                run["results"].append({**result, "repetition": repetition,
+                                       **({"rows": rows} if rows is not None else {})})
     (output / "run.json").write_text(json.dumps(run, indent=2, allow_nan=False) + "\n")
     finish(run, arguments)
     return int(any(result["status"] != "ok" for result in run["results"]))
@@ -447,6 +457,8 @@ def main():
     run = commands.add_parser("run", help="Build and capture apps sequentially")
     run.add_argument("apps", nargs="*", help="App IDs, comma-separated IDs, or all (default)")
     run.add_argument("--benchmark", choices=("scroll", "dashboard"), default="scroll")
+    run.add_argument("--rows", type=positive_integer, nargs="+", default=[1000, 3000, 5000, 7000],
+                     help="Scroll row counts (default: 1000 3000 5000 7000)")
     run.add_argument("--duration", type=positive_number, default=15)
     run.add_argument("--warmup", type=positive_number, default=2)
     run.add_argument("--rate", type=positive_number,
@@ -472,7 +484,7 @@ def main():
     history_options(parse)
     arguments = parser.parse_args()
     if arguments.command != "list" and arguments.history is None:
-        filename = dashboard.MEASUREMENT.removeprefix("mangohud-") + "-history.json" if arguments.benchmark == "dashboard" else "history.json"
+        filename = (dashboard.MEASUREMENT if arguments.benchmark == "dashboard" else MEASUREMENT).removeprefix("mangohud-") + "-history.json"
         arguments.history = DIRECTORY / filename
     if arguments.command == "parse":
         if arguments.benchmark == "scroll" and arguments.duration is None:
@@ -492,6 +504,8 @@ def main():
                 arguments.no_vsync = arguments.benchmark == "dashboard"
             if arguments.rate is None:
                 arguments.rate = 240 if arguments.benchmark == "dashboard" else arguments.fps_limit or 144
+            if len(set(arguments.rows)) != len(arguments.rows) or any(rows > 2**31 - 1 for rows in arguments.rows):
+                parser.error("--rows must contain unique positive integers no larger than 2147483647")
             return run_benchmarks(arguments, apps)
         if arguments.app not in apps:
             raise ValueError(f"Unknown app: {arguments.app}")

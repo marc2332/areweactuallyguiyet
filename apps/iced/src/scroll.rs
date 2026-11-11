@@ -1,3 +1,6 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use iced::{
     Color, Element, Length, Theme,
     widget::{column, container, scrollable, text},
@@ -5,7 +8,7 @@ use iced::{
 
 fn view(_state: &()) -> Element<'_, ()> {
     let mut rows = column![].spacing(0).width(Length::Fill);
-    for index in 0..2_000 {
+    for index in 0..scroll_config::row_count() {
         let background = if index % 2 == 0 {
             Color::from_rgb8(245, 245, 245)
         } else {
@@ -31,7 +34,7 @@ fn view(_state: &()) -> Element<'_, ()> {
 
 pub fn main() -> iced::Result {
     iced::application(|| (), |_: &mut (), _: ()| {}, view)
-        .title("Iced Scroll 2000")
+        .title("Iced Scroll")
         .theme(Theme::Light)
         .window_size(iced::Size::new(1000.0, 700.0))
         .run()

@@ -163,7 +163,10 @@ test('feature evidence is usable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('/');
-  await expect(page.locator('#features tbody tr')).toHaveCount(49);
+  await expect(page.locator('#features tbody tr')).toHaveCount(47);
+  const stateManagement = page.locator('#features tbody tr').filter({ has: page.getByRole('rowheader', { name: 'State Management', exact: true }) });
+  await expect(stateManagement.locator('td')).toHaveCount(14);
+  await expect(stateManagement.locator('td')).toHaveText(['Signals', 'Entities', 'Signals', 'Elm', 'Immediate mode', 'Property bindings', 'Signals', 'Signals', 'Events', 'Entities', 'Shared state', 'Signals', 'Signals', 'Signals']);
   await expect(page.locator('.downloads-row img')).toHaveCount(13);
   await expect(page.locator('.downloads-row img').first()).toHaveAttribute('src', /^https:\/\/img\.shields\.io\/crates\/dr\/.+\.svg\?label=recent$/);
   await expect(page.locator('.downloads-row')).toContainText('Not published');

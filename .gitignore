@@ -5,6 +5,7 @@
 /apps/*.json.lock
 /apps/history.json
 /apps/dashboard-v*-history.json
+/apps/scroll-v*-history.json
 /site/data/*.json.lock
 /results/
 /node_modules/

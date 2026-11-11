@@ -31,6 +31,22 @@ const layoutModels = {
   rune: 'Taffy (CSS)',
   whisker: 'Taffy (CSS)',
 };
+const stateManagementModels = {
+  blinc: 'Signals',
+  zgui: 'Signals',
+  freya: 'Signals',
+  gpui: 'Entities',
+  vizia: 'Signals',
+  iced: 'Elm',
+  egui: 'Immediate mode',
+  slint: 'Property bindings',
+  floem: 'Signals',
+  'dioxus-native': 'Signals',
+  makepad: 'Events',
+  'gpui-fast': 'Entities',
+  rune: 'Shared state',
+  whisker: 'Signals',
+};
 const fields = [
   ['License', library => library.license ?? 'Unknown'],
   ['Creation year', library => library.creationYear ?? 'Unknown'],
@@ -64,6 +80,7 @@ const fields = [
             {evidence && <a href={evidence}>Source</a>}
           </details></td>;
         })}</tr>)}
+        <tr><th scope="row">State Management</th>{libraries.map(library => <td>{stateManagementModels[library.id] ?? 'Unknown'}</td>)}</tr>
         {features.categories.map(category => <>
           <tr class="category-row"><th colspan={libraries.length + 1} scope="rowgroup">{category}</th></tr>
           {[...new Set(features.claims.filter(claim => claim.category === category && !['Scrolling', 'Text input', 'SVG'].includes(claim.name)).map(claim => claim.name))].map(name => <tr>

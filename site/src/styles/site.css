@@ -38,7 +38,7 @@ select { width: 100%; min-width: 0; padding: 9px 8px; color: #e6e6e2; background
 #reset { background: none; border: 0; padding: 5px 0 5px 10px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-size: 11px; }
 .framework-toggles { display: flex; flex-wrap: wrap; gap: 3px 15px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .framework-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 0; border: 0; color: #cccac4; background: transparent; font-size: 11px; }
-.framework-toggle::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--framework-color); }
+.framework-toggle::before { content: ''; width: 10px; height: 10px; flex-shrink: 0; border-radius: 50%; background: var(--framework-color); }
 .framework-toggle:hover { color: var(--framework-color); text-decoration: underline; }
 .framework-toggle[aria-pressed="false"] { opacity: .4; text-decoration: line-through; }
 .workload-section { padding: 24px 0; }

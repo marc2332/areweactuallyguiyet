@@ -54,6 +54,37 @@ class PublishTests(unittest.TestCase):
     def convert(self):
         return publish.website_run(self.source, self.apps, self.libraries)
 
+    def test_scroll_sizes_keep_separate_repetitions_and_metrics(self):
+        original = self.source["results"][0]
+        self.source["results"] = []
+        for rows in (500, 1500, 3000, 4500):
+            for repetition in (1, 2):
+                capture = copy.deepcopy(original)
+                capture.update(rows=rows, repetition=repetition)
+                capture["metrics"].update(fps=rows / 100, frames=rows * 3 / 100)
+                self.source["results"].append(capture)
+        run = self.convert()
+        self.assertEqual([result["scenario"] for result in run["results"]],
+                         ["scroll-500", "scroll-1500", "scroll-3000", "scroll-4500"])
+        for result, rows in zip(run["results"], (500, 1500, 3000, 4500)):
+            self.assertEqual(result["scenarioVersion"], 3)
+            self.assertEqual(len(result["repetitions"]), 2)
+            self.assertEqual(result["metrics"]["renderer_fps"]["value"], rows / 100)
+        self.assertEqual(run["metadata"]["repetitions"], 2)
+
+    def test_invalid_scroll_row_counts_are_rejected(self):
+        for rows in (0, -1, True, "500", 2**31):
+            with self.subTest(rows=rows):
+                self.source["results"][0]["rows"] = rows
+                with self.assertRaisesRegex(ValueError, "Invalid scroll row count"):
+                    self.convert()
+
+    def test_legacy_scroll_remains_a_separate_two_thousand_row_scenario(self):
+        self.source["measurement"] = "mangohud-scroll-v2"
+        result = self.convert()["results"][0]
+        self.assertEqual(result["scenario"], "scroll")
+        self.assertEqual(result["scenarioVersion"], 2)
+
     def test_dashboard_conversion_uses_interval_metrics_without_fps_scores(self):
         run = publish.website_run(dashboard_source(), self.apps, self.libraries)
         result = run["results"][0]
@@ -139,6 +170,39 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(history["runs"][0]["results"][-1]["status"], "failed")
         self.assertIn("dashboard", history["runs"][0]["metadata"]["scenarioCollections"])
         self.assertEqual(history["runs"][0]["metadata"]["measurement"], bench.MEASUREMENT)
+
+    def test_scroll_replacement_preserves_dashboard_and_older_collections(self):
+        previous = self.convert()
+        previous["metadata"]["captureRetries"] = [{"sourceRun": "obsolete"}]
+        dashboard_run = publish.website_run(dashboard_source(), self.apps, self.libraries)
+        history = {"schemaVersion": 1, "runs": [previous]}
+        publish.merge_latest(history, dashboard_run)
+        dashboard_results = copy.deepcopy([result for result in previous["results"] if result["scenario"] == "dashboard"])
+        dashboard_metadata = copy.deepcopy(previous["metadata"]["scenarioCollections"]["dashboard"])
+        older = copy.deepcopy(previous)
+        older.update(id="older", collectedAt="2026-11-09T20:00:00+00:00")
+        history["runs"].insert(0, copy.deepcopy(older))
+        original = self.source["results"][0]
+        self.source["results"] = [{**original, "rows": rows} for rows in (500, 1500, 3000, 4500)]
+        self.source.update(id="replacement", timestamp="2026-11-11T20:00:00+00:00")
+        replacement = self.convert()
+        publish.merge_latest(history, replacement)
+        latest = history["runs"][-1]
+        self.assertEqual(history["runs"][0], older)
+        self.assertEqual(latest["id"], "fixture")
+        self.assertEqual([result for result in latest["results"] if result["scenario"] == "dashboard"], dashboard_results)
+        self.assertEqual(latest["metadata"]["scenarioCollections"]["dashboard"], dashboard_metadata)
+        self.assertEqual(latest["metadata"]["sourceRun"], "replacement")
+        self.assertNotIn("captureRetries", latest["metadata"])
+        self.assertNotIn("scroll", [result["scenario"] for result in latest["results"]])
+        self.assertEqual(len(latest["results"]), 5)
+        publish.merge_latest(history, replacement)
+        self.assertEqual(len(history["runs"][-1]["results"]), 5)
+
+    def test_scroll_replacement_rejects_unlabeled_row_counts(self):
+        run = self.convert()
+        with self.assertRaisesRegex(ValueError, "row-count scenarios"):
+            publish.merge_latest({"runs": [copy.deepcopy(run)]}, run)
 
     def test_aggregates_repetitions_and_preserves_each_sample(self):
         second = copy.deepcopy(self.source["results"][0])

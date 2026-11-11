@@ -11,14 +11,18 @@ just app freya dashboard
 
 ## Scrolling
 
-The scroll UI is a non-virtualized list of 2,000 rows. Each row is 960 × 48 logical pixels, with 12 px padding, black 14 px `Item N` text, and alternating `#f5f5f5` / `#e6e6e6` backgrounds. Font families remain toolkit-native.
+The scroll UI is a non-virtualized list configured by `SCROLL_ROWS`, defaulting to 1,000 rows when launched directly. The runner captures four sizes by default: 1,000, 3,000, 5,000, and 7,000 rows. Each row is 960 × 48 logical pixels, with 12 px padding, black 14 px `Item N` text, and alternating `#f5f5f5` / `#e6e6e6` backgrounds. Font families remain toolkit-native.
 
 ```sh
+SCROLL_ROWS=3000 just app freya
 python3 apps/bench.py run all
-python3 apps/bench.py run freya --no-build --duration 15 --repetitions 3
+python3 apps/bench.py run freya --rows 1000 3000 5000 7000 --repetitions 3
+python3 apps/bench.py run freya --no-build --rows 3000 --duration 15 --repetitions 3
 python3 apps/bench.py run all --fps-limit 0 --no-vsync
 python3 apps/bench.py run freya --save
 ```
+
+The runner builds each app once and passes each size through `SCROLL_ROWS`, overriding the inherited environment. Every capture records its row count. Input reverses direction every half second to reduce the risk of reaching an edge in the smallest list. Custom rates and toolkit wheel distances can still reach an edge, so visually verify the workload when changing input settings. The website plots one line per framework against row count, with repetition medians and range whiskers, plus a separate p95 presentation-interval chart. Legacy 2,000-row captures remain separate.
 
 The runner sends continuous wheel input. Defaults are a 144 FPS limit, two-second warmup, and 15-second measurement. Input frequency follows the FPS limit, or 144 Hz when uncapped. Override with `--rate`. `--no-vsync` requests disabled synchronization through MangoHud, but does not verify the actual presentation mode.
 
@@ -32,7 +36,15 @@ CSV parsing expects `log_interval=0` and elapsed nanoseconds. `--start` selects 
 
 Reported FPS counts presentation observations in the exact timestamp window. It is not confirmed displayed FPS, distinct content changes, CPU render execution time, or GPU execution time. Intervals include waiting, synchronization, and the limiter. Overlay rendering and synchronous logging add overhead. MangoHud's own summary includes pre-roll and is not the runner's measurement-window summary.
 
-Scroll history defaults to `apps/history.json`, with identity `mangohud-scroll-v2`.
+Scroll history defaults to `apps/scroll-v3-history.json`, with identity `mangohud-scroll-v3`. Cached scroll binaries are versioned, so rebuild before using `--no-build` with this workload. Version 3 changes row counts and scroll direction timing. Do not compare it directly with version-2 captures.
+
+To refresh the latest website collection, run these commands from a desktop session with X11 access. This replaces its old scroll results while preserving dashboard results and older collections. All library lines are visible by default.
+
+```sh
+python3 apps/bench.py run all --duration 3 --warmup 1 --repetitions 3 --save > /tmp/scroll-run.json &&
+python3 apps/publish.py /tmp/scroll-run.json --save --latest &&
+npm run build
+```
 
 ## Dashboard
 

@@ -1,7 +1,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateHistory, chartHistory } from '../src/lib/history.mjs';
-import { collectionDetails, frameworkVersionsForScenario, groupMetricResults, responsivenessDetails } from '../src/lib/chart-data.mjs';
+import { readFile } from 'node:fs/promises';
+import { collectionDetails, frameworkColor, frameworkColors, frameworkVersionsForScenario, groupMetricResults, responsivenessDetails } from '../src/lib/chart-data.mjs';
+
+test('frameworks have explicit, unique chart colors', async () => {
+  const { libraries } = JSON.parse(await readFile(new URL('../data/libraries.json', import.meta.url), 'utf8'));
+  for (const library of libraries) {
+    assert.ok(frameworkColors[library.id], `Missing color for ${library.id}`);
+    assert.equal(frameworkColor(library.id), frameworkColors[library.id]);
+  }
+  const colors = Object.values(frameworkColors);
+  assert.equal(new Set(colors).size, colors.length);
+});
 
 function history() {
   return {

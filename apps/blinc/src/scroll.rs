@@ -1,11 +1,14 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use blinc_app::{prelude::*, windowed::WindowedApp};
 
 pub fn run() -> Result<()> {
     WindowedApp::run(
-        WindowConfig::new("Blinc Scroll 2000").size(1000, 700),
+        WindowConfig::new("Blinc Scroll").size(1000, 700),
         |context| {
             let mut rows = div().flex_col().w_full().h_fit();
-            for index in 0..2000 {
+            for index in 0..scroll_config::row_count() {
                 let gray = if index % 2 == 0 {
                     245.0 / 255.0
                 } else {

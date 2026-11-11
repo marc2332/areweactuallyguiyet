@@ -1,4 +1,5 @@
 import { compactChart } from './compact-chart.js';
+import { scrollChart } from './scroll-chart.js';
 import { workloadSections } from '../lib/workloads.mjs';
 
 const element = (tag, text, className) => {
@@ -10,17 +11,21 @@ const element = (tag, text, className) => {
 const number = value => value.toLocaleString(undefined, { maximumFractionDigits: 4 });
 const runSelector = document.querySelector('#run');
 const status = document.querySelector('#chart-status');
-const defaultHidden = ['freya', 'vizia', 'whisker', 'blinc'];
+const defaultHidden = ['freya', 'vizia', 'blinc', 'whisker'];
 let hidden = new Set(defaultHidden);
 const charts = [];
 const resizeObserver = new ResizeObserver(() => charts.forEach(chart => chart.resize()));
 const chartContainer = document.querySelector('#charts');
 resizeObserver.observe(chartContainer);
 
+function dataDetails(count) {
+  const details = element('details', undefined, 'chart-data');
+  details.append(element('summary', `Values and unavailable results (${count})`));
+  return details;
+}
+
 function dataTable(points, missing, frameworks, versions, description) {
   const isMemory = description.kind === 'memory';
-  const details = element('details', undefined, 'chart-data');
-  details.append(element('summary', `Values and unavailable results (${points.length + missing.length})`));
   const scroll = element('div', undefined, 'table-scroll');
   const table = element('table');
   const head = element('thead');
@@ -39,8 +44,7 @@ function dataTable(points, missing, frameworks, versions, description) {
   }
   table.append(head, body);
   scroll.append(table);
-  details.append(scroll);
-  return details;
+  return scroll;
 }
 
 async function start() {
@@ -82,13 +86,35 @@ async function start() {
       if (description.note) section.append(element('p', description.note, 'muted'));
       chartContainer.append(section);
       if (!workload.groups.length) section.append(element('p', 'This collection has no compatible measurements for this workload.', 'notice'));
+      const visibleScaling = workload.scaling && workload.groups.some(group => group.points.some(point => !hidden.has(point.framework)));
+      if (workload.scaling && workload.groups.length && !visibleScaling) {
+        section.append(element('p', 'No measured frameworks are visible. Use “Show all” to restore them.', 'notice'));
+      }
+      if (visibleScaling) {
+        const frame = element('div', undefined, 'compact-chart-frame');
+        frame.tabIndex = 0;
+        frame.setAttribute('role', 'region');
+        frame.setAttribute('aria-label', `${description.label} by row count`);
+        const host = element('div', undefined, 'echart');
+        host.setAttribute('role', 'img');
+        host.setAttribute('aria-label', `${description.label} by row count. Exact values follow.`);
+        frame.append(host);
+        section.append(frame);
+        charts.push(scrollChart(host, { groups: workload.groups, hidden, frameworks, description }));
+      }
+      const values = workload.scaling && workload.groups.length
+        ? dataDetails(workload.groups.reduce((count, group) => count + [...group.points, ...group.missing].filter(point => !hidden.has(point.framework)).length, 0))
+        : null;
+      if (values) section.append(values);
       for (const group of workload.groups) {
         const points = group.points.filter(point => !hidden.has(point.framework));
         const missing = group.missing.filter(point => !hidden.has(point.framework));
         const panel = element('div', undefined, 'chart-panel');
         panel.append(element('h4', `${group.label} · workload v${group.scenarioVersion}${group.boundary ? ` · ${group.boundary}` : ''}`, 'sr-only'));
-        section.append(panel);
-        if (points.length) {
+        (values ?? section).append(panel);
+        if (workload.scaling) {
+          panel.append(element('h4', group.label));
+        } else if (points.length) {
           const host = element('div', undefined, 'echart');
           host.setAttribute('role', 'img');
           host.setAttribute('aria-label', `${description.label} for ${group.label}, version ${group.scenarioVersion}. Exact values are in the following expandable table.`);
@@ -103,7 +129,13 @@ async function start() {
           panel.append(element('p', group.points.length ? 'No measured frameworks are visible. Use “Show all” to restore them.' : 'No successful measurements in this collection. See unavailable results below.', 'notice'));
           for (const point of missing) panel.append(element('p', `${frameworks.get(point.framework)?.name ?? point.framework}: no data`, 'muted'));
         }
-        panel.append(dataTable(points, missing, frameworks, group.versions, description));
+        const table = dataTable(points, missing, frameworks, group.versions, description);
+        if (values) panel.append(table);
+        else {
+          const details = dataDetails(points.length + missing.length);
+          details.append(table);
+          panel.append(details);
+        }
       }
     }
     for (const button of document.querySelectorAll('#toggles button')) button.setAttribute('aria-pressed', String(!hidden.has(button.dataset.framework)));

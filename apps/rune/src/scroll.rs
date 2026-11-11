@@ -1,3 +1,6 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use rune::{App, AppSpec, Color, Cx, El, ScrollSpec, TextStyle, col, text};
 
 fn view(_: &(), _: &mut Cx<()>) -> El {
@@ -8,7 +11,7 @@ fn view(_: &(), _: &mut Cx<()>) -> El {
         .scroll(ScrollSpec {
             stick_bottom: false,
         })
-        .children((0..2000).map(|index| {
+        .children((0..scroll_config::row_count()).map(|index| {
             let gray = rune::color::srgb_decode(if index % 2 == 0 {
                 245.0 / 255.0
             } else {
@@ -33,12 +36,6 @@ fn view(_: &(), _: &mut Cx<()>) -> El {
 }
 
 pub fn main() -> Result<(), Box<dyn std::error::Error>> {
-    App::new(AppSpec::new(
-        "Rune Scroll 2000",
-        (1000.0, 700.0),
-        || (),
-        view,
-    ))
-    .try_run()?;
+    App::new(AppSpec::new("Rune Scroll", (1000.0, 700.0), || (), view)).try_run()?;
     Ok(())
 }

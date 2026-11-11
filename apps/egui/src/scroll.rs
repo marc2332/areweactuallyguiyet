@@ -1,3 +1,6 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use eframe::egui;
 
 struct ScrollApp;
@@ -9,7 +12,7 @@ impl eframe::App for ScrollApp {
             egui::ScrollArea::vertical()
                 .auto_shrink([false, false])
                 .show(ui, |ui| {
-                    for index in 0..2_000 {
+                    for index in 0..scroll_config::row_count() {
                         let (rect, _) =
                             ui.allocate_exact_size(egui::vec2(960.0, 48.0), egui::Sense::hover());
                         let background = if index % 2 == 0 { 245 } else { 230 };
@@ -37,10 +40,10 @@ impl eframe::App for ScrollApp {
 
 pub fn main() -> eframe::Result {
     eframe::run_native(
-        "egui Scroll 2000",
+        "egui Scroll",
         eframe::NativeOptions {
             viewport: egui::ViewportBuilder::default()
-                .with_title("egui Scroll 2000")
+                .with_title("egui Scroll")
                 .with_inner_size([1000.0, 700.0]),
             renderer: eframe::Renderer::Glow,
             ..Default::default()

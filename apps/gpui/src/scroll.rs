@@ -1,10 +1,13 @@
+#[path = "../../scroll_config.rs"]
+mod scroll_config;
+
 use gpui::{
     App, Application, Bounds, Context, IntoElement, Render, TitlebarOptions, Window, WindowBounds,
     WindowOptions, div, prelude::*, px, rgb, size,
 };
 use std::{cell::RefCell, rc::Rc};
 
-const TITLE: &str = "GPUI Scroll 2000";
+const TITLE: &str = "GPUI Scroll";
 
 struct ScrollApp;
 
@@ -20,7 +23,7 @@ impl Render for ScrollApp {
             .text_size(px(14.0))
             .line_height(px(24.0))
             .text_color(rgb(0x000000))
-            .children((1..=2000).map(|number| {
+            .children((1..=scroll_config::row_count()).map(|number| {
                 div()
                     .w(px(960.0))
                     .h(px(48.0))
