@@ -9,7 +9,7 @@ cargo run --release --locked --manifest-path apps/freya/Cargo.toml --no-default-
 just app freya dashboard
 ```
 
-`apps/bench.py` is the only Python entry point. Implementation modules live in `apps/benchmark/`. Use `python3 apps/bench.py <command> --help` for command options, or `just bench <command>` as a shortcut.
+`apps/bench.py` is the only Python entry point. Implementation modules live in `apps/benchmark/`. Use `python3 apps/bench.py <command> --help` for command options. `just bench freya egui` runs scroll benchmarks.
 
 ## Scrolling
 
@@ -83,7 +83,7 @@ Requires MangoHud, X11/XWayland, `xwininfo`, `xprop`, and the X11 input librarie
 just binary-sizes
 ```
 
-This rebuilds all 16 scroll apps with `cargo build --profile production --locked` and updates `site/data/binary-sizes-snapshot.json`. Each app defines this profile:
+This rebuilds all scroll apps with `cargo build --profile production --locked` and updates `site/data/binary-sizes-snapshot.json`. Each app defines this profile:
 
 ```toml
 [profile.production]

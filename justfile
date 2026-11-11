@@ -23,9 +23,9 @@ app framework="freya" benchmark="scroll":
 list:
     python3 apps/bench.py list
 
-# Run benchmark commands, saving history only with --save.
+# Run scroll benchmarks, saving history only with --save.
 bench *args:
-    python3 apps/bench.py "$@"
+    python3 apps/bench.py scroll "$@"
 
 # Build production executables and collect their sizes for the website without launching apps.
 binary-sizes *args:
