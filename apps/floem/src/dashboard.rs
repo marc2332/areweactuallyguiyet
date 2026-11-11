@@ -73,7 +73,7 @@ pub fn main() {
                             .width(952.0)
                             .height(28.0)
                     }),
-                    scroll(v_stack_from_iter((1..=100).map(|number| {
+                    scroll(v_stack_from_iter((1..=1000).map(|number| {
                         h_stack((
                             img(|| {
                                 include_bytes!("../../../assets/images/dashboard-0.png").to_vec()

@@ -44,7 +44,7 @@ impl Render for DashboardApp {
             .child(div().h(px(54.)).flex_shrink_0().px(px(24.)).flex().items_center().text_size(px(13.)).text_color(rgb(0x555555)).child(format!("Status: {} | Refresh count: {}", if self.enabled { "enabled" } else { "disabled" }, self.refresh_count)))
             .child(
                 div().id("project-list").flex_1().min_h_0().overflow_y_scroll().px(px(24.))
-                    .children((1..=100).map(|number| {
+                    .children((1..=1000).map(|number| {
                         div().h(px(92.)).w_full().flex_shrink_0().flex().items_center().gap(px(16.)).border_b_1().border_color(rgb(0xdddddd)).px(px(8.))
                             .child(img(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join(format!("../../assets/images/dashboard-{}.png", (number - 1) % 10))).size(px(64.)))
                             .child(div().flex().flex_col().gap(px(6.)).child(div().text_size(px(16.)).child(format!("Project {number}"))).child(div().text_size(px(13.)).text_color(rgb(0x666666)).child(format!("Project {number} includes planning notes, recent activity, and team status."))))

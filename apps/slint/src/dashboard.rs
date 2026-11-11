@@ -23,9 +23,9 @@ slint::slint! {
         }
         ScrollView {
             x: 0px; y: 180px; width: parent.width; height: parent.height - 180px;
-            content-width: 960px; content-height: 100 * 112px;
+            content-width: 960px; content-height: 1000 * 112px;
             horizontal-scrollbar-policy: always-off;
-            for index in 100: Rectangle {
+            for index in 1000: Rectangle {
                 x: 20px; y: index * 112px; width: 960px; height: 104px;
                 background: mod(index, 2) == 0 ? #f5f5f5 : #e6e6e6;
                 Image { x: 12px; y: 12px; width: 64px; height: 64px; source: @image-url("../../../assets/images/dashboard-0.png"); image-fit: contain; }

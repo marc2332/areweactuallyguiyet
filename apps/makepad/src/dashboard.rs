@@ -121,7 +121,7 @@ impl MatchEvent for App {
             .text_input(id!(body.header.toolbar.notes))
             .set_text(cx, "Project notes");
         let list = self.ui.flat_list(id!(body.records));
-        for index in 0..100 {
+        for index in 0..1000 {
             let template = if index % 2 == 0 {
                 live_id!(Even)
             } else {

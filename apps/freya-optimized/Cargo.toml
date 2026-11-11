@@ -16,7 +16,7 @@ edition = "2024"
 publish = false
 
 [dependencies]
-freya = { git = "https://github.com/marc2332/freya", rev = "a29eb750190ff436fba01b25f275459a2b4d66b6" }
+freya = { git = "https://github.com/marc2332/freya", rev = "056a5b4fc6efce1e8a7054436a2119b30d14ab4a" }
 
 [features]
 default = ["scroll"]

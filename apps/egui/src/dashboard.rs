@@ -52,7 +52,7 @@ impl eframe::App for Dashboard {
                 egui::ScrollArea::vertical()
                     .auto_shrink([false, false])
                     .show(ui, |ui| {
-                        for index in 0..100 {
+                        for index in 0..1000 {
                             ui.horizontal(|ui| {
                                 let image = &self.images[index % self.images.len()];
                                 ui.add(egui::Image::new((image.id(), egui::vec2(64.0, 64.0))));

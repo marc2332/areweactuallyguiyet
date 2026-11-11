@@ -25,7 +25,7 @@ fn app() -> Element {
                 button { onclick: move |_| enabled.toggle(), if enabled() { "Enabled" } else { "Disabled" } }
             }
             div { class: "status", "Refresh count: {refreshes()}" }
-            div { class: "list", for number in 1..=100 { article { key: "{number}", img { src: "{dashboard_image_src((number - 1) % 10)}", alt: "Project preview" } div { h2 { "Project {number}" } p { "Project overview, recent activity, and notes for this workspace." } } } } }
+            div { class: "list", for number in 1..=1000 { article { key: "{number}", img { src: "{dashboard_image_src((number - 1) % 10)}", alt: "Project preview" } div { h2 { "Project {number}" } p { "Project overview, recent activity, and notes for this workspace." } } } } }
         }
     }
 }

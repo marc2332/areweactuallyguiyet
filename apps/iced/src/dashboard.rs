@@ -49,7 +49,7 @@ fn view(state: &Dashboard) -> Element<'_, Message> {
     .spacing(17)
     .padding(24)
     .height(180);
-    let records = (0..100).fold(column![].spacing(0), |list, index| {
+    let records = (0..1000).fold(column![].spacing(0), |list, index| {
         list.push(
             container(
                 row![

@@ -70,7 +70,7 @@ class PublishTests(unittest.TestCase):
 
     def test_full_window_worst_gap_uses_the_worst_repetition(self):
         source = dashboard_source()
-        source["measurement"] = "mangohud-dashboard-v2"
+        source["measurement"] = dashboard.MEASUREMENT
         capture = source["results"][0]
         capture.update(phase_duration_s=2, input_rate_hz=240)
         capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(1_000_000_000, 1000), Frame(9_000_000_000, 8000)], 0, 8)
@@ -80,7 +80,10 @@ class PublishTests(unittest.TestCase):
         source["results"].append(second)
         run = publish.website_run(source, self.apps, self.libraries)
         self.assertEqual(run["results"][0]["metrics"]["dashboard_worst_gap_ms"], {"value": 7000, "unit": "ms"})
-        self.assertEqual(run["results"][0]["scenarioVersion"], 2)
+        self.assertEqual(run["results"][0]["scenarioVersion"], 3)
+        self.assertEqual(run["metadata"]["recordCount"], 1000)
+        source["measurement"] = "mangohud-dashboard-v2"
+        self.assertEqual(publish.website_run(source, self.apps, self.libraries)["results"][0]["scenarioVersion"], 2)
         self.assertEqual(run["metadata"]["durationSeconds"], 8)
         self.assertEqual(run["metadata"]["inputRateHz"], 240)
         capture["metrics"] = dashboard.summarize([Frame(0, 1), Frame(9_000_000_000, 9000)], 0, 8)

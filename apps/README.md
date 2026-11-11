@@ -36,7 +36,7 @@ Scroll history defaults to `apps/history.json`, with identity `mangohud-scroll-v
 
 ## Dashboard
 
-The dashboard has a fixed toolbar with a text input, a Refresh button with a visible counter, an enabled toggle, and a scrollable list of 100 project records with text and images. Toolkit-native styling is retained. The client area is 1000 × 700 logical pixels. The runner scales input coordinates to the physical client area for desktop scaling.
+The dashboard has a fixed toolbar with a text input, a Refresh button with a visible counter, an enabled toggle, and a scrollable list of 1,000 project records with text and images. Toolkit-native styling is retained. The client area is 1000 × 700 logical pixels. The runner scales input coordinates to the physical client area for desktop scaling.
 
 ```sh
 python3 apps/bench.py run freya --benchmark dashboard
@@ -51,7 +51,7 @@ The main dashboard metric is the worst presentation gap anywhere in the eight-se
 
 Dashboard results also retain per-frame intervals, median, and p95 as diagnostic information. They deliberately do not report FPS or frame counts as performance scores. These intervals include idle time between actions, synchronization, and limiting. They measure presentation cadence during dashboard interactions, not CPU/GPU execution durations or input latency. Action timestamps and phase boundaries describe input dispatch, not verified widget updates or exact phase alignment in the MangoHud clock. Visually inspect an app before comparing its captures.
 
-Dashboard history defaults to `apps/dashboard-history.json`, with identity `mangohud-dashboard-v2`. It cannot be mixed with scroll history or the earlier idle-spaced dashboard captures. To add dashboard results to the latest website collection without replacing its scroll results:
+Dashboard history defaults to `apps/dashboard-v3-history.json`, with identity `mangohud-dashboard-v3`. Version 3 uses 1,000 records instead of 100 to avoid reaching the bottom during the scrolling phase. It cannot be mixed with scroll history or earlier dashboard captures. Cached dashboard binaries are versioned, so rebuild before using `--no-build`. To add dashboard results to the latest website collection without replacing its scroll results:
 
 ```sh
 python3 apps/publish.py results/apps/<run-id>/run.json --save --latest

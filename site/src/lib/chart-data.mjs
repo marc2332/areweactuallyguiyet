@@ -160,14 +160,14 @@ export function transformChartResults(results, { metric, scenarioVersion, relati
 }
 
 export function collectionDetails(run) {
-  const timing = run.metadata.measurement === 'mangohud-dashboard-v2'
+  const timing = ['mangohud-dashboard-v2', 'mangohud-dashboard-v3'].includes(run.metadata.measurement)
     ? `8s dashboard runs × ${run.metadata.repetitions ?? '?'} · four 2s phases`
     : run.metadata.measurement === 'mangohud-dashboard-v1'
     ? `Fixed-action runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.actionDelaySeconds ?? '?'}s between actions`
     : `${run.metadata.durationSeconds ?? '?'}s runs × ${run.metadata.repetitions ?? '?'} · ${run.metadata.warmupSeconds ?? '?'}s warm-up`;
   const scenarioTiming = Object.entries(run.metadata.scenarioCollections ?? {})
     .map(([scenario, metadata]) => {
-      if (scenario === 'dashboard' && metadata.measurement === 'mangohud-dashboard-v2') return ` · ${scenarioLabels[scenario]}: 8s × ${metadata.repetitions ?? '?'} · four 2s phases`;
+      if (scenario === 'dashboard' && ['mangohud-dashboard-v2', 'mangohud-dashboard-v3'].includes(metadata.measurement)) return ` · ${scenarioLabels[scenario]}: 8s × ${metadata.repetitions ?? '?'} · four 2s phases`;
       if (scenario === 'dashboard') return ` · ${scenarioLabels[scenario]}: fixed actions × ${metadata.repetitions ?? '?'} · ${metadata.actionDelaySeconds ?? '?'}s between actions`;
       const refreshRates = (metadata.displayRefreshProbe?.activeModes ?? []).flatMap(line =>
         line.trim().split(/\s+/).filter(field => field.includes('*')).map(field => field.replace(/[*+]/g, ''))

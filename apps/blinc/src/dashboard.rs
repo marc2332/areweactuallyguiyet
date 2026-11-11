@@ -17,7 +17,7 @@ pub fn run() -> Result<()> {
 
             let refresh_for_click = refresh_count.clone();
             let mut rows = div().flex_col().w_full().h_fit().gap_px(8.0);
-            for index in 0..100 {
+            for index in 0..1000 {
                 rows = rows.child(
                     div()
                         .w_full()

@@ -41,7 +41,7 @@ fn app() -> Element {
             Text(value: computed(move || format!("Status: {} refreshes · {}", refresh_count.get(), if enabled.get() { "enabled" } else { "disabled" })), style: Css::new().position(PositionKind::Absolute).left(px(24)).top(px(130)).font_size(px(14)).color(Color::hex(0x5f6368)))
             ScrollView(axis: ScrollAxis::Vertical, style: Css::new().position(PositionKind::Absolute).left(px(24)).right(px(24)).top(px(180)).bottom(px(16))) {
                 View(style: Css::new().display(Display::Flex).flex_direction(FlexDirection::Column).gap(px(8)).width(percent(100))) {
-                    ForEach(each: || (1..=100).collect::<Vec<usize>>(), key: |number: &usize| *number, children: |number: ReadSignal<usize>| {
+                    ForEach(each: || (1..=1000).collect::<Vec<usize>>(), key: |number: &usize| *number, children: |number: ReadSignal<usize>| {
                         let number = number.get_untracked();
                         render! {
                             View(style: Css::new().display(Display::Flex).flex_direction(FlexDirection::Row).align_items(AlignItems::Center).gap(px(16)).width(percent(100)).height(px(88)).padding(px(12)).background_color(Color::hex(if number % 2 == 0 { 0xf5f5f5 } else { 0xffffff }))) {

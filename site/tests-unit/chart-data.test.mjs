@@ -113,8 +113,10 @@ test('dashboard interval metrics are validated and use dashboard-specific collec
 
 test('dashboard bursts show their eight-second workload', () => {
   const run = history().runs[0];
-  run.metadata.scenarioCollections = { dashboard: { measurement: 'mangohud-dashboard-v2', repetitions: 2 } };
-  assert.match(collectionDetails(run).timing, /Dashboard interaction: 8s × 2 · four 2s phases/);
+  for (const version of [2, 3]) {
+    run.metadata.scenarioCollections = { dashboard: { measurement: `mangohud-dashboard-v${version}`, repetitions: 2 } };
+    assert.match(collectionDetails(run).timing, /Dashboard interaction: 8s × 2 · four 2s phases/);
+  }
 });
 
 test('metric units are validated for renderer measurements', () => {

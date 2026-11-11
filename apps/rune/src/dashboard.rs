@@ -90,7 +90,7 @@ fn view(state: &State, _: &mut Cx<State>) -> El {
         .scroll(rune::ScrollSpec {
             stick_bottom: false,
         })
-        .children((0..100).map(|index| {
+        .children((0..1000).map(|index| {
             let mut record = row().w_full().h(88.0).padding(12.0).center_y().gap(16.0);
             if let Some(image) = state.images.get(index % state.images.len().max(1)) {
                 record = record.child(el().size(64.0, 64.0).pixels(image.pixels()));

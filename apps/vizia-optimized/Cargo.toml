@@ -1,0 +1,24 @@
+[workspace]
+
+[profile.production]
+inherits = "release"
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
+strip = true
+incremental = false
+
+[package]
+name = "vizia-optimized-scroll"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+vizia = { git = "https://github.com/vizia/vizia", rev = "edb68af29d4982ae46e347d4a7252fa26ecaa50c", features = ["rayon"] }
+
+[features]
+default = ["scroll"]
+scroll = []
+dashboard = []

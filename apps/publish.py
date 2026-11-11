@@ -15,7 +15,7 @@ import tempfile
 import bench
 
 BOUNDARY = "mangohud-present-observation"
-DASHBOARD_MEASUREMENTS = ("mangohud-dashboard-v1", "mangohud-dashboard-v2")
+DASHBOARD_MEASUREMENTS = {f"mangohud-dashboard-v{version}": version for version in (1, 2, 3)}
 
 
 def dependency_versions(dependencies):
@@ -203,12 +203,13 @@ def dashboard_website_run(source, apps, libraries):
             combine = max if metric == "dashboard_worst_gap_ms" else statistics.median
             aggregate[metric] = {"value": combine(value["value"] for value in values), "unit": "ms"}
         results.append({"framework": identifier, "scenario": "dashboard",
-                        "scenarioVersion": 2 if source["measurement"] == "mangohud-dashboard-v2" else 1,
+                        "scenarioVersion": DASHBOARD_MEASUREMENTS[source["measurement"]],
                         "status": "ok" if successful else "failed", "reason": " · ".join(failures) or None,
                         "metrics": aggregate, "repetitions": repetitions})
     if len(configurations) > 1:
         raise ValueError("Expected successful dashboard captures with one consistent configuration")
     metadata["repetitions"] = max(map(len, samples.values()))
+    metadata["recordCount"] = 1000 if DASHBOARD_MEASUREMENTS[source["measurement"]] >= 3 else 100
     if configurations:
         warmup, action_delay, fps_limit, vsync, phase_duration, rate = configurations.pop()
         metadata.update({"warmupSeconds": warmup, "fpsLimit": fps_limit, "vsync": vsync})

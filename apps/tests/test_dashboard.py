@@ -99,7 +99,7 @@ class DashboardTests(unittest.TestCase):
             self.assertEqual(bench.main(), 0)
             arguments = run.call_args.args[0]
             self.assertEqual(arguments.benchmark, "dashboard")
-            self.assertEqual(arguments.history.name, "dashboard-history.json")
+            self.assertEqual(arguments.history.name, "dashboard-v3-history.json")
             self.assertEqual(arguments.rate, 240)
             self.assertEqual(arguments.fps_limit, 0)
             self.assertTrue(arguments.no_vsync)
@@ -133,6 +133,9 @@ class DashboardTests(unittest.TestCase):
                 self.assertEqual(bench.build(app, root, True, profile="production"), production)
                 binary.write_bytes(b"dashboard executable")
                 self.assertEqual(bench.build(app, root, True, "scroll").read_bytes(), b"scroll executable")
+                legacy = root / "benchmarks" / "dashboard" / "example" / "example"
+                legacy.parent.mkdir(parents=True)
+                legacy.write_bytes(b"old 100-row dashboard")
                 with self.assertRaisesRegex(ValueError, "Missing dashboard release binary"):
                     bench.build(app, root, True, "dashboard")
                 manifest.write_text('[features]\ndefault = ["scroll", "skia"]\n')

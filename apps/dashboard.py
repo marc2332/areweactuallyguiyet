@@ -6,7 +6,8 @@ import time
 from frames import summarize as summarize_window
 from scroll import WheelInput
 
-MEASUREMENT = "mangohud-dashboard-v2"
+MEASUREMENT = "mangohud-dashboard-v3"
+RECORD_COUNT = 1000
 PHASE_DURATION = 2.0
 PHASES = ("typing", "refresh", "toggle", "scroll")
 

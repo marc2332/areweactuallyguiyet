@@ -53,7 +53,7 @@ pub fn main() -> Result<(), ApplicationError> {
             .alignment(Alignment::Left);
 
             ScrollView::new(cx, |cx| {
-                for number in 1..=100 {
+                for number in 1..=1000 {
                     HStack::new(cx, |cx| {
                         Image::new(cx, "dashboard-0.png")
                             .width(Pixels(64.0))

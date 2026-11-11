@@ -103,7 +103,8 @@ def build(app, output, skip_build, benchmark="scroll", profile="release"):
     if len(binaries) != 1:
         raise ValueError(f"Expected exactly one binary for {app['id']}")
     binary = Path(metadata["target_directory"]) / profile / binaries[0]
-    selected = Path(metadata["target_directory"]) / "benchmarks" / benchmark / app["id"]
+    benchmark_directory = dashboard.MEASUREMENT.removeprefix("mangohud-") if benchmark == "dashboard" else benchmark
+    selected = Path(metadata["target_directory"]) / "benchmarks" / benchmark_directory / app["id"]
     if profile != "release":
         selected /= profile
     selected /= binary.name
@@ -355,7 +356,7 @@ def capture_dashboard(app, binary, output, arguments):
                     "client_pixels": list(input.size), "fps_limit": arguments.fps_limit,
                     "vsync": "disabled-requested" if arguments.no_vsync else "application-default",
                     "warmup_s": arguments.warmup, "input_rate_hz": arguments.rate,
-                    "phase_duration_s": dashboard.PHASE_DURATION,
+                    "record_count": dashboard.RECORD_COUNT, "phase_duration_s": dashboard.PHASE_DURATION,
                     "workload_duration_s": workload["duration_s"],
                     "actual_workload_duration_s": workload["actual_duration_s"],
                     "phases": workload["phases"], "actions": workload["actions"],
@@ -455,7 +456,7 @@ def main():
     history_options(parse)
     arguments = parser.parse_args()
     if arguments.command != "list" and arguments.history is None:
-        filename = "dashboard-history.json" if arguments.benchmark == "dashboard" else "history.json"
+        filename = dashboard.MEASUREMENT.removeprefix("mangohud-") + "-history.json" if arguments.benchmark == "dashboard" else "history.json"
         arguments.history = DIRECTORY / filename
     if arguments.command == "parse":
         if arguments.benchmark == "scroll" and arguments.duration is None:

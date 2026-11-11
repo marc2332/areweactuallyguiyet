@@ -56,7 +56,7 @@ fn app() -> impl IntoElement {
                 .child(
                     ScrollView::new()
                         .height(Size::fill())
-                        .child(rect().vertical().children((0..100).map(|index| {
+                        .child(rect().vertical().children((0..1000).map(|index| {
                             let image_index = index % 10;
                             let bytes: &'static [u8] = match image_index {
                                 0 => include_bytes!("../../../assets/images/dashboard-0.png"),

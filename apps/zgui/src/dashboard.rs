@@ -60,7 +60,7 @@ fn main_view() -> impl IntoView {
             }
             scroll(class = "records") {
                 column {
-                    for index in || 0..100, key = |index: &usize| *index {
+                    for index in || 0..1000, key = |index: &usize| *index {
                         row(class = "record") {
                             image(class = "record-image", src = Some(format!("{}/../../assets/images/dashboard-{}.png", env!("CARGO_MANIFEST_DIR"), index % 10)))
                             column(class = "copy") {
