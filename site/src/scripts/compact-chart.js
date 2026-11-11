@@ -17,11 +17,11 @@ function axisScale(maximum) {
   return { maximum: Math.ceil(maximum / interval) * interval, interval };
 }
 
-function placeLeftLabels(points, { left, right, maximum, labelWidths }) {
+function placeLeftLabels(points, { left, right, minimum, maximum, labelWidths }) {
   const positioned = points.map(point => {
-    const horizontal = left + point.value / maximum * (right - left);
-    const lower = left + point.minimum / maximum * (right - left);
-    const upper = left + point.maximum / maximum * (right - left);
+    const horizontal = left + (point.value - minimum) / (maximum - minimum) * (right - left);
+    const lower = left + (point.minimum - minimum) / (maximum - minimum) * (right - left);
+    const upper = left + (point.maximum - minimum) / (maximum - minimum) * (right - left);
     return { ...point, start: Math.min(lower - 4, horizontal - 9 - labelWidths[point.framework]), end: Math.max(upper + 4, horizontal + 4) };
   }).sort((first, second) => first.start - second.start);
   const laneEnds = [];
@@ -37,7 +37,17 @@ function placeLeftLabels(points, { left, right, maximum, labelWidths }) {
 export function compactChart(host, { points, missing = [], frameworks, group, metric, description }) {
   host.style.height = '210px';
   const chart = init(host, null, { renderer: 'svg' });
-  const scale = axisScale(Math.max(...points.map(point => point.maximum)));
+  const minimum = points.length ? Math.min(...points.map(point => point.minimum)) : 0;
+  const maximum = points.length ? Math.max(...points.map(point => point.maximum)) : 1;
+  const padding = Math.max((maximum - minimum) * 0.1, Math.abs(maximum) * 0.001, 0.0001);
+  const lowerBound = Math.max(0, minimum - padding);
+  const upperBound = maximum + padding;
+  const { interval } = axisScale(upperBound - lowerBound);
+  const scale = {
+    minimum: Math.floor(lowerBound / interval) * interval,
+    maximum: Math.ceil(upperBound / interval) * interval,
+    interval,
+  };
   const isSize = description.kind === 'size';
   const detail = group.detail ?? `${group.boundary ? `${group.boundary} · ` : ''}v${group.scenarioVersion}`;
   const names = Object.fromEntries(points.map(point => [point.framework, `${frameworks.get(point.framework)?.name ?? point.framework} ${labelNumber(point.value)}`]));
@@ -55,14 +65,14 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
     const right = width - 36;
     const plotWidth = right - workloadWidth;
     const labelGutter = Math.ceil(Math.max(0, ...points.map(point => {
-      const fraction = point.value / scale.maximum;
+      const fraction = (point.value - scale.minimum) / (scale.maximum - scale.minimum);
       if (fraction >= 1) return 0;
       return (labelWidths[point.framework] + 17 - fraction * plotWidth) / (1 - fraction);
     })));
     const left = workloadWidth + labelGutter;
     const top = 62;
     const laneSpacing = 16;
-    const layout = placeLeftLabels(points, { left, right, maximum: scale.maximum, labelWidths });
+    const layout = placeLeftLabels(points, { left, right, minimum: scale.minimum, maximum: scale.maximum, labelWidths });
     const rowHeight = Math.max(110, layout.laneCount * laneSpacing + 26);
     const unavailableHeight = missing.length ? missing.length * 18 + 12 : 0;
     host.style.height = `${rowHeight + top + 38 + unavailableHeight}px`;
@@ -86,7 +96,7 @@ export function compactChart(host, { points, missing = [], frameworks, group, me
       tooltip: { trigger: 'item', renderMode: 'richText', confine: true, backgroundColor: '#171716', borderColor: '#55554e', textStyle: { color: '#e6e6e2', fontSize: 12, fontFamily } },
       toolbox: { right: 14, top: 2, iconStyle: { borderColor: '#999993' }, feature: { dataZoom: { yAxisIndex: 'none', title: { zoom: 'Select horizontal zoom', back: 'Undo zoom' } }, restore: { title: 'Reset view' }, saveAsImage: { title: 'Save SVG', type: 'svg', name: isSize ? 'binary-sizes' : `${metric}-${group.scenario}-v${group.scenarioVersion}`, backgroundColor: '#111110' } } },
       xAxis: ['top', 'bottom'].map(position => ({
-        type: 'value', position, min: 0, max: scale.maximum, interval: scale.interval,
+        type: 'value', position, min: scale.minimum, max: scale.maximum, interval: scale.interval,
         axisLabel: { color: '#999993', fontSize: 10, formatter: value => `${labelNumber(value)} ${description.unit}`, showMinLabel: true, showMaxLabel: true },
         axisLine: { show: false }, axisTick: { show: false },
         splitLine: { show: position === 'bottom', lineStyle: { color: '#33332f' } },

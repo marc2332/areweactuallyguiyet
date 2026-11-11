@@ -7,8 +7,8 @@
       "homepage": "https://blinc.rs",
       "classification": "Declarative reactive Rust UI with state machines and spring animation",
       "backend": "Custom SDF GPU rendering through WGPU with Taffy layout",
-      "creationYear": null,
-      "latestRelease": null,
+      "creationYear": 2022,
+      "latestRelease": "2026-11-04",
       "sourceUpdated": "2026-11-10",
       "status": "Pre-1.0 cross-platform framework with a preview WebGPU backend",
       "license": "Apache-2.0",
@@ -16,13 +16,20 @@
       "reviewedVersion": "main@2ca5f509e736",
       "reviewedDate": "2026-11-10",
       "metadataEvidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
-      "metadataNotes": "Metadata, feature claims and benchmarks use the same pinned source. Platform claims are source-reviewed, not execution-validated. Creation year and latest release were not established from the source snapshot.",
+      "metadataNotes": "Metadata, feature claims and benchmarks use the same pinned source. Platform claims are source-reviewed, not execution-validated. Creation year uses the repository's first commit date. Latest release is Blinc v0.6.0, published on GitHub.",
       "metadataFieldEvidence": {
         "License": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/Cargo.toml",
         "Classification": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
         "Backend": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/Cargo.toml",
         "Project status": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/README.md",
-        "Source updated": "https://github.com/project-blinc/Blinc/commit/2ca5f509e73600e7629f70d827b4f2850f5f9eb9"
+        "Source updated": "https://github.com/project-blinc/Blinc/commit/2ca5f509e73600e7629f70d827b4f2850f5f9eb9",
+        "Creation year": "https://github.com/project-blinc/Blinc/commit/01936c93e9ea90471a8a2c480df679a44f42939f",
+        "Latest release": "https://github.com/project-blinc/Blinc/releases/tag/v0.6.0"
+      },
+      "firstCommit": {
+        "sha": "01936c93e9ea90471a8a2c480df679a44f42939f",
+        "date": "2022-04-10",
+        "reviewedDate": "2026-11-11"
       },
       "provenance": {
         "status": "ai-led",
@@ -325,7 +332,7 @@
       "classification": "Dioxus virtual DOM with native HTML/CSS layout and rendering",
       "backend": "Blitz DOM with Stylo/Taffy/Parley, AnyRender drawing abstraction and Winit shell",
       "creationYear": 2023,
-      "latestRelease": null,
+      "latestRelease": "2026-10-16",
       "sourceUpdated": null,
       "status": "Explicitly beta with bugs and missing features",
       "provenance": {
@@ -347,7 +354,8 @@
         "Classification": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
         "Backend": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/Cargo.toml",
         "Project status": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/README.md",
-        "Creation year": "https://github.com/DioxusLabs/blitz/commit/38e191211ec08e6c70ba9d5a47e72377dd7782a2"
+        "Creation year": "https://github.com/DioxusLabs/blitz/commit/38e191211ec08e6c70ba9d5a47e72377dd7782a2",
+        "Latest release": "https://crates.io/crates/dioxus-native/0.8.0-alpha.3"
       },
       "firstCommit": {
         "sha": "38e191211ec08e6c70ba9d5a47e72377dd7782a2",
@@ -364,7 +372,7 @@
       "classification": "Native/web Rust UI runtime with a live-editable scripting/design language",
       "backend": "Custom GPU drawing/shader pipeline with native and Wasm platform backends",
       "creationYear": 2025,
-      "latestRelease": null,
+      "latestRelease": "2025-05-13",
       "sourceUpdated": null,
       "status": "Actively evolving UI/runtime and development environment",
       "provenance": {
@@ -386,7 +394,8 @@
         "Classification": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
         "Backend": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/widgets/Cargo.toml",
         "Project status": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/README.md",
-        "Creation year": "https://github.com/makepad/makepad/commit/84328d949abceb02523986e6695ff12ff1b9df6d"
+        "Creation year": "https://github.com/makepad/makepad/commit/84328d949abceb02523986e6695ff12ff1b9df6d",
+        "Latest release": "https://crates.io/crates/makepad-widgets/1.0.0"
       },
       "firstCommit": {
         "sha": "84328d949abceb02523986e6695ff12ff1b9df6d",
@@ -403,7 +412,7 @@
       "classification": "GPUI fork with tracked view retention and scroll-layer caching",
       "backend": "GPU platform renderers, including Metal and WGPU paths",
       "creationYear": 2026,
-      "latestRelease": "2026-11-02",
+      "latestRelease": "2026-11-09",
       "sourceUpdated": null,
       "status": "Experimental performance-focused GPUI fork",
       "provenance": {
@@ -431,7 +440,7 @@
         "Classification": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
         "Backend": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/Cargo.toml",
         "Project status": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/README.md",
-        "Latest release": "https://github.com/longbridge/gpui-fast/releases/tag/v0.1.13",
+        "Latest release": "https://github.com/longbridge/gpui-fast/releases/tag/v0.1.14",
         "Creation year": "https://github.com/longbridge/gpui-fast/commit/11a44c4882f32789a8292b3f0682ffa4e6b6e79e"
       },
       "firstCommit": {
@@ -493,7 +502,7 @@
       "homepage": "https://zgui.zortax.de",
       "classification": "Native Rust components with fine-grained reactivity and CSS styling",
       "backend": "Retained WGPU renderer with Vello, Stylo CSS and cephal layout",
-      "creationYear": null,
+      "creationYear": 2026,
       "latestRelease": "2026-10-15",
       "sourceUpdated": "2026-11-08",
       "status": "Experimental pre-1.0 framework with breaking changes expected",
@@ -511,14 +520,20 @@
       "reviewedDate": "2026-11-09",
       "license": "Apache-2.0",
       "reviewedCommit": "80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
-      "metadataNotes": "Metadata, features and the benchmark adapter use the same pinned development commit. Platform capabilities are source-reviewed, not execution-validated here. Creation year was not established from the shallow source snapshot.",
+      "metadataNotes": "Metadata, features and the benchmark adapter use the same pinned development commit. Platform capabilities are source-reviewed, not execution-validated here. Creation year uses the repository's first commit date.",
       "metadataFieldEvidence": {
         "License": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/Cargo.toml",
         "Classification": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
         "Backend": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
         "Project status": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/README.md",
         "Latest release": "https://github.com/zortax/zgui/releases/tag/v0.1.0",
-        "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a"
+        "Source updated": "https://github.com/zortax/zgui/commit/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a",
+        "Creation year": "https://github.com/zortax/zgui/commit/0554dd773e3c030025be2eb0ba3e60e623b2ded9"
+      },
+      "firstCommit": {
+        "sha": "0554dd773e3c030025be2eb0ba3e60e623b2ded9",
+        "date": "2026-08-02",
+        "reviewedDate": "2026-11-11"
       },
       "crate": "zgui"
     },
@@ -529,8 +544,8 @@
       "homepage": "https://whisker.rs/",
       "classification": "Retained Rust element tree with fine-grained signals and platform Host renderers",
       "backend": "Taffy layout with WGPU desktop drawing and native mobile or DOM web Hosts",
-      "creationYear": null,
-      "latestRelease": null,
+      "creationYear": 2026,
+      "latestRelease": "2026-11-11",
       "sourceUpdated": "2026-11-10",
       "status": "Pre-alpha framework with evolving APIs and platform coverage",
       "license": "MIT OR Apache-2.0",
@@ -538,18 +553,27 @@
       "reviewedDate": "2026-11-10",
       "reviewedCommit": "536dd4949e69eba99a702c703f49ce7c73531a54",
       "metadataEvidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
-      "metadataNotes": "Source-reviewed at the same commit pinned by the scroll benchmark. Release date and creation year were not established. Desktop capabilities are distinguished from mobile and web Hosts.",
+      "metadataNotes": "Source-reviewed at the same commit pinned by the scroll benchmark. Latest release is whisker-release-20261111.1, published on GitHub. Creation year uses the repository's first commit date. Desktop capabilities are distinguished from mobile and web Hosts.",
       "metadataFieldEvidence": {
         "License": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/Cargo.toml",
         "Classification": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
         "Backend": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/Cargo.toml",
         "Project status": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
-        "Source updated": "https://github.com/whiskerrs/whisker/commit/536dd4949e69eba99a702c703f49ce7c73531a54"
+        "Source updated": "https://github.com/whiskerrs/whisker/commit/536dd4949e69eba99a702c703f49ce7c73531a54",
+        "Creation year": "https://github.com/whiskerrs/whisker/commit/56179a42a58597ab59347f26e199def7a8257c12",
+        "Latest release": "https://github.com/whiskerrs/whisker/releases/tag/whisker-release-20261111.1"
+      },
+      "firstCommit": {
+        "sha": "56179a42a58597ab59347f26e199def7a8257c12",
+        "date": "2026-05-12",
+        "reviewedDate": "2026-11-11"
       },
       "provenance": {
-        "status": "unknown",
-        "scope": "The inspected source and agent instructions do not establish how much code was authored with AI assistance.",
-        "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/CLAUDE.md",
+        "status": "ai-led",
+        "scope": "AI-led. Classification by the site maintainer.",
+        "basis": "site-maintainer",
+        "quote": "AI involvement is AI-led",
+        "evidence": null,
         "reviewedCommit": "536dd4949e69eba99a702c703f49ce7c73531a54",
         "reviewedDate": "2026-11-10"
       },

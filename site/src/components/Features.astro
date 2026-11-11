@@ -66,14 +66,17 @@ const fields = [
         })}</tr>)}
         {features.categories.map(category => <>
           <tr class="category-row"><th colspan={libraries.length + 1} scope="rowgroup">{category}</th></tr>
-          {[...new Set(features.claims.filter(claim => claim.category === category && !['Scrolling', 'Text input'].includes(claim.name)).map(claim => claim.name))].map(name => <tr>
-            <th scope="row">{name === 'Layout models' ? 'Layout model' : name}</th>
+          {[...new Set(features.claims.filter(claim => claim.category === category && !['Scrolling', 'Text input', 'SVG'].includes(claim.name)).map(claim => claim.name))].map(name => <tr>
+            <th scope="row">{name === 'Layout models' ? 'Layout model' : name === 'Images' ? 'Images/SVG' : name}</th>
             {libraries.map(library => {
               const claim = features.claims.find(claim => claim.library === library.id && claim.category === category && claim.name === name);
+              const svgClaim = name === 'Images' ? features.claims.find(claim => claim.library === library.id && claim.category === category && claim.name === 'SVG') : null;
+              const featureName = name === 'Images' ? 'Images/SVG' : name;
               const layoutModel = name === 'Layout models' ? layoutModels[library.id] ?? 'Unknown' : null;
               const label = layoutModel ?? labels[claim.status];
-              return <td class={layoutModel ? undefined : claim.status}><details class={layoutModel ? undefined : 'feature-status'}><summary aria-label={`${library.name}, ${name}: ${label}`} title={label}>{layoutModel ?? <span class="status-mark" data-status={indicators[claim.status]} aria-hidden="true">{markerText(indicators[claim.status])}</span>}</summary>
-                <p>{label}</p><p>{claim.notes}</p><p>{claim.reviewedVersion} · reviewed {claim.reviewedDate ?? 'unknown'}</p><a href={claim.evidence}>Source</a>
+              return <td class={layoutModel ? undefined : claim.status}><details class={layoutModel ? undefined : 'feature-status'}><summary aria-label={`${library.name}, ${featureName}: ${label}`} title={label}>{layoutModel ?? <span class="status-mark" data-status={indicators[claim.status]} aria-hidden="true">{markerText(indicators[claim.status])}</span>}</summary>
+                <p>{label}</p><p>{claim.notes}</p><p>{claim.reviewedVersion} · reviewed {claim.reviewedDate ?? 'unknown'}</p><a href={claim.evidence}>{svgClaim ? 'Images source' : 'Source'}</a>
+                {svgClaim && <><p>SVG: {labels[svgClaim.status]}</p><p>{svgClaim.notes}</p><p>{svgClaim.reviewedVersion} · reviewed {svgClaim.reviewedDate ?? 'unknown'}</p><a href={svgClaim.evidence}>SVG source</a></>}
               </details></td>;
             })}
           </tr>)}
