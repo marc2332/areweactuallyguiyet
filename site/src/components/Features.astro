@@ -15,6 +15,22 @@ const legend = [
 ];
 const markerText = kind => kind === 'unknown' ? '?' : kind === 'na' ? 'N/A' : '';
 const provenanceLabels = { 'no-ai': 'No AI', 'ai-assisted': 'AI-assisted', 'ai-co-developed': 'AI co-developed', 'ai-led': 'AI-led', unknown: 'Unknown' };
+const layoutModels = {
+  blinc: 'Taffy (CSS)',
+  zgui: 'Cephal (CSS)',
+  freya: 'Torin (custom)',
+  gpui: 'Taffy (CSS)',
+  vizia: 'Morphorm (custom)',
+  iced: 'Custom (rows and columns)',
+  egui: 'Custom (immediate mode)',
+  slint: 'Custom (declarative)',
+  floem: 'Taffy (CSS)',
+  'dioxus-native': 'Taffy (CSS)',
+  makepad: 'Custom (flow layout)',
+  'gpui-fast': 'Taffy (CSS)',
+  rune: 'Taffy (CSS)',
+  whisker: 'Taffy (CSS)',
+};
 const fields = [
   ['License', library => library.license ?? 'Unknown'],
   ['Creation year', library => library.creationYear ?? 'Unknown'],
@@ -50,12 +66,14 @@ const fields = [
         })}</tr>)}
         {features.categories.map(category => <>
           <tr class="category-row"><th colspan={libraries.length + 1} scope="rowgroup">{category}</th></tr>
-          {[...new Set(features.claims.filter(claim => claim.category === category).map(claim => claim.name))].map(name => <tr>
-            <th scope="row">{name}</th>
+          {[...new Set(features.claims.filter(claim => claim.category === category && !['Scrolling', 'Text input'].includes(claim.name)).map(claim => claim.name))].map(name => <tr>
+            <th scope="row">{name === 'Layout models' ? 'Layout model' : name}</th>
             {libraries.map(library => {
               const claim = features.claims.find(claim => claim.library === library.id && claim.category === category && claim.name === name);
-              return <td class={claim.status}><details class="feature-status"><summary aria-label={`${library.name}, ${name}: ${labels[claim.status]}`} title={labels[claim.status]}><span class="status-mark" data-status={indicators[claim.status]} aria-hidden="true">{markerText(indicators[claim.status])}</span></summary>
-                <p>{labels[claim.status]}</p><p>{claim.notes}</p><p>{claim.reviewedVersion} · reviewed {claim.reviewedDate ?? 'unknown'}</p><a href={claim.evidence}>Source</a>
+              const layoutModel = name === 'Layout models' ? layoutModels[library.id] ?? 'Unknown' : null;
+              const label = layoutModel ?? labels[claim.status];
+              return <td class={layoutModel ? undefined : claim.status}><details class={layoutModel ? undefined : 'feature-status'}><summary aria-label={`${library.name}, ${name}: ${label}`} title={label}>{layoutModel ?? <span class="status-mark" data-status={indicators[claim.status]} aria-hidden="true">{markerText(indicators[claim.status])}</span>}</summary>
+                <p>{label}</p><p>{claim.notes}</p><p>{claim.reviewedVersion} · reviewed {claim.reviewedDate ?? 'unknown'}</p><a href={claim.evidence}>Source</a>
               </details></td>;
             })}
           </tr>)}

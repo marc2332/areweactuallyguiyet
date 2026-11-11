@@ -10,7 +10,8 @@ const element = (tag, text, className) => {
 const number = value => value.toLocaleString(undefined, { maximumFractionDigits: 4 });
 const runSelector = document.querySelector('#run');
 const status = document.querySelector('#chart-status');
-const hidden = new Set();
+const defaultHidden = ['freya', 'vizia', 'whisker', 'blinc'];
+let hidden = new Set(defaultHidden);
 const charts = [];
 const resizeObserver = new ResizeObserver(() => charts.forEach(chart => chart.resize()));
 const chartContainer = document.querySelector('#charts');
@@ -117,7 +118,7 @@ async function start() {
   runSelector.value = selected.id;
   runSelector.addEventListener('change', () => {
     selected = dashboard.runs.find(run => run.id === runSelector.value) ?? dashboard.runs[0];
-    hidden.clear();
+    hidden = new Set(defaultHidden);
     renderCollection();
   });
   document.querySelector('#reset').addEventListener('click', () => { hidden.clear(); renderCharts(); });
