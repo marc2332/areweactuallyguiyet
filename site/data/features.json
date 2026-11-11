@@ -4919,13 +4919,293 @@
       "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/README.md",
       "reviewedVersion": "main@536dd4949e69",
       "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Winit shell combines the floating-point display scale with a custom scale and updates layout when it changes. Not execution-validated across platforms.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/src/window.rs#L492-L505",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "freya",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "unknown",
+      "notes": "Display scaling is implemented, but a framework-wide device-pixel snapping policy was not established in the reviewed source. This does not mean it is unsupported.",
+      "evidence": "https://github.com/marc2332/freya/blob/11cd62a248bfafa496173360744bc6eb8f33b742/crates/freya-winit/src/window.rs",
+      "reviewedVersion": "main@11cd62a248bf",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "Layout explicitly handles fractional display scales such as 125% and 150%, converting between logical and device pixels. Not execution-validated across platforms.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/taffy.rs#L280-L300",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Layout snaps authored metrics and resolved box edges in device-pixel space before returning logical bounds.",
+      "evidence": "https://github.com/zed-industries/zed/blob/9a8ab54db4f9f9af4dc6efb42b304c55c6a62bd3/crates/gpui/src/taffy.rs#L280-L314",
+      "reviewedVersion": "main@9a8ab54db4f9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The window integration multiplies the floating-point system scale by an arbitrary user scale and updates the context. Not execution-validated across platforms.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_baseview/src/application.rs#L242-L258",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "vizia",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "partial",
+      "notes": "The layout cache rounds relative x/y positions, but preserves widths and heights. This is not a complete shared-edge snapping policy.",
+      "evidence": "https://github.com/vizia/vizia/blob/9231260010d57380681d6bd2eca05b2b756463cb/crates/vizia_core/src/layout/cache.rs#L25-L31",
+      "reviewedVersion": "main@9231260010d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Winit integration combines floating-point window and application scales and updates the viewport on scale changes. Not execution-validated across platforms.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/winit/src/window/state.rs",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "iced",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Quads expose a snap flag for pixel-grid alignment. Its default follows the crisp feature, so snapping is configurable rather than unconditional for every primitive.",
+      "evidence": "https://github.com/iced-rs/iced/blob/8ff48c42b0d5188223501ea1ccc506fd5beaf36a/core/src/renderer.rs#L98-L125",
+      "reviewedVersion": "master@8ff48c42b0d5",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The official Winit integration stores the native display scale as floating-point pixels per point and updates it on scale changes. Not execution-validated across platforms.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/egui-winit/src/lib.rs#L380-L386",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "egui",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "GuiRounding provides scale-aware rounding to physical pixel boundaries and pixel centers for scalar and geometry types.",
+      "evidence": "https://github.com/emilk/egui/blob/91b5712dd61765c337591ae25f07acee8fee3d52/crates/emath/src/gui_rounding.rs",
+      "reviewedVersion": "main@91b5712dd617",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Winit backend explicitly accounts for fractional display scales when converting requested logical window sizes to physical pixels. Not execution-validated across platforms.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/backends/winit/winitwindowadapter.rs#L150-L164",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "slint",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "partial",
+      "notes": "The FemtoVG renderer snaps text selection x coordinates and text y coordinates when the transform permits it. Framework-wide box-edge snapping across renderers was not established.",
+      "evidence": "https://github.com/slint-ui/slint/blob/b3be5c22781dfb245c700c80411daa2a69c4d9ff/internal/renderers/femtovg/itemrenderer.rs#L1044-L1052",
+      "reviewedVersion": "master@b3be5c22781d",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The window integration uses the floating-point OS scale to convert surface dimensions and initialize rendering. Not execution-validated across platforms.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/window/handle.rs#L128-L130",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "floem",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "unknown",
+      "notes": "Taffy layout rounding is explicitly disabled. A replacement framework-wide physical-pixel snapping policy was not established, which is not a claim that snapping is unsupported.",
+      "evidence": "https://github.com/lapce/floem/blob/1351ffb162faeb8be983f1301d718a0d5fb59c27/src/view/storage.rs#L96",
+      "reviewedVersion": "main@1351ffb162fa",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Blitz shell passes floating-point Winit scale changes into the document viewport's HiDPI scale. Not execution-validated across platforms.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-shell/src/window.rs#L630-L631",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "dioxus-native",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Blitz rounds resolved layout box edges before painting while preserving unrounded text origins for subpixel text placement.",
+      "evidence": "https://github.com/DioxusLabs/blitz/blob/5be96ed0e621f1b52b71b2206a2c3a54e90c0b5c/packages/blitz-dom/src/resolve.rs#L454-L459",
+      "reviewedVersion": "main@5be96ed0e621",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Wayland backend implements the fractional-scale protocol and handles the compositor's preferred scale. Not execution-validated across platforms.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/platform/hal/src/backend/linux/wayland.rs#L1296-L1305",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "makepad",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "partial",
+      "notes": "The Finish shader helpers include a function to snap an edge to whole device pixels. Automatic framework-wide layout snapping was not established.",
+      "evidence": "https://github.com/makepad/makepad/blob/506ec05105b9adb08d1d21f9879df181b5244ea7/draw/src/shader/finish.rs#L194-L198",
+      "reviewedVersion": "main@506ec05105b9",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Wayland backend implements preferred fractional-scale events, and layout handles non-integer device scales. Not execution-validated across platforms.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui_linux/src/linux/wayland/window.rs#L1226-L1227",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "gpui-fast",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Layout snaps authored metrics and resolved box edges in device-pixel space before returning logical bounds.",
+      "evidence": "https://github.com/longbridge/gpui-fast/blob/4a4a89af7c7fd3f9999218d6abdeb66116fd6d49/crates/gpui/src/taffy.rs#L275-L309",
+      "reviewedVersion": "main@4a4a89af7c7f",
+      "reviewedDate": "2026-11-06"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The Winit web platform handles floating-point scale changes and resizes its rendering surface accordingly. Native-platform parity was not execution-validated.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/platform/web.rs#L501-L505",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "rune",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Paint-time snapping aligns box edges, borders and clips to device pixels while keeping layout fractional. Moving or rotated content has explicit exceptions, and subtrees can opt out.",
+      "evidence": "https://github.com/anomalyco/rune/blob/a9da7e3ebf5a8ab9bf19c3015032674b6e042df2/crates/rune/src/runtime/paint/pixel_snap.rs",
+      "reviewedVersion": "dev@a9da7e3ebf5a",
+      "reviewedDate": "2026-11-07"
+    },
+    {
+      "library": "zgui",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "Source regression tests cover surface coverage at 1.2x and 1.25x and pointer hit testing at fractional scales. These tests were source-reviewed, not run here.",
+      "evidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/crates/zgui-runtime/tests/scale.rs",
+      "reviewedVersion": "main@80baa3c7cb0f",
+      "reviewedDate": "2026-11-09"
+    },
+    {
+      "library": "zgui",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "built-in",
+      "notes": "Layout, painting and hit testing share a device-pixel policy for edge rounding, covering bounds and nonzero stroke widths.",
+      "evidence": "https://github.com/zortax/zgui/blob/80baa3c7cb0fbbe1c058f10059e076e41c0a1b9a/crates/zgui-geom/src/snap/mod.rs",
+      "reviewedVersion": "main@80baa3c7cb0f",
+      "reviewedDate": "2026-11-09"
+    },
+    {
+      "library": "blinc",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The desktop event loop carries the floating-point Winit display scale into layout and rendering. Not execution-validated across platforms.",
+      "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_app/src/windowed/event_loop.rs#L284-L289",
+      "reviewedVersion": "main@2ca5f509e736",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "blinc",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "partial",
+      "notes": "Scroll offsets are rounded in device-pixel space. A framework-wide shared-edge snapping policy for all layout boxes was not established.",
+      "evidence": "https://github.com/project-blinc/Blinc/blob/2ca5f509e73600e7629f70d827b4f2850f5f9eb9/crates/blinc_layout/src/renderer/scroll.rs#L816-L853",
+      "reviewedVersion": "main@2ca5f509e736",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "Fractional scaling",
+      "status": "built-in",
+      "notes": "The desktop host passes the floating-point display scale and logical viewport dimensions to the style environment. Not execution-validated across platforms.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/platforms/desktop/src/app.rs#L307-L316",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
+    },
+    {
+      "library": "whisker",
+      "category": "Rendering",
+      "name": "Pixel snapping",
+      "status": "unknown",
+      "notes": "Layout disables Taffy rounding. A replacement framework-wide device-pixel snapping policy was not established, which is not a claim that snapping is unsupported.",
+      "evidence": "https://github.com/whiskerrs/whisker/blob/536dd4949e69eba99a702c703f49ce7c73531a54/crates/whisker-layout/src/lib.rs#L292",
+      "reviewedVersion": "main@536dd4949e69",
+      "reviewedDate": "2026-11-10"
     }
   ],
   "review": {
     "date": "2026-11-06",
     "scope": "Development-branch source snapshots, not the older versions pinned by benchmark adapters. Features were source-reviewed, not execution-tested on every platform.",
     "method": "Read repository documentation, manifests, API implementations, examples and regression tests at immutable commits. Built-in means a provided API, not specification completeness. Partial records a specific limitation or specialized scope. Different model identifies delegated/browser/low-level contracts. Unknown means the review did not establish the capability, not that it is absent. Unsupported requires an explicit source statement.",
-    "claimCount": 490,
+    "claimCount": 518,
     "repositories": [
       {
         "id": "blinc",

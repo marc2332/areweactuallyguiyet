@@ -163,7 +163,14 @@ test('feature evidence is usable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('/');
-  await expect(page.locator('#features tbody tr')).toHaveCount(47);
+  await expect(page.locator('#features tbody tr')).toHaveCount(49);
+  for (const name of ['Fractional scaling', 'Pixel snapping']) {
+    const row = page.locator('#features tbody tr').filter({ has: page.getByRole('rowheader', { name, exact: true }) });
+    await expect(row.locator('td')).toHaveCount(14);
+    const evidence = row.locator('td details').first();
+    await evidence.locator('summary').click();
+    await expect(evidence.getByRole('link', { name: 'Source', exact: true })).toHaveAttribute('href', /^https:\/\/github\.com\/.+\/blob\/[a-f0-9]{40}\//);
+  }
   const stateManagement = page.locator('#features tbody tr').filter({ has: page.getByRole('rowheader', { name: 'State Management', exact: true }) });
   await expect(stateManagement.locator('td')).toHaveCount(14);
   await expect(stateManagement.locator('td')).toHaveText(['Component signals', 'Entities', 'Fine-grained signals', 'Elm', 'Immediate mode', 'Property bindings', 'Fine-grained signals', 'Component signals', 'Events', 'Entities', 'Shared state', 'Fine-grained signals', 'Component signals', 'Fine-grained signals']);
