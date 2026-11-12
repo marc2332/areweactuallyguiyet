@@ -18,6 +18,7 @@ export const metrics = {
   dashboard_rss_mean_mib: { label: 'Dashboard memory usage', unit: 'MiB', kind: 'memory', note: 'Application process RSS sampled every 50 ms during the eight-second workload. Dots show average RSS. Excludes child processes and GPU memory.' },
   renderer_fps: { ...metricLabels.renderer_fps, note: 'Closer to 144 FPS is better, matching my 144 Hz screen.' },
   frame_gap_max_ms: { ...metricLabels.frame_gap_max_ms, note: 'Includes silent periods at both ends of the workload. Lower is better, but does not establish display latency.' },
+  dashboard_present_p95_ms: { ...metricLabels.dashboard_present_p95_ms, note: 'p95 presentation interval, median across runs. Includes idle time, not input latency. Lower is better.' },
   dashboard_worst_gap_ms: { ...metricLabels.dashboard_worst_gap_ms, note: 'Longest period without a presentation during the eight-second workload. Worst across runs. Lower is better.' },
   cpu_ms: { ...metricLabels.cpu_ms, note: 'CPU consumed during the workload. Less CPU can mean less work completed, not a faster UI.' },
   pss_mib: { ...metricLabels.pss_mib, note: 'Process-tree proportional memory. Shared pages are apportioned between processes.' },
