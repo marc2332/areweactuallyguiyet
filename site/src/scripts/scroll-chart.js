@@ -25,7 +25,7 @@ export function scrollChart(host, { groups, hidden, frameworks, description }) {
     xAxis: { type: 'category', name: 'Rows', data: rows.map(String), boundaryGap: false,
       axisLabel: { color: '#999993', interval: 0, formatter: value => Number(value).toLocaleString() },
       splitLine: { lineStyle: { color: '#33332f' } } },
-    yAxis: { type: 'value', name: description.unit, min: 0,
+    yAxis: { type: 'value', name: description.unit, scale: true, boundaryGap: ['10%', '10%'],
       axisLabel: { color: '#999993' }, splitLine: { lineStyle: { color: '#33332f' } } },
     series: series.flatMap(series => {
       const framework = frameworks.get(series.framework);
